@@ -31,15 +31,36 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
+            <li class="header">Admin Functions</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
             <li class="treeview">
-                <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fa fa-calendar-times-o'></i> <span>Schedules & Task</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
+                    <li><a href="#"><i class="fa fa-tasks"></i>Schedules</a></li>
+                    <li><a href="#"><i class="fa fa-tasks"></i>Tasks</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class='fa fa-users'></i> <span>Communications</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class='fa fa-bell'></i>Chat</a></li>
+                    <li><a href="#"><i class="fa fa-tasks"></i> Announcements</a></li>
+                    <li><a href="#"><i class="fa fa-briefcase"></i>Publish Content</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class='fa fa-book'></i> <span>Training & Onboarding</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="#"> <i class='fa fa-book'></i>Training Material</a></li>
+                    <li><a href="#"><i class='fa fa-book'></i>Onboarding Material</a></li>
+                </ul>
+            </li>
+            <hr>
+            <li class="treeview">
+                <a href="#"><i class='fa fa-cogs'></i> <span>User Management</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-users"></i>Users</a></li>
+                    <li><a href="#"> <i class="fa fa-user-secret"></i>Roles & Authorization</a></li>
                 </ul>
             </li>
         </ul><!-- /.sidebar-menu -->
