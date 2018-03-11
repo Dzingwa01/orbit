@@ -17,6 +17,7 @@
 .skin-black .main-header .navbar {
   background-color: #ffffff;
 }
+
 .skin-black .main-header .navbar .nav > li > a {
   color: #333333;
 }
@@ -76,10 +77,13 @@
   background: transparent;
   box-shadow: none;
 }
+.main-sidebar{
+  background: #FFFFFF!important;
+}
 .skin-black .wrapper,
 .skin-black .main-sidebar,
 .skin-black .left-side {
-  background-color: #222d32;
+  background-color: #FFFFFF!important;
 }
 .skin-black .user-panel > .info,
 .skin-black .user-panel > .info > a {

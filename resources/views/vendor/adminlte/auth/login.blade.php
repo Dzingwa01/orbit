@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-<body class="hold-transition login-page">
-    <div id="app" v-cloak>
+<body class=theme-cyan">
+    <div id="app">
         <div class="login-box">
             <div class="login-logo">
-                <a href="{{ url('/home') }}">Orbit</a>
+                <a href="{{ url('/home') }}"> <img src="{{URL::asset('/img/orbit_logo_new.png')}}"/></a>
             </div><!-- /.login-logo -->
 
         @if (count($errors) > 0)

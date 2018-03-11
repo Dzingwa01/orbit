@@ -3,7 +3,7 @@
  * ----------
  */
 .skin-blue .main-header .navbar {
-  background-color: #3c8dbc;
+  background-color: #ffffff;
 }
 .skin-blue .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -310,6 +310,11 @@
   -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
 }
+.skin-black .wrapper,
+.skin-black .main-sidebar,
+.skin-black .left-side {
+  background-color: #FFFFFF;
+}
 .skin-black .main-header .navbar-toggle {
   color: #333;
 }
@@ -382,7 +387,7 @@
 .skin-black .wrapper,
 .skin-black .main-sidebar,
 .skin-black .left-side {
-  background-color: #222d32;
+  background-color: #FFFFFF;
 }
 .skin-black .user-panel > .info,
 .skin-black .user-panel > .info > a {
