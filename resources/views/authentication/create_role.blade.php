@@ -29,7 +29,6 @@
                                 <input id="description" name="description" class="form-control" type="text"
                                        placeholder="Role description">
                             </div>
-
                         </div>
 
                         <div class="box-footer">
