@@ -16,7 +16,7 @@
                         <th>Team Size</th>
                         <th>Price</th>
                         <th>Discount</th>
-                        <th>Description</th>
+                        {{--<th>Description</th>--}}
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -44,7 +44,7 @@
                         {data: 'number_of_members', name: 'number_of_members'},
                         {data: 'package_prices', name: 'package_prices'},
                         {data: 'discount', name: 'discount'},
-                        {data: 'package_description', name: 'package_description'},
+//                        {data: 'package_description', name: 'package_description'},
                         {data: 'created_at', name: 'created_at'},
                         {data:'action',name:'action',orderable:false,searchable:false}
                     ]

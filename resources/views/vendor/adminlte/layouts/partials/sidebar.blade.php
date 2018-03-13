@@ -1,4 +1,4 @@
-<aside id="leftsidebar" class="sidebar">
+<aside id="leftsidebar" class="sidebar theme-cyan">
     <div class="menu">
         <ul class="list">
             <li>
@@ -14,7 +14,7 @@
                 </div>
             </li>
             <li class="header">MAIN</li>
-            <li class="active open"> <a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+            {{--<li class="active open"> <a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>--}}
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-gamepad"></i><span>Schedule Management</span></a>
                 <ul class="ml-menu">
                     <li><a href="#">Shifts</a></li>

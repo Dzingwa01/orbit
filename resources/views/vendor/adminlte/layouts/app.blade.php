@@ -29,7 +29,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="theme-cyan">
+<body >
 {{--<div>--}}
     {{--<div class="wrapper">--}}
 
@@ -43,7 +43,7 @@ desired effect
         {{--@include('adminlte::layouts.partials.contentheader')--}}
 
         <!-- Main content -->
-        <section class="content home">
+        <section class="content home" style="background-color: white;">
             <!-- Your Page Content Here -->
             @yield('main-content')
         </section><!-- /.content -->
@@ -55,9 +55,22 @@ desired effect
 
 {{--</div><!-- ./wrapper -->--}}
 {{--</div>--}}
-@section('scripts')
-    @include('adminlte::layouts.partials.scripts')
-@show
+{{--@section('scripts')--}}
+    {{--@include('adminlte::layouts.partials.scripts')--}}
+{{--@show--}}
+
+{{--<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>--}}
+{{--<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>--}}
+{{--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.js"></script>
+<script src="/assets/bundles/knob.bundle.js"></script> <!-- Jquery Knob-->
+<script src="/assets/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js ( jquery.v3.2.1, Bootstrap4 js) -->
+<script src="/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
+
+<script src="/assets/bundles/mainscripts.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+{{--<script src="assets/js/pages/index.js"></script>--}}
 
 </body>
 </html>

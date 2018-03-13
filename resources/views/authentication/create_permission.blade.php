@@ -1,11 +1,11 @@
 @extends('adminlte::layouts.app')
 @section('main-content')
     <div class="container-fluid">
-        <div class="col-md-10">
-            {{--<div class="box box-primary">--}}
-                {{--<div class="box-header with-border">--}}
-                    {{--<h3 class="box-title">Add Permission</h3>--}}
-                {{--</div>--}}
+        {{--<div class="col-md-10">--}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Permission</h3>
+                </div>
                 <form role="form" id="add-establishment" enctype="multipart/form-data" action="/save_permission"
                       method="post">
                     {{ csrf_field() }}

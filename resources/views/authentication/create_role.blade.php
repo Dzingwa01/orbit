@@ -2,8 +2,8 @@
 
 @section('main-content')
     <div class="container-fluid">
-        <div class="col-md-10">
-            <div class="box box-primary">
+        {{--<div class="col-md-10">--}}
+            <div class="box box-danger">
                 <div class="box-header with-border">
                     <h3 class="box-title">Add Role</h3>
                 </div>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            {{--</div>--}}
         </div>
     </div>
 @endsection
