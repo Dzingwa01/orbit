@@ -24,7 +24,7 @@ class PackagesController extends Controller
         $packages = Package::all();
         return DataTables::of($packages)
             ->addColumn('action', function ($package) {
-                return '<a href="package/' . $package->_id . '" title="View Role" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="package/' . $package->_id . '" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete/' . $package->_id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="/package/' . $package->id . '" title="View Role" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="/package/' . $package->id . '/edit" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="/delete/' . $package->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -56,7 +56,6 @@ class PackagesController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-
         }
         return redirect('package');
     }
@@ -67,9 +66,10 @@ class PackagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Package $package)
     {
         //
+        return view('packages.view',compact('package'));
     }
 
     /**
@@ -78,9 +78,10 @@ class PackagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Package $package)
     {
         //
+        return view('packages.edit',compact('package'));
     }
 
     /**
@@ -90,9 +91,19 @@ class PackagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Package $package)
     {
         //
+        DB::beginTransaction();
+        try {
+            $package->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect('package');
+
     }
 
     /**

@@ -15,7 +15,7 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
-                        <th>Created At</th>
+                        <th>Package Name</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -44,7 +44,7 @@
                         {data: 'email', name: 'email'},
 //                        {data: 'contact_number', name: 'contact_number'},
 //                        {data: 'depot', name: 'depot'},
-                        {data: 'created_at', name: 'created_at'},
+                        {data: 'package_name', name: 'package_name'},
                         {data:'action',name:'action',orderable:false,searchable:false}
                     ]
                 });

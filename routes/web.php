@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('package','PackagesController');
     Route::get('get_packages','PackagesController@getPackages')->name('packages.get_packages');
+    Route::post('save_package/{package}','PackagesController@update');
 
     Route::resource('team','TeamsController');
     Route::get('get_teams','TeamsController@getTeams')->name('teams.get_teams');

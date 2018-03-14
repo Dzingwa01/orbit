@@ -42,6 +42,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label for="package_id">Package</label>
+                                <select id="package_id" name="package_id" class="form-control">
+                                    <option></option>
+                                    @foreach($packages as $package)
+                                        <option value="{{$package->id}}">{{$package->package_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <hr>
                         <label>*Auto generated credentials - Send these credentials to the user</label>
@@ -69,7 +78,7 @@
 @push('datatable-scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#role_id').select2({
+            $('select').select2({
                 placeholder: 'Select or search an option'
             });
 

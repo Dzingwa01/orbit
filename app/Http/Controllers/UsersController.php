@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use Yajra\Datatables\Datatables;
 use DB;
+use App\Package;
 
 class UsersController extends Controller
 {
@@ -21,7 +22,9 @@ class UsersController extends Controller
     }
 
     public function getUsers(){
-        $users = User::all();
+        $users = DB::table('users')
+                ->join('packages','packages.id','users.package_id')
+                ->select('users.*','packages.package_name')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
                 return '<a href="user/' . $user->id . '" title="View User" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="user/' . $user->id . '/edit" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_user/' . $user->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
@@ -38,7 +41,8 @@ class UsersController extends Controller
     {
         //
         $roles = Role::all();
-        return view('users.create_user',compact('roles'));
+        $packages = Package::all();
+        return view('users.create_user',compact('roles','packages'));
     }
 
     /**
@@ -76,7 +80,8 @@ class UsersController extends Controller
         //
         $user = User::find($id);
         $roles = Role::all();
-        return view('users.view',compact('roles','user'));
+        $packages = Package::all();
+        return view('users.view',compact('roles','user','packages'));
     }
 
     /**
@@ -89,7 +94,8 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $roles = Role::all();
-        return view('users.edit',compact('roles','user'));
+        $packages = Package::all();
+        return view('users.edit',compact('roles','user','packages'));
     }
 
     /**
