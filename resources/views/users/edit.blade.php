@@ -1,44 +1,43 @@
 @extends('adminlte::layouts.app')
 
 @section('main-content')
-    <div class="container-fluid"  >
-        {{--<div class="col-md-10">--}}
-            <div class="box box-danger col-md-12" >
+    <div class="container-fluid" >
+        <div class="col-md-10">
+            <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add User</h3>
+                    <h3 class="box-title">Edit User Details</h3>
                 </div>
-                <form role="form" id="add-user" action="/user" method="post">
+                <form role="form" action="/update/user/{{$user->id}}" method="post">
                     {{ csrf_field() }}
                     <div class="box-body">
                         <div class="row">
 
                             <div class="col-md-6 form-group">
                                 <label for="name">Name</label>
-                                <input id="name" name="name" class="form-control" placeholder="Name">
+                                <input id="name" name="name" class="form-control" placeholder="Name" value="{{$user->name}}">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="surname">Surname</label>
-                                <input id="surname" name="surname" type="text" class="form-control" placeholder="Surname">
+                                <input id="surname" name="surname" type="text" class="form-control" value="{{$user->surname}}">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="email">Email Address</label>
-                                <input id="email" name="email" class="form-control" type="email" placeholder="Email Address">
+                                <input id="email" name="email" class="form-control" type="email" value="{{$user->email}}">
                             </div>
 
                             <div class="col-md-6 form-group">
                                 <label for="contact_number">Contact Number</label>
-                                <input id="contact_number" name="contact_number" type="tel" class="form-control" placeholder="Contact Number">
+                                <input id="contact_number" name="contact_number" type="tel" class="form-control" value="{{$user->contact_number}}">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 form-group">
                                 <label for="role_id">Role</label>
                                 <select id="role_id" name="role_id" class="form-control">
-                                    <option></option>
                                     @foreach($roles as $role)
-                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                        <option {{$user->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->display_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -61,8 +60,10 @@
                                 <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Save</button>
                             </center>
                         </div>
+
                     </div>
                 </form>
+            </div>
         </div>
     </div>
 @endsection

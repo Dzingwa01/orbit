@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
     #adminlte_routes
     Route::resource('user','UsersController');
     Route::get('get_users','UsersController@getUsers')->name('users.get_users');
+    Route::post('/update/user/{id}','UsersController@update');
+    Route::get('delete_user/{id}','UsersController@destroy');
 
     Route::resource('package','PackagesController');
     Route::get('get_packages','PackagesController@getPackages')->name('packages.get_packages');
@@ -38,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('edit_role/{role}','RolesController@editRole');
     Route::get('delete_role/{role}','RolesController@deleteRole');
     Route::get('roles','RolesController@index');
+    Route::post('/update_role/{role}','RolesController@updateRole');
 
     Route::get('/get_permissions', 'PermissionsController@getPermissions')->name('permissions.get_permissions');
     Route::get('create_permission','PermissionsController@createPermission');
@@ -46,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('edit_permission/{permission}','PermissionsController@editPermission');
     Route::get('delete_permission/{permission}','PermissionsController@deletePermission');
     Route::get('permissions','PermissionsController@index');
+    Route::post('update_permission/{permission}','PermissionsController@updatePermission');
 });
 
 Auth::routes();

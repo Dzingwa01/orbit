@@ -17,8 +17,6 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
-//        dd(User::all());
         return view('users.index');
     }
 
@@ -26,7 +24,7 @@ class UsersController extends Controller
         $users = User::all();
         return DataTables::of($users)
             ->addColumn('action',function($user){
-                return '<a href="view_user/'.$user->id.'" title="View User" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="edit_user/'.$user->id.'" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_user/'.$user->id.'" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="user/' . $user->id . '" title="View User" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="user/' . $user->id . '/edit" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_user/' . $user->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -54,7 +52,10 @@ class UsersController extends Controller
         //
         DB::beginTransaction();
         try {
-            $user = User::create($request->all());
+            $input = $request->all();
+            $password = bcrypt($input['password']);
+            $input['password'] = $password;
+            $user = User::create($input);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -73,6 +74,9 @@ class UsersController extends Controller
     public function show($id)
     {
         //
+        $user = User::find($id);
+        $roles = Role::all();
+        return view('users.view',compact('roles','user'));
     }
 
     /**
@@ -83,29 +87,47 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        $roles = Role::all();
+        return view('users.edit',compact('roles','user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $user = User::find($id);
+        if(is_null($input['password'])){
+            unset($input['password']);
+            $user->update($input);
+        }else{
+            $password = bcrypt($input['password']);
+            $input['password'] = $password;
+            $user->update($input);
+        }
+
+        return redirect('/user');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+        $user = User::find($id);
+        $user->delete();
+        return redirect('/user');
     }
 }

@@ -33,13 +33,37 @@ class PermissionsController extends Controller
         }
         return redirect('permissions');
     }
+
+    public function updatePermission(Request $request,Permission $permission){
+        DB::beginTransaction();
+        try {
+            $permission = $permission->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect('permissions');
+    }
+
+    public function editPermission(Permission $permission){
+        return view('authentication.edit_permission',compact('permission'));
+    }
+    public function viewPermission(Permission $permission){
+        return view('authentication.view_permission',compact('permission'));
+    }
     public function getPermissions()
     {
         $permissions = Permission::all();
         return DataTables::of($permissions)
             ->addColumn('action', function ($permission) {
-                return '<a href="view_user/' . $permission->_id . '" title="View Role" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="edit_role/' . $permission->_id . '" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete/' . $permission->_id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="view_permission/'. $permission->id . '" title="View Permission" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="edit_permission/' . $permission->id . '" style="margin-left:0.5em" title="Edit Permission" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_permission/' . $permission->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Permission"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
+    }
+
+    public function deletePermission(Permission $permission){
+        $permission->delete();
+        return redirect('permissions');
     }
 }
