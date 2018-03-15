@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Team;
-use App\User;
-use App\City;
 use Yajra\Datatables\Datatables;
 use DB;
+use App\City;
 
-class TeamsController extends Controller
+class CitiesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,17 +17,14 @@ class TeamsController extends Controller
     public function index()
     {
         //
-        return view('teams.index');
+        return view('cities.index');
     }
 
-    public function getTeams(){
-        $teams = DB::table('teams')
-                ->join('users','users.id','teams.creator')
-                ->join('cities','teams.city_id','cities.id')
-                ->select('teams.*','users.name','users.surname','cities.city_name');
-        return DataTables::of($teams)
-            ->addColumn('action', function ($team) {
-                return '<a href="team/' . $team->id . '" title="View Team" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="team/' . $team->id . '/edit" style="margin-left:0.5em" title="Edit Team" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_team/' . $team->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Team"><i class="glyphicon glyphicon-trash "></i></a>';
+    public function getCities(){
+        $cities = City::all();
+        return DataTables::of($cities)
+            ->addColumn('action', function ($city) {
+                return '<a href="/city/' . $city->id . '" title="View City" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="/city/' . $city->id . '/edit" style="margin-left:0.5em" title="Edit City" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="/delete_city/' . $city->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete City"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -42,9 +37,7 @@ class TeamsController extends Controller
     public function create()
     {
         //
-        $users = User::all();
-        $cities = City::all();
-        return view('teams.create_team',compact('users','cities'));
+        return view('cities.create_city');
     }
 
     /**
@@ -56,17 +49,15 @@ class TeamsController extends Controller
     public function store(Request $request)
     {
         //
-        $team_id = '';
         DB::beginTransaction();
         try {
-            $team = Team::create($request->all());
+            $city = City::create($request->all());
             DB::commit();
-            return view('teams.team_members',compact('team'));
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-        return redirect('team');
+        return redirect('city');
     }
 
     /**
@@ -75,9 +66,10 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Team $team)
+    public function show(City $city)
     {
         //
+        return view('cities.view',compact('city'));
     }
 
     /**
@@ -86,9 +78,10 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Team $team)
+    public function edit(City $city)
     {
         //
+        return view('cities.edit',compact('city'));
     }
 
     /**
@@ -98,9 +91,18 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Team $team)
+    public function update(Request $request, City $city)
     {
         //
+        DB::beginTransaction();
+        try {
+            $city->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect('city');
     }
 
     /**
@@ -109,10 +111,10 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team)
+    public function destroy(City $city)
     {
         //
-        $team->delete();
-        return redirect('team');
+        $city->delete();
+        return redirect('city');
     }
 }

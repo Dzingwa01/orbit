@@ -40,8 +40,8 @@
                     ajax: "{{route('teams.get_teams')}}",
                     columns: [
                         {data: 'team_name', name: 'team_name'},
-                        {data: 'creator', name: 'creator'},
-                        {data: 'city_id', name: 'city_id'},
+                        {data: 'name', name: 'name'},
+                        {data: 'city_name', name: 'city_name'},
                         {data: 'team_description', name: 'team_description'},
                         {data: 'created_at', name: 'created_at'},
                         {data:'action',name:'action',orderable:false,searchable:false}

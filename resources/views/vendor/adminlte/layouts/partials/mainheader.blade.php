@@ -12,17 +12,17 @@
                 <i class="zmdi zmdi-arrow-right"></i>
             </a>
         </li>
-        <li class="dropdown app_menu"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-apps"></i></a>
-            <ul class="dropdown-menu pullDown">
-                <li><a href="mail-inbox.html"><i class="zmdi zmdi-email m-r-10"></i><span>Mail</span></a></li>
-                <li><a href="contact.html"><i class="zmdi zmdi-accounts-list m-r-10"></i><span>Contacts</span></a></li>
-                <li><a href="chat.html"><i class="zmdi zmdi-comment-text m-r-10"></i><span>Chat</span></a></li>
-                <li><a href="invoices.html"><i class="zmdi zmdi-arrows m-r-10"></i><span>Invoices</span></a></li>
-                <li><a href="events.html"><i class="zmdi zmdi-calendar-note m-r-10"></i><span>Calendar</span></a></li>
-                <li><a href="javascript:void(0)"><i class="zmdi zmdi-arrows m-r-10"></i><span>Notes</span></a></li>
-                <li><a href="javascript:void(0)"><i class="zmdi zmdi-view-column m-r-10"></i><span>Taskboard</span></a></li>
-            </ul>
-        </li>
+        {{--<li class="dropdown app_menu"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-apps"></i></a>--}}
+            {{--<ul class="dropdown-menu pullDown">--}}
+                {{--<li><a href="mail-inbox.html"><i class="zmdi zmdi-email m-r-10"></i><span>Mail</span></a></li>--}}
+                {{--<li><a href="contact.html"><i class="zmdi zmdi-accounts-list m-r-10"></i><span>Contacts</span></a></li>--}}
+                {{--<li><a href="chat.html"><i class="zmdi zmdi-comment-text m-r-10"></i><span>Chat</span></a></li>--}}
+                {{--<li><a href="invoices.html"><i class="zmdi zmdi-arrows m-r-10"></i><span>Invoices</span></a></li>--}}
+                {{--<li><a href="events.html"><i class="zmdi zmdi-calendar-note m-r-10"></i><span>Calendar</span></a></li>--}}
+                {{--<li><a href="javascript:void(0)"><i class="zmdi zmdi-arrows m-r-10"></i><span>Notes</span></a></li>--}}
+                {{--<li><a href="javascript:void(0)"><i class="zmdi zmdi-view-column m-r-10"></i><span>Taskboard</span></a></li>--}}
+            {{--</ul>--}}
+        {{--</li>--}}
         <li class="dropdown notifications hidden-sm-down"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-notifications"></i>
                 <span class="label-count">5</span>
             </a>
@@ -144,20 +144,33 @@
                 <li class="footer"><a href="javascript:void(0);">View All</a></li>
             </ul>
         </li>
-        <li class="search_bar hidden-sm-down">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search...">
-                <span class="input-group-addon">
-                    <i class="zmdi zmdi-search"></i>
-                </span>
-            </div>
-        </li>
-        <li class="float-right">
+        {{--<li class="search_bar hidden-sm-down">--}}
+            {{--<div class="input-group">--}}
+                {{--<input type="text" class="form-control" placeholder="Search...">--}}
+                {{--<span class="input-group-addon">--}}
+                    {{--<i class="zmdi zmdi-search"></i>--}}
+                {{--</span>--}}
+            {{--</div>--}}
+        {{--</li>--}}
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right" style="margin-right:1em;">
+        <li class="">
             <a href="javascript:void(0);" class="fullscreen hidden-md-down hidden-sm-down" data-provide="fullscreen"><i class="zmdi zmdi-fullscreen"></i></a>
-            <a href="javascript:void(0);" class="js-right-chat"><i class="zmdi zmdi-comments"></i></a>
+            {{--<a href="javascript:void(0);" class="js-right-chat"><i class="zmdi zmdi-comments"></i></a>--}}
             <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings"></i></a>
-            <a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-sort-amount-desc"></i></a>
-            <a href="sign-in.html" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
+            {{--<a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-sort-amount-desc"></i></a>--}}
+            {{--<a href="sign-in.html" class="mega-menu"><i class="zmdi zmdi-power"></i></a>--}}
+            <a href="{{ url('/logout') }}" class="mega-menu" id="logout"
+               onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();"><i class="zmdi zmdi-power"></i>
+                {{--{{ trans('adminlte_lang::message.signout') }}--}}
+            </a>
+
+            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+                <input type="submit" value="logout" style="display: none;">
+            </form>
         </li>
     </ul>
 </nav>

@@ -34,22 +34,21 @@
                             <div class="col-md-6 form-group">
                                 <label for="discount">City</label>
                                 <select id="city_id" name="city_id" class="form-control">
-                                    {{--@foreach($users as $user)--}}
-                                        {{--<option value="{{$user->id}}">{{$user->name}}</option>--}}
-                                    {{--@endforeach--}}
+                                    @foreach($cities as $city)
+                                        <option value="{{$city->id}}">{{$city->city_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="box-footer">
                             <center>
-                                <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Save</button>
+                                <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Next</button>
                             </center>
                         </div>
                     </div>
                 </form>
             </div>
-
     </div>
 @endsection
 @push('datatable-scripts')

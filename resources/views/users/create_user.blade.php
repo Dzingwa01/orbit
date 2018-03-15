@@ -14,40 +14,47 @@
 
                             <div class="col-md-6 form-group">
                                 <label for="name">Name</label>
-                                <input id="name" name="name" class="form-control" placeholder="Name">
+                                <input id="name" name="name" class="form-control" placeholder="Name" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="surname">Surname</label>
-                                <input id="surname" name="surname" type="text" class="form-control" placeholder="Surname">
+                                <input id="surname" name="surname" type="text" class="form-control" placeholder="Surname" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="email">Email Address</label>
-                                <input id="email" name="email" class="form-control" type="email" placeholder="Email Address">
+                                <input id="email" name="email" class="form-control" type="email" placeholder="Email Address" required>
                             </div>
 
                             <div class="col-md-6 form-group">
                                 <label for="contact_number">Contact Number</label>
-                                <input id="contact_number" name="contact_number" type="tel" class="form-control" placeholder="Contact Number">
+                                <input id="contact_number" name="contact_number" type="tel" class="form-control" placeholder="Contact Number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="company_name">Company Name</label>
+                                <input id="company_name" name="company_name" class="form-control" type="text" placeholder="Company Name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="package_id">Package</label>
+                                <select id="package_id" name="package_id" class="form-control" required>
+                                    <option></option>
+                                    @foreach($packages as $package)
+                                        <option value="{{$package->id}}">{{$package->package_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="role_id">Role</label>
-                                <select id="role_id" name="role_id" class="form-control">
+                                <select id="role_id" name="role_id" class="form-control" required>
                                     <option></option>
                                     @foreach($roles as $role)
                                         <option value="{{$role->id}}">{{$role->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="package_id">Package</label>
-                                <select id="package_id" name="package_id" class="form-control">
-                                    <option></option>
-                                    @foreach($packages as $package)
-                                        <option value="{{$package->id}}">{{$package->package_name}}</option>
                                     @endforeach
                                 </select>
                             </div>

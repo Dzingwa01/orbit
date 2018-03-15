@@ -34,12 +34,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="role_id">Role</label>
-                                <select id="role_id" name="role_id" class="form-control">
-                                    @foreach($roles as $role)
-                                        <option {{$user->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->display_name}}</option>
-                                    @endforeach
-                                </select>
+                                <label for="company_name">Company Name</label>
+                                <input id="company_name" name="company_name" class="form-control" type="text" placeholder="Company Name" value="{{$user->company_name}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="package_id">Package</label>
@@ -50,6 +46,17 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="role_id">Role</label>
+                                <select id="role_id" name="role_id" class="form-control">
+                                    @foreach($roles as $role)
+                                        <option {{$user->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->display_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                         </div>
                         <hr>
                         <label>*Auto generated credentials - Send these credentials to the user</label>

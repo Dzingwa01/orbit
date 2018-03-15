@@ -24,7 +24,7 @@ class PackagesController extends Controller
         $packages = Package::all();
         return DataTables::of($packages)
             ->addColumn('action', function ($package) {
-                return '<a href="/package/' . $package->id . '" title="View Role" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="/package/' . $package->id . '/edit" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="/delete/' . $package->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="/package/' . $package->id . '" title="View Package" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="/package/' . $package->id . '/edit" style="margin-left:0.5em" title="Edit Package" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="/delete_package/' . $package->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Package"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -112,8 +112,10 @@ class PackagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Package $package)
     {
         //
+        $package->delete();
+        return redirect('package');
     }
 }

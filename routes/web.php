@@ -30,9 +30,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('package','PackagesController');
     Route::get('get_packages','PackagesController@getPackages')->name('packages.get_packages');
     Route::post('save_package/{package}','PackagesController@update');
+    Route::get('delete_package/{package}','PackagesController@destroy');
+
+    Route::resource('city','CitiesController');
+    Route::get('get_cities','CitiesController@getCities')->name('cities.get_cities');
+    Route::post('save_city/{city}','CitiesController@update');
+    Route::get('delete_city/{city}','CitiesController@destroy');
 
     Route::resource('team','TeamsController');
     Route::get('get_teams','TeamsController@getTeams')->name('teams.get_teams');
+    Route::post('save_team/{team}','TeamsController@update');
+    Route::get('delete_team/{team}','TeamsController@destroy');
 
     Route::get('/get_roles', 'RolesController@getRoles')->name('roles.get_roles');
     Route::get('create_role','RolesController@createRole');

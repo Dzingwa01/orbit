@@ -31,8 +31,7 @@
             crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
-    console.log("sei sei");
-//    $.noConflict();
+
     $(document).ready(function ($) {
         $(function () {
             oTable = $('#roles_table').DataTable({

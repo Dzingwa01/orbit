@@ -1,4 +1,4 @@
-<aside id="leftsidebar" class="sidebar theme-cyan">
+<aside id="leftsidebar" class="sidebar theme-cyan" style="margin-bottom: 3em;">
     <div class="menu">
         <ul class="list">
             <li>
@@ -21,9 +21,10 @@
                     <li><a href="#">Tasks</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Teams</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>
                 <ul class="ml-menu">
-                    <li><a href="{{url('team')}}">Team Management</a></li>
+                    <li><a href="{{url('team')}}">Teams</a></li>
+                    <li><a href="{{url('city')}}">Cities</a></li>
                     <li><a href="#">Swap Teams</a></li>
                 </ul>
             </li>
@@ -34,15 +35,15 @@
                     <li> <a href="#">Share Files</a> </li>
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Training</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Training</span></a>
                 <ul class="ml-menu">
                     <li><a href="#">Training Material</a></li>
                     <li><a href="#">Onboarding Material</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Packages</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Packages</span></a>
                 <ul class="ml-menu">
-                    <li><a href="{{url('package')}}">Package Management</a></li>
+                    <li><a href="{{url('package')}}">Packages</a></li>
                     <li><a href="#">Terms</a></li>
                 </ul>
             </li>
