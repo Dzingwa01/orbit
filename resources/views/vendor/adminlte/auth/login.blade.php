@@ -9,7 +9,7 @@
     <div id="app" v-cloak>
         <div class="login-box">
             <div class="login-logo">
-                <a href="{{ url('/home') }}"><img src="/img/orbit_logo_new.png" alt="orbit"></a>
+                <a href="/"><img src="/img/orbit_logo_new.png" alt="orbit"></a>
             </div><!-- /.login-logo -->
 
             @if (count($errors) > 0)
@@ -43,7 +43,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-8">
-                            <div class="checkbox icheck">
+                            <div >
                                 <label>
                                     <input style="display:none;" type="checkbox"
                                            name="remember"> {{ trans('adminlte_lang::message.remember') }}
@@ -60,8 +60,8 @@
                 {{--@include('adminlte::auth.partials.social_login')--}}
 
                 <a href="{{ url('/password/reset') }}">{{ trans('adminlte_lang::message.forgotpassword') }}</a><br>
-                <a href="{{ url('/register') }}"
-                   class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>
+                {{--<a href="{{ url('/register') }}"--}}
+                   {{--class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>--}}
 
             </div><!-- /.login-box-body -->
 
@@ -70,13 +70,13 @@
     @include('adminlte::layouts.partials.scripts_auth')
 
     <script>
-//        $(document).ready(function(){
-//            $('input').iCheck({
-//                checkboxClass: 'icheckbox_square-blue',
-//                radioClass: 'iradio_square-blue',
-//                increaseArea: '20%' // optional
-//            });
-//        });
+        $(document).ready(function(){
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
     </script>
     </body>
 

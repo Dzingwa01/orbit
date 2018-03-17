@@ -10,7 +10,7 @@
     <div id="app" v-cloak>
         <div class="register-box">
             <div class="register-logo">
-                <a href="{{ url('/home') }}">Orbit</a>
+                <a href="{{ url('/') }}"><img src="/img/orbit_logo_new.png" alt="orbit"></a></a>
             </div>
 
             @if (count($errors) > 0)
@@ -30,26 +30,26 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group has-feedback">
                         <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.fullname') }}" name="name" value="{{ old('name') }}" autofocus/>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        {{--<span class="glyphicon glyphicon-user form-control-feedback"></span>--}}
                     </div>
                     @if (config('auth.providers.users.field','email') === 'username')
                         <div class="form-group has-feedback">
                             <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.username') }}" name="username" autofocus/>
-                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            {{--<span class="glyphicon glyphicon-user form-control-feedback"></span>--}}
                         </div>
                     @endif
 
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email" value="{{ old('email') }}"/>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        {{--<span class="glyphicon glyphicon-envelope form-control-feedback"></span>--}}
                     </div>
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        {{--<span class="glyphicon glyphicon-lock form-control-feedback"></span>--}}
                     </div>
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.retrypepassword') }}" name="password_confirmation"/>
-                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                        {{--<span class="glyphicon glyphicon-log-in form-control-feedback"></span>--}}
                     </div>
                     <div class="row">
                         <div class="col-xs-1">

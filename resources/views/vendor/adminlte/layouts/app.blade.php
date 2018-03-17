@@ -34,8 +34,14 @@ desired effect
     {{--<div class="wrapper">--}}
 
     @include('adminlte::layouts.partials.mainheader')
+    @if($role->name=='Manager')
+    @include('adminlte::layouts.partials.manager_sidebar')
+    @elseif($role->name=='Employee')
+        @include('adminlte::layouts.partials.employee_sidebar')
+        @else
+        @include('adminlte::layouts.partials.sidebar')
+    @endif
 
-    @include('adminlte::layouts.partials.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     {{--<div class="content-wrapper">--}}

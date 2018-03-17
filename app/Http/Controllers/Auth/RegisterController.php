@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Package;
+use App\Role;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -33,6 +35,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
+
         return view('adminlte::auth.register');
     }
 
@@ -78,14 +81,34 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $team_size = Package::where('id',$data['package_id'])->select('number_of_members')->first();
+        $role_id = "";
+
+        if($team_size->number_of_members>1){
+            $role = Role::where('name','Manager')->first();
+            $role_id = $role->id;
+        }
+        else{
+            $role = Role::where('name','Employee')->first();
+            $role_id = $role->id;
+        }
+
         $fields = [
             'name'     => $data['name'],
             'email'    => $data['email'],
+            'surname'    => $data['surname'],
+            'contact_number' =>$data['contact_number'],
+            'company_name' =>$data['company_name'],
+            'user_name' =>$data['user_name'],
+            'role_id'=> $role_id,
+            'package_id' => $data['package_id'],
+            'terms' =>$data['terms'],
             'password' => bcrypt($data['password']),
         ];
-        if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
-            $fields['username'] = $data['username'];
-        }
+//        dd($fields);
+//        if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
+//            $fields['username'] = $data['username'];
+//        }
         return User::create($fields);
     }
 }

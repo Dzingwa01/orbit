@@ -12,7 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $packages = App\Package::orderBy('number_of_members','ASC')->get();
+    $individual_package = App\Package::where('number_of_members',1)->first();
+    return view('welcome',compact('packages','individual_package'));
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -64,3 +66,4 @@ Route::group(['middleware' => 'auth'], function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/manager', 'HomeController@index')->name('home');
