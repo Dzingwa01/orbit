@@ -34,9 +34,9 @@ desired effect
     {{--<div class="wrapper">--}}
 
     @include('adminlte::layouts.partials.mainheader')
-    @if($role->name=='Manager')
+    @if(Auth::user()->role_id==2)
     @include('adminlte::layouts.partials.manager_sidebar')
-    @elseif($role->name=='Employee')
+    @elseif(Auth::user()->role_id==3)
         @include('adminlte::layouts.partials.employee_sidebar')
         @else
         @include('adminlte::layouts.partials.sidebar')

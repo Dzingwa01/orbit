@@ -19,7 +19,11 @@ html {
 body {
   margin: 0;
 }
-
+@media only screen and (max-device-width: 480px) {
+body{
+    margin-top:10em!important;
+}
+}
 article,
 aside,
 details,

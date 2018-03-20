@@ -3,10 +3,10 @@
         <ul class="list">
             <li>
                 <div class="user-info m-b-20">
-                    <div class="image"><a><img src="/assets/images/profile_av.jpg" alt="User"></a></div>
+                    <div class="image"><a><img src="/img/avatar.png" alt="User"></a></div>
                     <div class="detail">
                         <h4>{{Auth::user()->name . ' '. Auth::user()->surname}}</h4>
-                        <p class="m-b-0">{{$role->name}}</p>
+                        <p class="m-b-0">{{App\Role::where('id',Auth::user()->role_id)->first()->name}}</p>
                         <p class="m-b-0">{{Auth::user()->company_name}}</p>
                         <a href="#" title="Events"><i class="zmdi zmdi-calendar"></i></a>
                         <a href="#" title="Inbox"><i class="zmdi zmdi-email"></i></a>

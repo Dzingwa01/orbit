@@ -28,6 +28,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $role = Role::where('id',$user->role_id)->first();
+//        dd($role);
         if($role->name =="Manager"){
             return view('manager',compact('role'));
         }

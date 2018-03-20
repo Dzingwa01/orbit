@@ -59,6 +59,7 @@ class UsersController extends Controller
             $input = $request->all();
             $password = bcrypt($input['password']);
             $input['password'] = $password;
+            $input['logins_counter'] = 0;
             $user = User::create($input);
             DB::commit();
         } catch (\Exception $e) {
