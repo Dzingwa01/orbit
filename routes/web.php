@@ -48,6 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_teams','TeamsController@getTeams')->name('teams.get_teams');
     Route::post('save_team/{team}','TeamsController@update');
     Route::get('delete_team/{team}','TeamsController@destroy');
+    Route::post('/add_team_members/','TeamsController@managersTeamMembers');
+
+    Route::resource('shifts','ShiftsController');
 
     Route::resource('tasks', 'TasksController');
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');

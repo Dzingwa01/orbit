@@ -1,19 +1,41 @@
 @extends('adminlte::layouts.app')
-
+<?php
+    $employees =\App\User::where('creator_id',Auth::user()->id)->get();
+?>
 @section('main-content')
     <div class="container-fluid" >
         {{--<div class="col-md-10">--}}
         <div class="box box-danger col-md-12" >
             <div class="box-header with-border">
-                <h3 class="box-title">Add Team Members</h3>
+                <h3 class="box-title">Add Team Members: {{$team->team_name}}</h3>
             </div>
             <div class="row">
                 <div class="col-sm-2">
-                    <button id="email_invite" class="btn btn-success">Invite by Email</button>
+                    <button id="email_invite" class="btn btn-success"><i class="fa fa-mail-forward"></i>Invite by Email</button>
                 </div>
                 <div class="col-sm-2">
-                    <button id="create_employees" class="btn btn-success">Create Employees</button>
+                    <button id="create_employees" class="btn btn-success"><i class="fa fa-user"></i>Create Employees</button>
                 </div>
+            </div>
+            <div class="row" style="margin-top:2em;">
+                <form id="employees_list" role="form" action="/add_team_members" method="post" class="col-sm-8">
+                    {{ csrf_field() }}
+                    <input hidden name="team_id" value="{{$team->id}}">
+                    <legend>Add existing employees</legend>
+                    {{--<fieldset>--}}
+                    @foreach($employees as $employee)
+                        <div class="form-check col-sm-6">
+                            <input name="{{$employee->contact_number}}" type="checkbox" class="form-check-input" value="{{$employee->id}}">
+                            <label class="form-check-label" for="{{$employee->contact_number}}">{{$employee->name . ' '. $employee->surname}}</label>
+                        </div>
+                    @endforeach
+                        <div class="box-footer" style="margin-top:3em!important;">
+                            <center>
+                                <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Save</button>
+                            </center>
+                        </div>
+                    {{--</fieldset>--}}
+                </form>
             </div>
         </div>
         {{--</div>--}}
@@ -40,29 +62,15 @@
     {{--</div>--}}
 @endsection
 @push('datatable-scripts')
-    {{--<script type="text/javascript">--}}
-        {{--console.log('Check');--}}
-        {{--var holder = $.noConflict();--}}
-        {{--holder(document).ready(function () {--}}
-            {{--var employees_counter = 0;--}}
-            {{--console.log('Check');--}}
-            {{--employees_counter = {{count(\App\User::where('creator_id',Auth::user()->id)->get())}}--}}
-                {{--console.log("count" + employees_counter);--}}
-            {{--if (employees_counter == 0) {--}}
-                {{--holder('#options').modal('show');--}}
-            {{--}--}}
-            {{--holder('#not_now').on('click', function () {--}}
-                {{--holder('#create_team_modal').modal('hide');--}}
-                {{--{{Auth::user()->update(array('logins_counter' => 1))}}--}}
-            {{--});--}}
-            {{--holder('#create_team').on('click', function () {--}}
-                {{--alert('Clicked');--}}
-            {{--});--}}
+    <script type="text/javascript">
+        console.log('Check');
+        var holder = $.noConflict();
+        holder(document).ready(function () {
 
-        {{--});--}}
+        });
 
 
-    {{--</script>--}}
+    </script>
 
 @endpush
 

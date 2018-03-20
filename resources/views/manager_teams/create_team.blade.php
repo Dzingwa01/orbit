@@ -20,11 +20,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="creator">Team Creator</label>
                                 <input class="form-control" type="text" value="{{Auth::user()->name . ' '. Auth::user()->surname}}" disabled="disabled">
-                                {{--<select id="creator" name="creator" class="form-control">--}}
-                                    {{--@foreach($users as $user)--}}
-                                        {{--<option value="{{$user->id}}">{{$user->name . ' ' . $user->surname}}</option>--}}
-                                    {{--@endforeach--}}
-                                {{--</select>--}}
+
                             </div>
                         </div>
                         <div class="row">

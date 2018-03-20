@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TeamMember;
 use Illuminate\Http\Request;
 use App\Team;
 use App\User;
@@ -59,7 +60,7 @@ class TeamsController extends Controller
         $team_id = '';
         DB::beginTransaction();
         try {
-            $team = Team::create($request->all());
+            $team = Team::updateOrCreate($request->all());
             DB::commit();
             return view('teams.team_members',compact('team'));
         } catch (\Exception $e) {
@@ -67,6 +68,17 @@ class TeamsController extends Controller
             throw $e;
         }
         return redirect('team');
+    }
+
+    public function managersTeamMembers(Request $request){
+        $input = $request->all();
+        $team_id = $input['team_id'];
+        $team_members= array_values(array_except($input,['_token','team_id']));
+//        dd($team_members);
+        foreach($team_members as $key) {
+            TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key]);
+        }
+        return redirect('manager_teams');
     }
 
     /**

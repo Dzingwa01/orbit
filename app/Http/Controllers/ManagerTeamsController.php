@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Team;
@@ -73,9 +74,19 @@ class ManagerTeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Team $team)
+    public function show($id)
     {
         //
+//        dd($team);
+        $team = Team::where('id',$id)->first();
+        $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
+                        ->join('teams','teams.id','team_members.member_team_id')
+                        ->select('users.*')
+            ->where('teams.id',$id)
+                        ->get();
+//        dd($team_members);
+        $cities = City::all();
+        return view('manager_teams.view',compact('team','cities','team_members'));
     }
 
     /**
@@ -84,9 +95,17 @@ class ManagerTeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Team $team)
+    public function edit($id)
     {
         //
+        $team = Team::where('id',$id)->first();
+        $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
+            ->join('teams','teams.id','team_members.member_team_id')
+            ->where('teams.id',$id)
+            ->select('users.*')
+            ->get();
+        $cities = City::all();
+        return view('manager_teams.edit',compact('team','cities','team_members'));
     }
 
     /**

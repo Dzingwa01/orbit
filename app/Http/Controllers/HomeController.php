@@ -6,6 +6,7 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Calendar;
 
 class HomeController extends Controller
 {
@@ -30,7 +31,8 @@ class HomeController extends Controller
         $role = Role::where('id',$user->role_id)->first();
 //        dd($role);
         if($role->name =="Manager"){
-            return view('manager',compact('role'));
+            $calendar =Calendar();
+            return view('manager',compact('role','calendar'));
         }
         else if($role->name == "Employee"){
             return view('employee',compact('role'));
