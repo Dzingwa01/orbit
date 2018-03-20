@@ -15,7 +15,7 @@
                 </div>
             </li>
             <li class="header">MAIN</li>
-            {{--<li class="active open"> <a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>--}}
+            <li> <a href="{{url('home')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-time-countdown"></i><span>Schedule Management</span></a>
                 <ul class="ml-menu">
                     <li><a href="#">Shifts</a></li>
@@ -24,7 +24,7 @@
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>
                 <ul class="ml-menu">
-                    <li><a href="#">Teams</a></li>
+                    <li><a href="{{url('/manager_teams')}}">Teams</a></li>
                     <li><a href="#">Swap Teams</a></li>
                 </ul>
             </li>
@@ -44,7 +44,7 @@
             <li class="header">EMPLOYEE MANAGEMENT</li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>Employees</span></a>
                 <ul class="ml-menu">
-                    <li><a href="#">Employees</a> </li>
+                    <li><a href="{{url('/employees')}}">Employees</a> </li>
                     <li><a href="#">Employee Roles</a> </li>
                 </ul>
             </li>

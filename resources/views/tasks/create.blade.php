@@ -5,17 +5,17 @@
 
         <div class="box box-danger col-md-12" >
             <div class="box-header with-border">
-                <h3 class="box-title">Add Team</h3>
+                <h3 class="box-title">Add Task</h3>
             </div>
             <form role="form" id="add-task" action="/tasks" method="post">
                 {{ csrf_field() }}
-                <input id="creator_id" value="{{Auth::user()->id}}" hidden>
+
                 <div class="box-body">
                     <div class="row">
-
+                        <input name="creator_id" type="number" value="{{Auth::user()->id}}" hidden>
                         <div class="col-md-6 form-group">
-                            <label for="task_title">Task Title</label>
-                            <input id="task_title" name="task_title" class="form-control" placeholder="Task Title">
+                            <label for="name">Task Title</label>
+                            <input id="name" name="name" class="form-control" placeholder="Task Title">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="creator">Task Creator</label>
@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="description">Task Description</label>
-                            <input id="description" name="description" class="form-control" type="text" placeholder="Task Description">
+                            <textarea id="description" name="description" class="form-control" type="text"></textarea>
                         </div>
 
                         <div class="col-md-6 form-group">
@@ -34,8 +34,10 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6 form-group">
                         <label for="task_date">Task Date</label>
-                        <input type="date" name="task_date" class="date" class="form-control" />
+                        <input type="date" name="task_date" class="form-control" class="date" class="form-control" />
+                        </div>
                     </div>
 
                     <div class="box-footer">

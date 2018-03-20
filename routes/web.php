@@ -29,6 +29,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update/user/{id}','UsersController@update');
     Route::get('delete_user/{id}','UsersController@destroy');
 
+    Route::resource('employees','EmployeesController');
+    Route::get('get_employees','EmployeesController@getUsers')->name('employees.get_employees');
+    Route::post('/update/employee/{user}','EmployeesController@update');
+    Route::get('delete_employee/{user}','EmployeesController@destroy');
+
     Route::resource('package','PackagesController');
     Route::get('get_packages','PackagesController@getPackages')->name('packages.get_packages');
     Route::post('save_package/{package}','PackagesController@update');
@@ -48,6 +53,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');
     Route::get('delete_task/{task}','TasksController@destroy');
     Route::post('save_task/{task}','TasksController@update');
+
+    Route::resource('manager_teams', 'ManagerTeamsController');
+    Route::get('manager_teams_list','ManagerTeamsController@getTeams')->name('manager_teams.get_teams');
+    Route::post('manager_save_team/{team}','ManagerTeamsController@update');
+    Route::get('manager_delete_team/{team}','ManagerTeamsController@destroy');
 
     Route::get('/get_roles', 'RolesController@getRoles')->name('roles.get_roles');
     Route::get('create_role','RolesController@createRole');

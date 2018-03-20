@@ -18,6 +18,7 @@ class TasksController extends Controller
     public function index()
     {
         //
+//        dd(Task::all());
         return view('tasks.index');
     }
 
@@ -52,6 +53,17 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         //
+//        dd($request->all());
+        DB::beginTransaction();
+        try {
+            $task = Task::create($request->all());
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect('tasks');
     }
 
     /**
@@ -60,7 +72,7 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
         //
     }
