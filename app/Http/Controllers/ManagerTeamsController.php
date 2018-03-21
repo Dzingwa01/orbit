@@ -104,8 +104,19 @@ class ManagerTeamsController extends Controller
             ->where('teams.id',$id)
             ->select('users.*')
             ->get();
+        $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
+            ->join('teams','teams.id','team_members.member_team_id')
+            ->where('teams.id',$id)
+            ->pluck('users.id');
+//        dd($team_member_ids);
+
+        $available_team_members = Team::join('users','users.creator_id','teams.creator')
+            ->where('teams.id',$id)
+            ->whereNotIn('users.id',$team_member_ids)
+            ->select('users.*')
+            ->get();
         $cities = City::all();
-        return view('manager_teams.edit',compact('team','cities','team_members'));
+        return view('manager_teams.edit',compact('team','cities','team_members','available_team_members'));
     }
 
     /**
@@ -115,11 +126,67 @@ class ManagerTeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Team $team)
+    public function update(Request $request, $id)
     {
-        //
+        $team_cur = Team::where('id',$id)->first();
+
+        DB::beginTransaction();
+        try {
+            $team = $team_cur->update($request->all());
+            DB::commit();
+//            dd($team);
+            $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
+                ->join('teams','teams.id','team_members.member_team_id')
+                ->where('teams.id',$id)
+                ->select('users.*')
+                ->get();
+
+            $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
+                ->join('teams','teams.id','team_members.member_team_id')
+                ->where('teams.id',$id)
+                ->pluck('users.id');
+
+            $available_team_members = Team::join('users','users.creator_id','teams.creator')
+                ->where('teams.id',$id)
+                ->whereNotIn('users.id',$team_member_ids)
+                ->select('users.*')
+                ->get();
+            $cities = City::all();
+            return view('manager_teams.edit',compact('team','cities','team_members','available_team_members'));
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return view('manager_teams.team_members',compact('team'));
     }
 
+    public function updateTeamMembers(Request $request){
+//        dd($request->all());
+        $input = $request->all();
+        $team_id = $input['team_id'];
+        $team_members= array_values(array_except($input,['_token','team_id']));
+//        dd($team_members);
+        foreach($team_members as $key) {
+            TeamMember::updateOrCreate(['member_team_id'=>$team_id,'team_member_id'=>$key]);
+        }
+        $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
+            ->join('teams','teams.id','team_members.member_team_id')
+            ->where('teams.id',$team_id)
+            ->select('users.*')
+            ->get();
+        $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
+            ->join('teams','teams.id','team_members.member_team_id')
+            ->where('teams.id',$team_id)
+            ->pluck('users.id');
+        $available_team_members = Team::join('users','users.creator_id','teams.creator')
+            ->where('teams.id',$team_id)
+            ->whereNotIn('users.id',$team_member_ids)
+            ->select('users.*')
+            ->get();
+        $cities = City::all();
+        $team = Team::where('id',$team_id)->first();
+        return view('manager_teams.edit',compact('team','cities','team_members','available_team_members'));
+    }
     /**
      * Remove the specified resource from storage.
      *

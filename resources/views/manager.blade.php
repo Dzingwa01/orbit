@@ -11,13 +11,13 @@ $tasks = App\Task::all();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 @endsection
 @section('main-content')
-    <div class="row">
+    {{--<div class="row">--}}
         <div class="col-md-10 col-sm-12"  style="display: block;">
         <h3>Team Schedule Summary</h3>
 
         <div id='calendar' >  {!! $calendar->calendar() !!}</div>
         </div>
-    </div>
+    {{--</div>--}}
 
     {{--<div id="create_team_modal" role="dialog" class="modal fade" style="display: block; margin-top: 5em;" >--}}
         {{--<div class="modal-dialog">--}}
@@ -50,29 +50,28 @@ $tasks = App\Task::all();
     {{--<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>--}}
 
     <script type="text/javascript">
-        var holder = $.noConflict();
-        holder(document).ready(function () {
-            console.log('tapinda');
-            var logins_counter = 0;
-            logins_counter =
-            {{Auth::user()->logins_counter}}
-            if (logins_counter == 0) {
-                holder('#create_team_modal').modal('show');
-            }
-            else {
-                holder('#create_team_modal').modal('hide');
+        {{--var holder = $.noConflict();--}}
+        {{--holder(document).ready(function () {--}}
+            {{--console.log('tapinda');--}}
+            {{--var logins_counter = 0;--}}
+            {{--logins_counter =--}}
+            {{--{{Auth::user()->logins_counter}}--}}
+            {{--if (logins_counter == 0) {--}}
+                {{--holder('#create_team_modal').modal('show');--}}
+            {{--}--}}
+            {{--else {--}}
+                {{--holder('#create_team_modal').modal('hide');--}}
 
-            }
+            {{--}--}}
 
-            holder('#not_now').on('click', function () {
-                holder('#create_team_modal').modal('hide');
-                {{Auth::user()->update(array('logins_counter' => 1))}}
-            });
-            holder('#create_team').on('click', function () {
-                alert('Clicked');
-            });
-        }
-
+            {{--holder('#not_now').on('click', function () {--}}
+                {{--holder('#create_team_modal').modal('hide');--}}
+                {{--{{Auth::user()->update(array('logins_counter' => 1))}}--}}
+            {{--});--}}
+            {{--holder('#create_team').on('click', function () {--}}
+                {{--alert('Clicked');--}}
+            {{--});--}}
+        {{--});--}}
 
             {{--holder('#calendar').fullCalendar({--}}
                 {{--// put your options and callbacks here--}}

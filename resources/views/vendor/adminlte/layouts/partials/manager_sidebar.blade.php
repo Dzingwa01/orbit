@@ -45,7 +45,7 @@
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>Employees</span></a>
                 <ul class="ml-menu">
                     <li><a href="{{url('/employees')}}">Employees</a> </li>
-                    <li><a href="#">Employee Roles</a> </li>
+                    <li><a href="{{URL('/employee_roles')}}">Employee Roles</a> </li>
                 </ul>
             </li>
 

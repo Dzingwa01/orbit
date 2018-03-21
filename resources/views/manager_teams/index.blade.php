@@ -13,10 +13,10 @@
                     <thead>
                     <tr>
                         <th>Team Name</th>
-                        <th>Team Creator</th>
-                        <th>City</th>
+                        {{--<th>Team Creator</th>--}}
+                        {{--<th>City</th>--}}
                         <th>Team Description</th>
-                        <th>Created At</th>
+                        {{--<th>Created At</th>--}}
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -40,10 +40,10 @@
                 ajax: "{{route('manager_teams.get_teams')}}",
                 columns: [
                     {data: 'team_name', name: 'team_name'},
-                    {data: 'name', name: 'name'},
-                    {data: 'city_name', name: 'city_name'},
+//                    {data: 'name', name: 'name'},
+//                    {data: 'city_name', name: 'city_name'},
                     {data: 'team_description', name: 'team_description'},
-                    {data: 'created_at', name: 'created_at'},
+//                    {data: 'created_at', name: 'created_at'},
                     {data:'action',name:'action',orderable:false,searchable:false}
                 ]
 

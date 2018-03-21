@@ -50,17 +50,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('delete_team/{team}','TeamsController@destroy');
     Route::post('/add_team_members/','TeamsController@managersTeamMembers');
 
+//    Route::resource('employee_roles','EmployeeRolesController');
+    Route::get('/get_employee_roles', 'EmployeeRolesController@getRoles')->name('employee_roles.get_roles');
+    Route::get('employee_create_role','EmployeeRolesController@createRole');
+    Route::post('/employee_save_role','EmployeeRolesController@saveRole');
+    Route::get('employee_view_role/{role}','EmployeeRolesController@viewRole');
+    Route::get('employee_edit_role/{role}','EmployeeRolesController@editRole');
+    Route::get('employee_delete_role/{role}','EmployeeRolesController@deleteRole');
+    Route::get('employee_roles','EmployeeRolesController@index');
+    Route::post('/employee_update_role/{role}','EmployeeRolesController@updateRole');
+
     Route::resource('shifts','ShiftsController');
 
     Route::resource('tasks', 'TasksController');
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');
-    Route::get('delete_task/{task}','TasksController@destroy');
-    Route::post('save_task/{task}','TasksController@update');
+    Route::get('delete_tasks/{task}','TasksController@destroy');
+    Route::post('update_task/{task}','TasksController@update');
 
     Route::resource('manager_teams', 'ManagerTeamsController');
     Route::get('manager_teams_list','ManagerTeamsController@getTeams')->name('manager_teams.get_teams');
     Route::post('manager_save_team/{team}','ManagerTeamsController@update');
     Route::get('manager_delete_team/{team}','ManagerTeamsController@destroy');
+    Route::post('manager_update_team_members','ManagerTeamsController@updateTeamMembers');
 
     Route::get('/get_roles', 'RolesController@getRoles')->name('roles.get_roles');
     Route::get('create_role','RolesController@createRole');
