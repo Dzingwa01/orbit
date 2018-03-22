@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Calendar;
+use App\Shift;
 
 class HomeController extends Controller
 {
@@ -31,7 +32,25 @@ class HomeController extends Controller
         $role = Role::where('id',$user->role_id)->first();
 //        dd($role);
         if($role->name =="Manager"){
-            $calendar =Calendar();
+            $events = [];
+            $data = Shift::where('creator_id',Auth::user()->id)->get();
+            if($data->count()) {
+                foreach ($data as $key => $value) {
+                    $events[] = Calendar::event(
+                        $value->shift_title,
+                        true,
+                        new \DateTime($value->start_date),
+                        new \DateTime($value->end_date),
+                        null,
+                        // Add color and link on event
+                        [
+                            'color' => '#f05050',
+                            'url' => 'shifts/'.$value->id,
+                        ]
+                    );
+                }
+            }
+            $calendar = Calendar::addEvents($events);
             return view('manager',compact('role','calendar'));
         }
         else if($role->name == "Employee"){

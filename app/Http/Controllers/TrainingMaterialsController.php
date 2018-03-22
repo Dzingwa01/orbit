@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\TrainingMaterial;
 use Illuminate\Http\Request;
-use App\Task;
 use Illuminate\Support\Facades\Auth;
+use App\Shift;
 use Yajra\Datatables\Datatables;
 use DB;
+use File;
 
-class TasksController extends Controller
+class TrainingMaterialsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,21 +20,17 @@ class TasksController extends Controller
     public function index()
     {
         //
-//        dd(Task::all());
-        return view('tasks.index');
+        return view('materials.index');
     }
 
-    public function getTasks(){
-        $tasks = DB::table('tasks')
-                ->where('tasks.creator_id',Auth::user()->id)
-            ->get();
-        return DataTables::of($tasks)
-            ->addColumn('action', function ($task) {
-                return '<a href="tasks/' . $task->id . '" title="View Task" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="tasks/' . $task->id . '/edit" style="margin-left:0.5em" title="Edit Task" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_tasks/' . $task->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Task"><i class="glyphicon glyphicon-trash "></i></a>';
+    public function getTrainingMaterials(){
+        $materials = TrainingMaterial::all();
+        return DataTables::of($materials)
+            ->addColumn('action', function ($material) {
+                return '<a href="training_materials/' . $material->id . '" title="View Material" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="training_materials/' . $material->id . '/edit" style="margin-left:0.5em" title="Edit Material" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_material/' . $material->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Shift"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +39,7 @@ class TasksController extends Controller
     public function create()
     {
         //
-        return view('tasks.create');
+        return view('materials.create');
     }
 
     /**
@@ -52,17 +50,28 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        //
+//        dd($request->all());
+        $input = $request->all();
+//        dd($input);
+        $dir = "files/";
+        if (File::exists(public_path($dir)) == false) {
+            File::makeDirectory(public_path($dir), 0777, true);
+        }
 
+        $path = $request->file('file_url')->store($dir);
+        $input['file_url'] = $path;
         DB::beginTransaction();
         try {
-            $task = Task::create($request->all());
+            $material = TrainingMaterial::create($input);
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-        return redirect('tasks');
+        return redirect('training_materials');
+
     }
 
     /**
@@ -71,9 +80,11 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show($id)
     {
         //
+        $material = TrainingMaterial::where('id',$id)->first();
+        return view('materials.show',compact('material'));
     }
 
     /**
@@ -82,10 +93,11 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Task $task)
+    public function edit($id)
     {
         //
-        return view('tasks.edit',compact('task'));
+        $material = TrainingMaterial::where('id',$id)->first();
+        return view('materials.edit',compact('material'));
     }
 
     /**
@@ -98,6 +110,7 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
         //
+//        dd($id);
     }
 
     /**

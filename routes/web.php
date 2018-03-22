@@ -61,6 +61,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/employee_update_role/{role}','EmployeeRolesController@updateRole');
 
     Route::resource('shifts','ShiftsController');
+    Route::get('get_shifts','ShiftsController@getShifts')->name('shifts.get_shifts');
+    Route::post('update_shift/{shift}','ShiftsController@update');
+    Route::get('delete_shift/{shift}','ShiftsController@destroy');
+
+    Route::resource('schedules','SchedulerController');
+
+    Route::resource('training_materials','TrainingMaterialsController');
+    Route::get('get_training_materials','TrainingMaterialsController@getTrainingMaterials')->name('training_materials.get_materials');
+    Route::post('update_training_materials/{id}','TrainingMaterialsController@update');
 
     Route::resource('tasks', 'TasksController');
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');

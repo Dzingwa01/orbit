@@ -18,7 +18,8 @@
             <li> <a href="{{url('home')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-time-countdown"></i><span>Schedule Management</span></a>
                 <ul class="ml-menu">
-                    <li><a href="#">Shifts</a></li>
+                    <li><a href="{{url('/home')}}">Calendar</a></li>
+                    <li><a href="{{url('/shifts')}}">Shift List</a></li>
                     <li><a href="{{url('/tasks')}}">Tasks</a></li>
                 </ul>
             </li>
@@ -37,7 +38,7 @@
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Training</span></a>
                 <ul class="ml-menu">
-                    <li><a href="#">Training Material</a></li>
+                    <li><a href="{{url('training_materials')}}">Training Material</a></li>
                     <li><a href="#">Onboarding Material</a></li>
                 </ul>
             </li>

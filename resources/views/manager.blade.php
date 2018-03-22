@@ -11,13 +11,15 @@ $tasks = App\Task::all();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 @endsection
 @section('main-content')
-    {{--<div class="row">--}}
-        <div class="col-md-10 col-sm-12"  style="display: block;">
-        <h3>Team Schedule Summary</h3>
 
+    <div class="row">
+        <div class="col-md-10 col-sm-12"  style="display: block;">
+            <h3>Team Schedule Summary</h3>
+            <a id="create_shift" href="{{url('schedules/create')}}" class="btn btn-primary">Create Shift</a>
+            <a id="create_shift" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>
         <div id='calendar' >  {!! $calendar->calendar() !!}</div>
         </div>
-    {{--</div>--}}
+    </div>
 
     {{--<div id="create_team_modal" role="dialog" class="modal fade" style="display: block; margin-top: 5em;" >--}}
         {{--<div class="modal-dialog">--}}
