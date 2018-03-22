@@ -54,7 +54,31 @@ class HomeController extends Controller
             return view('manager',compact('role','calendar'));
         }
         else if($role->name == "Employee"){
-            return view('employee',compact('role'));
+            $events = [];
+            $data = Shift::join('team_members','team_members.member_team_id','shifts.team_id')
+                    ->join('users','users.id','team_members.team_member_id')
+                    ->where('users.id',Auth::user()->id)
+                    ->select('shifts.*')
+                    ->get();
+
+            if($data->count()) {
+                foreach ($data as $key => $value) {
+                    $events[] = Calendar::event(
+                        $value->shift_title,
+                        true,
+                        new \DateTime($value->start_date),
+                        new \DateTime($value->end_date),
+                        null,
+                        // Add color and link on event
+                        [
+                            'color' => '#f05050',
+                            'url' => '',
+                        ]
+                    );
+                }
+            }
+            $calendar = Calendar::addEvents($events);
+            return view('employee',compact('role','calendar'));
         }
         else{
             return view('home',compact('role'));

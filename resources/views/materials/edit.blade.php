@@ -11,6 +11,7 @@
                       method="post"
                 >
                     {{ csrf_field() }}
+                    <input type="text" name="creator_id" value="{{Auth::user()->id}}" hidden>
                     <div class="box-body">
                         <div class="row">
                             <div class="form-group col-md-6">

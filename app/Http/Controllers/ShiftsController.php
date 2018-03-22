@@ -79,6 +79,7 @@ class ShiftsController extends Controller
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$shift->team_id)
+            ->where('creator_id',Auth::user()->id)
             ->select('users.*')
             ->get();
         return view('shifts.view',compact('shift','teams','team_members'));
@@ -99,6 +100,7 @@ class ShiftsController extends Controller
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$shift->team_id)
+            ->where('creator_id',Auth::user()->id)
             ->select('users.*')
             ->get();
         return view('shifts.edit',compact('shift','teams','team_members','team'));

@@ -33,13 +33,12 @@
                 <ul class="ml-menu">
                     <li> <a href="#">Chat</a> </li>
                     <li> <a href="#">Announcements</a> </li>
-                    <li> <a href="#">Share Files</a> </li>
                 </ul>
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Training</span></a>
                 <ul class="ml-menu">
                     <li><a href="{{url('training_materials')}}">Training Material</a></li>
-                    <li><a href="#">Onboarding Material</a></li>
+                    <li><a href="{{url('onboarding_materials')}}">Onboarding Material</a></li>
                 </ul>
             </li>
             <li class="header">EMPLOYEE MANAGEMENT</li>

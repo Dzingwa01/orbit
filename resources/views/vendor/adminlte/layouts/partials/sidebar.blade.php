@@ -16,32 +16,32 @@
             </li>
             <li class="header">MAIN</li>
             {{--<li class="active open"> <a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>--}}
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-gamepad"></i><span>Schedule Management</span></a>
-                <ul class="ml-menu">
-                    <li><a href="#">Shifts</a></li>
-                    <li><a href="#">Tasks</a></li>
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>
-                <ul class="ml-menu">
-                    <li><a href="{{url('team')}}">Teams</a></li>
-                    <li><a href="{{url('city')}}">Cities</a></li>
-                    <li><a href="#">Swap Teams</a></li>
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-swap-alt"></i><span>Communications</span></a>
-                <ul class="ml-menu">
-                    <li> <a href="#">Chat</a> </li>
-                    <li> <a href="#">Announcements</a> </li>
-                    <li> <a href="#">Share Files</a> </li>
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Training</span></a>
-                <ul class="ml-menu">
-                    <li><a href="#">Training Material</a></li>
-                    <li><a href="#">Onboarding Material</a></li>
-                </ul>
-            </li>
+            {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-gamepad"></i><span>Schedule Management</span></a>--}}
+                {{--<ul class="ml-menu">--}}
+                    {{--<li><a href="#">Shifts</a></li>--}}
+                    {{--<li><a href="#">Tasks</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>--}}
+                {{--<ul class="ml-menu">--}}
+                    {{--<li><a href="{{url('team')}}">Teams</a></li>--}}
+                    {{--<li><a href="{{url('city')}}">Cities</a></li>--}}
+                    {{--<li><a href="#">Swap Teams</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-swap-alt"></i><span>Communications</span></a>--}}
+                {{--<ul class="ml-menu">--}}
+                    {{--<li> <a href="#">Chat</a> </li>--}}
+                    {{--<li> <a href="#">Announcements</a> </li>--}}
+                    {{--<li> <a href="#">Share Files</a> </li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Training</span></a>--}}
+                {{--<ul class="ml-menu">--}}
+                    {{--<li><a href="#">Training Material</a></li>--}}
+                    {{--<li><a href="#">Onboarding Material</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-widgets"></i><span>Manage Packages</span></a>
                 <ul class="ml-menu">
                     <li><a href="{{url('package')}}">Packages</a></li>

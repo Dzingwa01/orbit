@@ -71,6 +71,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_training_materials','TrainingMaterialsController@getTrainingMaterials')->name('training_materials.get_materials');
     Route::post('update_training_materials/{id}','TrainingMaterialsController@update');
 
+    Route::resource('onboarding_materials','OnBoardingMaterialsController');
+    Route::get('get_onboarding_materials','OnBoardingMaterialsController@getTrainingMaterials')->name('onboarding_materials.get_materials');
+    Route::post('update_onboarding_materials/{id}','OnBoardingMaterialsController@update');
+
     Route::resource('tasks', 'TasksController');
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');
     Route::get('delete_tasks/{task}','TasksController@destroy');

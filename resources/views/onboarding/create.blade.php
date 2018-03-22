@@ -5,14 +5,15 @@
         <div class="col-md-12">
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add Training Material</h3>
+                    <h3 class="box-title">Add Onboarding Material</h3>
                 </div>
                 <form role="form" id="add-material" enctype="multipart/form-data"
-                      action="/training_materials"
+                      action="/onboarding_materials"
                       method="post">
                     {{ csrf_field() }}
-                    <input type="text" name="creator_id" value="{{Auth::user()->id}}" hidden>
+
                     <div class="box-body">
+                        <input type="text" name="creator_id" value="{{Auth::user()->id}}" hidden>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="start_date">Title</label>
