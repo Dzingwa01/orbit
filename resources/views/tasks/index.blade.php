@@ -14,7 +14,8 @@
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Task Date</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -24,11 +25,6 @@
     </div>
 @endsection
 @push('datatable-scripts')
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function ($) {
             $(function () {
@@ -39,11 +35,13 @@
                     columns: [
                         {data: 'name', name: 'name'},
                         {data: 'description', name: 'description'},
-                        {data: 'task_date', name: 'task_date'},
+                        {data: 'start_date', name: 'start_date'},
+                        {data: 'end_date', name: 'end_date'},
                         {data:'action',name:'action',orderable:false,searchable:false}
                     ]
                 });
             });
+
         });
 
     </script>

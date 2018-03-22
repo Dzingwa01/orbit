@@ -6,6 +6,7 @@
         <div class="box box-danger col-md-12" >
             <div class="box-header with-border">
                 <h3 class="box-title">Add Task</h3>
+                <a class="pull-right btn btn-primary" id="create_shift" onclick="goBack()" class="btn btn-primary">Back</a>
             </div>
             <form role="form" id="add-task" action="/tasks" method="post">
                 {{ csrf_field() }}
@@ -23,6 +24,21 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="start_date">Start Date</label>
+                                <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date" required/>
+
+                            </div>
+                        </div>
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_date">End Date</label>
+                                <input id='end_date' type='text' name="end_date" class="form-control"   placeholder="End Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="description">Task Description</label>
                             <textarea id="description" name="description" class="form-control" type="text"></textarea>
@@ -33,12 +49,7 @@
                             <input type="file" class="form-control">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                        <label for="task_date">Task Date</label>
-                        <input type="date" name="task_date" class="form-control" class="date" class="form-control" />
-                        </div>
-                    </div>
+
 
                     <div class="box-footer">
                         <center>
@@ -61,6 +72,13 @@
                 autoclose: true,
                 dateFormat: "yy-mm-dd"
             });
+        });
+        function goBack(){
+            window.history.back();
+        }
+        jQuery(function ($) {
+            $('#start_date').datetimepicker();
+            $('#end_date').datetimepicker();
         });
     </script>
 

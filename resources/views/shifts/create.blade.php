@@ -22,7 +22,7 @@ $team_members = $team_members->toArray();
                         <input name="creator_id" type="number" value="{{Auth::user()->id}}" hidden>
                         <div class="col-md-6 form-group">
                             <label for="name">Shift Title</label>
-                            <input id="shift_title" name="shift_title" class="form-control" placeholder="Shift Title">
+                            <input id="shift_title" name="shift_title" class="form-control" placeholder="Shift Title" required>
                         </div>
                         <input hidden name="team_id" >
                         <div class="col-md-6 form-group">
@@ -34,18 +34,24 @@ $team_members = $team_members->toArray();
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="start_date">Start Date</label>
-                                <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date"/>
+                                <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date" required/>
 
                             </div>
                         </div>
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="end_date">End Date</label>
-                                <input id='end_date' type='text' name="end_date" class="form-control"   placeholder="End Date" />
+                                <input id='end_date' type='text' name="end_date" class="form-control"   placeholder="End Date" required />
                             </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_date">Daily Shift Duration</label>
+                                <input id='shift_duration' type='number' name="shift_duration" class="form-control"   placeholder="Daily Shift Duration" required />
+                            </div>
+                        </div>
                         <div class="col-md-6 form-group">
                             <label for="package_id">Assign Team</label>
                             <select id="team_id" name="team_id" class="form-control" required>

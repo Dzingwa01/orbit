@@ -4,7 +4,11 @@
     {{ trans('adminlte_lang::message.home') }}
 @endsection
 <?php
-$tasks = App\Task::all();
+$tasks = App\Task::where('users.creator_id',Auth::user()->id);
+$employees_count = count(DB::table('users')
+    ->join('packages','packages.id','users.package_id')
+    ->where('users.creator_id',Auth::user()->id)
+    ->select('users.*','packages.package_name')->get());
 ?>
 @section('style')
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -15,8 +19,8 @@ $tasks = App\Task::all();
     <div class="row">
         <div class="col-md-10 col-sm-12"  style="display: block;">
             <h3>Team Schedule Summary</h3>
-            <a id="create_shift" href="{{url('schedules/create')}}" class="btn btn-primary">Create Shift</a>
-            <a id="create_shift" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>
+            <a id="create_shift" class="btn btn-primary">Create Shift</a>
+            <a id="my_shifts" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>
         <div id='calendar' >  {!! $calendar->calendar() !!}</div>
         </div>
     </div>
@@ -52,6 +56,17 @@ $tasks = App\Task::all();
     {{--<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>--}}
 
     <script type="text/javascript">
+        $(document).ready(function ($) {
+           $("#create_shift").on('click',function () {
+              var counter = {{$employees_count}}
+               if(counter == 0){
+                   $.notify("You currently do not have any employees, please add employees before creating a shift", "warning");
+               }
+               else{
+                   window.location.href = 'schedules/create';
+               }
+           });
+        });
         {{--var holder = $.noConflict();--}}
         {{--holder(document).ready(function () {--}}
             {{--console.log('tapinda');--}}

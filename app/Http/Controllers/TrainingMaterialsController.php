@@ -24,7 +24,7 @@ class TrainingMaterialsController extends Controller
     }
 
     public function getTrainingMaterials(){
-        $materials = TrainingMaterial::all();
+        $materials = TrainingMaterial::where('creator_id',Auth::user()->id)->get();
         return DataTables::of($materials)
             ->addColumn('action', function ($material) {
                 return '<a href="training_materials/' . $material->id . '" title="View Material" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="training_materials/' . $material->id . '/edit" style="margin-left:0.5em" title="Edit Material" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_material/' . $material->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Shift"><i class="glyphicon glyphicon-trash "></i></a>';

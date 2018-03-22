@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\EmployeeRole;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use DB;
 
@@ -32,7 +33,7 @@ class EmployeeRolesController extends Controller
 
     public function getRoles()
     {
-        $roles = EmployeeRole::all();
+        $roles = EmployeeRole::where('role_creator',Auth::user()->id)->get();
         return DataTables::of($roles)
             ->addColumn('action', function ($role) {
                 return '<a href="employee_view_role/' . $role->id . '" title="View Role" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="employee_edit_role/' . $role->id . '" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="employee_delete_role/' . $role->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';

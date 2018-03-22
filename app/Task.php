@@ -8,5 +8,5 @@ class Task extends Model
 {
 
     //
-    protected $fillable = ['description','name','task_date','creator_id','picture_url'];
+    protected $fillable = ['description','name','start_date','end_date','creator_id','picture_url'];
 }

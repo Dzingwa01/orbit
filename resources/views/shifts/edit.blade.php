@@ -22,7 +22,7 @@ $team_members_shift = $team_members_shift->toArray();
                         <input name="creator_id" type="number" value="{{Auth::user()->id}}" hidden>
                         <div class="col-md-6 form-group">
                             <label for="name">Shift Title</label>
-                            <input id="shift_title" name="shift_title" class="form-control" placeholder="Shift Title" value="{{$shift->shift_title}}">
+                            <input id="shift_title" name="shift_title" class="form-control" required placeholder="Shift Title" value="{{$shift->shift_title}}">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="creator">Task Creator</label>
@@ -37,18 +37,24 @@ $team_members_shift = $team_members_shift->toArray();
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="start_date">Start Date</label>
-                                    <input id='start_date' type='text' name="start_date" class="form-control" value="{{$shift->start_date}}"/>
+                                    <input id='start_date' type='text' name="start_date" class="form-control" required value="{{$shift->start_date}}"/>
 
                             </div>
                         </div>
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="end_date">End Date</label>
-                                <input id='end_date' type='text' name="end_date" class="form-control" value="{{$shift->end_date}}" />
+                                <input id='end_date' type='text' name="end_date" class="form-control" value="{{$shift->end_date}}" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_date">Daily Shift Duration</label>
+                                <input id='shift_duration' type='number' name="shift_duration" class="form-control" value="{{$shift->duration}}" required placeholder="Daily Shift Duration" />
+                            </div>
+                        </div>
                         <div class="col-md-6 form-group">
                             <label for="package_id">Team</label>
                             <select id="team_id" name="team_id" class="form-control" required>

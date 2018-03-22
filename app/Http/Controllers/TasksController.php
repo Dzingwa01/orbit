@@ -74,6 +74,7 @@ class TasksController extends Controller
     public function show(Task $task)
     {
         //
+        return view('tasks.view',compact('task'));
     }
 
     /**
@@ -95,9 +96,19 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
         //
+        DB::beginTransaction();
+        try {
+            $task->update($request->all());
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect('tasks');
     }
 
     /**
@@ -106,8 +117,9 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
         //
+        $task->delete();
     }
 }
