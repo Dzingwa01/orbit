@@ -9,19 +9,22 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Add Team Members: {{$team->team_name}}</h3>
             </div>
-            <div class="row">
-                <div class="col-sm-2">
-                    <button id="email_invite" class="btn btn-success"><i class="fa fa-mail-forward"></i>Invite by Email</button>
-                </div>
-                <div class="col-sm-2">
-                    <button id="create_employees" class="btn btn-success"><i class="fa fa-user"></i>Create Employees</button>
-                </div>
-            </div>
+            {{--<div class="row">--}}
+                {{--<div class="col-sm-2">--}}
+                    {{--<button id="email_invite" class="btn btn-success"><i class="fa fa-mail-forward"></i>Invite by Email</button>--}}
+                {{--</div>--}}
+                {{--@if(count($employees)==0)--}}
+                {{--<div class="col-sm-2">--}}
+                    {{--<span>You currently dont have any employees </span>--}}
+                    {{--<button id="create_employees" class="btn btn-success"><i class="fa fa-user"></i>Create Employees</button>--}}
+                {{--</div>--}}
+                {{--@endif--}}
+            {{--</div>--}}
             <div class="row" style="margin-top:2em;">
                 <form id="employees_list" role="form" action="/add_team_members" method="post" class="col-sm-8">
                     {{ csrf_field() }}
                     <input hidden name="team_id" value="{{$team->id}}">
-                    <legend>Add existing employees</legend>
+                    {{--<legend>Add existing employees</legend>--}}
                     {{--<fieldset>--}}
                     @foreach($employees as $employee)
                         <div class="form-check col-sm-6">

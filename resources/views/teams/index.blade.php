@@ -3,8 +3,12 @@
 @section('main-content')
     <div class="container-fluid" >
         <div class="row" style="margin-top:1em;">
-
+                @if($employee_count>0)
                 <a href="{{url('team/create')}}" class="btn btn-success"><i class="fa fa-plus-square"></i> Add Team</a>
+            @else
+                    <span>You currently do not have users please create employees first</span>
+                <a href="{{url('team/create')}}" class="btn btn-success"><i class="fa fa-plus-square" disabled="disabled"></i> Add Team</a>
+            @endif
 
             <a class="pull-right btn btn-primary" id="create_shift" onclick="goBack()" class="btn btn-primary">Back</a>
         </div>

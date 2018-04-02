@@ -122,4 +122,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/account_creation_success','Auth\RegisterController@accountSuccess');
 Route::get('/account_not_verified','Auth\RegisterController@accountNotRegistered');
 Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
+
+Route::get('/invite_team_member/{email_token}','TeamsController@acceptTeamMember');
 //Route::get('/manager', 'HomeController@index')->name('home');

@@ -65,7 +65,6 @@ class UsersController extends Controller
             $input['email_token'] = base64_encode($input['email']);
             $input['verified'] = 0;
             $user = User::create($input);
-
             DB::commit();
             event($user);
             dispatch(new InviteEmployees($user,$input['password']));

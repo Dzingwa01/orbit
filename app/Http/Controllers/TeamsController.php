@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\InviteTeamMembers;
 use App\TeamMember;
 use Illuminate\Http\Request;
 use App\Team;
 use App\User;
 use App\City;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use DB;
 
@@ -20,7 +22,8 @@ class TeamsController extends Controller
     public function index()
     {
         //
-        return view('teams.index');
+        $employee_count = count(User::where('creator_id',Auth::user()->id)->get());
+        return view('teams.index',compact('employee_count'));
     }
 
     public function getTeams(){
@@ -45,7 +48,8 @@ class TeamsController extends Controller
         //
         $users = User::all();
         $cities = City::all();
-        return view('teams.create_team',compact('users','cities'));
+        $employee_count = count(User::where('creator_id',Auth::user()->id)->get());
+        return view('teams.create_team',compact('users','cities','employee_count'));
     }
 
     /**
@@ -76,9 +80,28 @@ class TeamsController extends Controller
         $team_members= array_values(array_except($input,['_token','team_id']));
 //        dd($team_members);
         foreach($team_members as $key) {
-            TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key]);
+            DB::beginTransaction();
+            try {
+            $user = User::where('id',$key)->first();
+            $email_token = base64_encode($user->email);
+            $team_member = TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
+            DB::commit();
+            event($user);
+            dispatch(new InviteTeamMembers($team_member));
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
         }
         return redirect('manager_teams');
+    }
+
+    public function acceptTeamMember($email_toke){
+        $user = TeamMember::where('email_token', $email_toke)->first();
+        $user->verified = 1;
+        if ($user->save()) {
+            return view('emails.team_member_invite_success', ['user' => $user]);
+        }
     }
 
     /**

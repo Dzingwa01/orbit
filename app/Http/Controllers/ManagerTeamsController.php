@@ -16,7 +16,8 @@ class ManagerTeamsController extends Controller
     public function index()
     {
         //
-        return view('manager_teams.index');
+        $employee_count = count(User::where('creator_id',Auth::user()->id)->get());
+        return view('manager_teams.index',compact('employee_count'));
     }
 
     public function getTeams(){
@@ -42,6 +43,7 @@ class ManagerTeamsController extends Controller
         //
         $users = User::all();
         $cities = City::all();
+//        dd($users);
         return view('manager_teams.create_team',compact('users','cities'));
     }
 
