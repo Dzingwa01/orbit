@@ -22,13 +22,13 @@
                     {{--<li><a href="#">Tasks</a></li>--}}
                 {{--</ul>--}}
             {{--</li>--}}
-            {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>--}}
-                {{--<ul class="ml-menu">--}}
-                    {{--<li><a href="{{url('team')}}">Teams</a></li>--}}
-                    {{--<li><a href="{{url('city')}}">Cities</a></li>--}}
-                    {{--<li><a href="#">Swap Teams</a></li>--}}
-                {{--</ul>--}}
-            {{--</li>--}}
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Manage Teams</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{url('team')}}">Teams</a></li>
+                    <li><a href="{{url('city')}}">Cities</a></li>
+                    <li><a href="#">Swap Teams</a></li>
+                </ul>
+            </li>
             {{--<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-swap-alt"></i><span>Communications</span></a>--}}
                 {{--<ul class="ml-menu">--}}
                     {{--<li> <a href="#">Chat</a> </li>--}}

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Jobs\SendVerificationEmail;
 use App\Package;
 use App\Role;
 use App\User;
 use Validator;
+use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -44,7 +46,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/account_creation_success';
 
     /**
      * Create a new controller instance.
@@ -83,7 +85,6 @@ class RegisterController extends Controller
     {
         $team_size = Package::where('id',$data['package_id'])->select('number_of_members')->first();
         $role_id = "";
-
         if($team_size->number_of_members>1){
             $role = Role::where('name','Manager')->first();
             $role_id = $role->id;
@@ -92,7 +93,7 @@ class RegisterController extends Controller
             $role = Role::where('name','Employee')->first();
             $role_id = $role->id;
         }
-
+        $data['email_token'] = base64_encode($data['email']);
         $fields = [
             'name'     => $data['name'],
             'email'    => $data['email'],
@@ -104,11 +105,38 @@ class RegisterController extends Controller
             'package_id' => $data['package_id'],
             'terms' =>$data['terms'],
             'password' => bcrypt($data['password']),
+            'email_token'=>$data['email_token'],
+            'verified'=>0
         ];
-//        dd($fields);
-//        if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
-//            $fields['username'] = $data['username'];
-//        }
-        return User::create($fields);
+        DB::beginTransaction();
+        try {
+            $user = User::create($fields);
+//            Mail::queue('emails.verify_user',['title'=>$title,'user'=>user],function())
+            DB::commit();
+            event($user);
+            dispatch(new SendVerificationEmail($user));
+
+        }
+        catch (\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+        return response()->view('status.status_message',$user,200);
+    }
+    public function verify($token)
+    {
+        $user = User::where('email_token', $token)->first();
+        $user->verified = 1;
+        if ($user->save()) {
+            return view('emails.registration_success', ['user' => $user]);
+        }
+    }
+
+    public function accountSuccess(){
+        return view('status.status_message');
+    }
+
+    public function accountNotRegistered(){
+        return view('status.status_message_not_activated');
     }
 }

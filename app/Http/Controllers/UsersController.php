@@ -61,7 +61,9 @@ class UsersController extends Controller
             $input['password'] = $password;
             $input['logins_counter'] = 0;
             $user = User::create($input);
+
             DB::commit();
+
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;

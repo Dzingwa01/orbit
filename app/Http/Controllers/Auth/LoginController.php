@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+//    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -68,11 +69,19 @@ class LoginController extends Controller
      */
     protected function attemptLogin(Request $request)
     {
-        if ($this->username() === 'email') return $this->attemptLoginAtAuthenticatesUsers($request);
-        if ( ! $this->attemptLoginAtAuthenticatesUsers($request)) {
-            return $this->attempLoginUsingUsernameAsAnEmail($request);
+        $input = $request->all();
+
+        $user = User::where('email',$input['email'])->first();
+        if($user->verified==0){
+            return redirect('/welcome');
         }
-        return false;
+        else{
+            if ($this->username() === 'email') return $this->attemptLoginAtAuthenticatesUsers($request);
+            if ( ! $this->attemptLoginAtAuthenticatesUsers($request)) {
+                return $this->attempLoginUsingUsernameAsAnEmail($request);
+            }
+            return false;
+        }
     }
 
     /**
@@ -83,9 +92,18 @@ class LoginController extends Controller
      */
     protected function attempLoginUsingUsernameAsAnEmail(Request $request)
     {
-        return $this->guard()->attempt(
-            ['email' => $request->input('username'), 'password' => $request->input('password')],
-            $request->has('remember'));
+        $input = $request->all();
+//        dd($user);
+        $user = User::where('email',$input['email'])->first();
+        if($user->verified==0){
+            return redirect('/account_not_verified');
+        }
+        else{
+            return $this->guard()->attempt(
+                ['email' => $request->input('username'), 'password' => $request->input('password')],
+                $request->has('remember'));
+        }
+
     }
 
 

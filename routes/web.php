@@ -11,6 +11,17 @@
 |
 */
 
+Route::get('send_test_email', function(){
+    Mail::raw('Hi, Yonela, this is a test message from Orbit.!', function($message)
+    {
+        $message->subject('Test message from Orbit!');
+        $message->from('admin@orbit.co.za', 'Orbit');
+        $message->to('yonela@ntshangacapital.co.za');
+        $message->to('tongaichiridza@gmail.com');
+        $message->to('tongai@avochoc.com');
+    });
+});
+
 Route::get('/', function () {
     $packages = App\Package::orderBy('number_of_members','ASC')->get();
     $individual_package = App\Package::where('number_of_members',1)->first();
@@ -108,4 +119,7 @@ Route::group(['middleware' => 'auth'], function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/account_creation_success','Auth\RegisterController@accountSuccess');
+Route::get('/account_not_verified','Auth\RegisterController@accountNotRegistered');
+Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
 //Route::get('/manager', 'HomeController@index')->name('home');
