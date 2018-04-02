@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\InviteEmployees;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
@@ -57,12 +58,17 @@ class UsersController extends Controller
         DB::beginTransaction();
         try {
             $input = $request->all();
+//            dd($input);
             $password = bcrypt($input['password']);
             $input['password'] = $password;
             $input['logins_counter'] = 0;
+            $input['email_token'] = base64_encode($input['email']);
+            $input['verified'] = 0;
             $user = User::create($input);
 
             DB::commit();
+            event($user);
+            dispatch(new InviteEmployees($user,$input['password']));
 
         } catch (\Exception $e) {
             DB::rollback();

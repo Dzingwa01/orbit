@@ -25,8 +25,9 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <link href="css/assets.min.css" rel="stylesheet">
-    <link href="css/style.min.css" rel="stylesheet">
+
+    <link href="http://169.60.184.102/css/assets.min.css" rel="stylesheet">
+    <link href="http://169.60.184.102/css/style.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CVarela+Round" rel="stylesheet">
 </head>
 <body>
@@ -35,7 +36,7 @@
 </div>
 <header class="scrolled">
     <div class="container">
-        <div class="row"><a href="/" class="logo"><img src="img/orbit_logo_new.png" alt="Orbit" class="top-logo">
+        <div class="row"><a href="/" class="logo"><img src="http://169.60.184.102/img/orbit_logo_new.png" alt="Orbit" class="top-logo">
             </a><a href="#" class="menutoggle">
                 <div class="bar"></div>
             </a>
@@ -125,8 +126,8 @@
         <div class="scrollToTop-icon"></div>
     </div>
 </div>
-<script src="js/assets.min.js"></script>
-<script src="js/main.min.js"></script>
+<script src="http://169.60.184.102/js/assets.min.js"></script>
+<script src="http://169.60.184.102/js/main.min.js"></script>
 <script>
     function passToReg(package_id){
         if (typeof(Storage) !== "undefined") {
