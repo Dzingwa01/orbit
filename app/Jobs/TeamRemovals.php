@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\TeamMember;
+use App\Mail\TeamRemoval;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 
-class InviteTeamMembers implements ShouldQueue
+class TeamRemovals implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -21,14 +21,13 @@ class InviteTeamMembers implements ShouldQueue
      * @return void
      */
     protected $user;
-    protected $team_member;
+    protected $team_name;
 
-    public function __construct(TeamMember $teamMember)
+    public function __construct(User $user,$team_name)
     {
         //
-        $user = User::where('id',$teamMember->team_member_id)->first();
-        $this->team_member = $teamMember;
         $this->user = $user;
+        $this->team_name = $team_name;
     }
 
     /**
@@ -39,7 +38,7 @@ class InviteTeamMembers implements ShouldQueue
     public function handle()
     {
         //
-        $email = new \App\Mail\InviteTeamMembers($this->user,$this->team_member->email_token);
+        $email = new TeamRemoval($this->user,$this->team_name);
         Mail::to($this->user->email)->send($email);
         $this->release(2);
     }

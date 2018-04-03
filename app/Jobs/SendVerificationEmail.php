@@ -38,6 +38,6 @@ class SendVerificationEmail implements ShouldQueue
         //
         $email = new VerifyUser($this->user);
         Mail::to($this->user->email)->send($email);
-        $this->release(5);
+        $this->release(2);
     }
 }

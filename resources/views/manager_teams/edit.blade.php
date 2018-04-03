@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('main-content')
-    {{--<div class="container-fluid" >--}}
+    <div class="container-fluid" >
 
         <div class="box box-danger col-md-12" >
             <div class="box-header with-border">
@@ -83,7 +83,7 @@
                 </div>
             </form>
         </div>
-    {{--</div>--}}
+    </div>
 @endsection
 @push('datatable-scripts')
 

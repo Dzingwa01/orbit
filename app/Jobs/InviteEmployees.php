@@ -40,6 +40,6 @@ class InviteEmployees implements ShouldQueue
         //
         $email = new InviteEmployee($this->user,$this->password);
         Mail::to($this->user->email)->send($email);
-        $this->release(5);
+        $this->release(2);
     }
 }

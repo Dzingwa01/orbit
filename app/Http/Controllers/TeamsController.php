@@ -96,8 +96,8 @@ class TeamsController extends Controller
         return redirect('manager_teams');
     }
 
-    public function acceptTeamMember($email_toke){
-        $user = TeamMember::where('email_token', $email_toke)->first();
+    public function acceptTeamMember($email_token){
+        $user = TeamMember::where('email_token', $email_token)->first();
         $user->verified = 1;
         if ($user->save()) {
             return view('emails.team_member_invite_success', ['user' => $user]);

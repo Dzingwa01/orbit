@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\InviteTeamMembers;
+use App\Jobs\TeamRemovals;
 use App\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -165,11 +167,42 @@ class ManagerTeamsController extends Controller
     public function updateTeamMembers(Request $request){
 //        dd($request->all());
         $input = $request->all();
+//        dd($input);
         $team_id = $input['team_id'];
+        $cur_team = Team::where('id',$team_id)->first();
         $team_members= array_values(array_except($input,['_token','team_id']));
 //        dd($team_members);
+        $cur_team_members = TeamMember::where('member_team_id',$team_id)->pluck('team_member_id')->toArray();
+//        dd(in_array(62,$cur_team_members));
+        foreach ($cur_team_members as $key){
+            if(!in_array($key,$team_members)){
+                $user = User::where('id',$key)->first();
+//                dd($user);
+               TeamMember::where('team_member_id',$key)->delete();
+                event($user);
+                dispatch(new TeamRemovals($user,$cur_team->team_name));
+            }
+        }
+
         foreach($team_members as $key) {
-            TeamMember::updateOrCreate(['member_team_id'=>$team_id,'team_member_id'=>$key]);
+            DB::beginTransaction();
+            try {
+                $cur_team_member = TeamMember::where('team_member_id',$key)->where('member_team_id',$team_id)->first();
+                if($cur_team_member==null){
+                    $user = User::where('id',$key)->first();
+                    $email_token = base64_encode($user->email);
+                    $team_member= TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
+//                    dd($team_member);
+                    DB::commit();
+                    event($user);
+                    dispatch(new InviteTeamMembers($team_member));
+                }
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+
         }
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
