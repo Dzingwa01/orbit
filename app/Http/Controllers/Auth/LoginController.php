@@ -72,16 +72,22 @@ class LoginController extends Controller
         $input = $request->all();
 
         $user = User::where('email',$input['email'])->first();
-        if($user->verified==0){
-            return redirect('/welcome');
-        }
-        else{
-            if ($this->username() === 'email') return $this->attemptLoginAtAuthenticatesUsers($request);
-            if ( ! $this->attemptLoginAtAuthenticatesUsers($request)) {
-                return $this->attempLoginUsingUsernameAsAnEmail($request);
+        try{
+            if($user->verified==0){
+                return redirect('/welcome');
             }
-            return false;
+            else{
+                if ($this->username() === 'email') return $this->attemptLoginAtAuthenticatesUsers($request);
+                if ( ! $this->attemptLoginAtAuthenticatesUsers($request)) {
+                    return $this->attempLoginUsingUsernameAsAnEmail($request);
+                }
+                return false;
+            }
         }
+        catch (\Exception $e){
+            return redirect('login');
+    }
+
     }
 
     /**
