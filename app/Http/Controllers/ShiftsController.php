@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Shift;
@@ -116,7 +117,7 @@ class ShiftsController extends Controller
     public function update(Request $request, Shift $shift)
     {
         $input = $request->all();
-        $input_team_members = array_except($input,['shift_title','creator_id','start_date','end_date','_token']);
+        $input_team_members = array_except($input,['shift_title','creator_id','start_date','end_date','_token','shift_duration','team_id']);
         $team_cur = Team::where('id',$input['team_id'])->first();
         $cur_members = TeamMember::where('member_team_id',$team_cur->id)->get();
         DB::beginTransaction();
@@ -127,7 +128,9 @@ class ShiftsController extends Controller
                 $member->delete();
             }
             foreach($input_team_members as $key) {
-                TeamMember::create(['member_team_id'=>$team_cur->id,'team_member_id'=>$key]);
+                $user = User::where('id',$key)->first();
+                $email_token = base64_encode($user->email);
+                TeamMember::create(['member_team_id'=>$team_cur->id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
             }
             DB::commit();
 

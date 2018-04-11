@@ -165,7 +165,7 @@ class ManagerTeamsController extends Controller
     }
 
     public function updateTeamMembers(Request $request){
-//        dd($request->all());
+//        dd('ndeip');
         $input = $request->all();
 //        dd($input);
         $team_id = $input['team_id'];
