@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EmployeeRole;
 use App\Jobs\InviteEmployees;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,6 +98,10 @@ class EmployeesController extends Controller
         return view('employees.view',compact('roles','user','packages'));
     }
 
+    public  function apiGetEmployees($id){
+        $users = User::where('creator_id',$id)->get();
+        return response()->json(["users" => $users]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
