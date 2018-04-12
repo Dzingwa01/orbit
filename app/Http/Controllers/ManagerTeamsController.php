@@ -173,11 +173,9 @@ class ManagerTeamsController extends Controller
         $team_members= array_values(array_except($input,['_token','team_id']));
 //        dd($team_members);
         $cur_team_members = TeamMember::where('member_team_id',$team_id)->pluck('team_member_id')->toArray();
-//        dd(in_array(62,$cur_team_members));
         foreach ($cur_team_members as $key){
             if(!in_array($key,$team_members)){
                 $user = User::where('id',$key)->first();
-//                dd($user);
                TeamMember::where('team_member_id',$key)->delete();
                 event($user);
                 dispatch(new TeamRemovals($user,$cur_team->team_name));
@@ -194,7 +192,7 @@ class ManagerTeamsController extends Controller
                     $team_member= TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
 //                    dd($team_member);
                     DB::commit();
-                    event($user);
+                    event($team_member);
                     dispatch(new InviteTeamMembers($team_member));
                 }
 

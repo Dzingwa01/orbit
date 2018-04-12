@@ -86,7 +86,7 @@ class TeamsController extends Controller
             $email_token = base64_encode($user->email);
             $team_member = TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
             DB::commit();
-            event($user);
+            event($team_member);
             dispatch(new InviteTeamMembers($team_member));
             } catch (\Exception $e) {
                 DB::rollback();
@@ -97,6 +97,7 @@ class TeamsController extends Controller
     }
 
     public function acceptTeamMember($email_token){
+//        dd($email_token);
         $user = TeamMember::where('email_token', $email_token)->first();
 //        dd($user);
         $user->verified = 1;

@@ -67,40 +67,47 @@ class ApiLoginController extends Controller
     public function login(Request $request)
     {
         $input = $request->all();
+//        dd($input);
         $this->validateLogin($request);
         if ($this->attemptLogin($request)) {
+//            dd("ndeip");
             $user = $this->guard()->user();
 //            $user->generateToken();
-            return response()->json($user);
+            return response()->json(
+                $user
+            );
         } else {
             try {
                 $user = User::where('email', $input['email'])->first();
+
                 if ($user != null) {
                     $verified = $user->verified;
-                    if ($verified == "0") {
+                    if ($verified == 0) {
                         return response()->json(
-                            ['_id' => '700', 'message' => 'Your Account has not be verified, please check your email address ' . $user->email]
+                            ['id' => '700', 'message' => 'Your Account has not be verified, please check your email address ' . $user->email]
                         );
                     } else {
                         return response()->json(
-                            ['_id' => '701', 'message' => trans('auth.failed')]
+                            ['id' => '701', 'message' => trans('auth.failed')]
                         );
                     }
                 } else {
                     return response()->json(
-                        ['_id' => '702', 'message' => 'Your Account does not exist, please create an account ']
+                        ['id' => '702', 'message' => 'Your Account does not exist, please create an account ']
                     );
                 }
             } catch (\ErrorException $error) {
 //                dd($error);
                 return response()->json(
-                    ['_id' => '701', 'message' => trans('auth.failed')]
+                    ['id' => '701', 'message' => trans('auth.failed')]
                 );
             }
 
         }
 
-        return $this->sendFailedLoginResponse($request);
+        return response()->json(
+            ['_id' => '701', 'message' => trans('auth.failed')]
+        );
     }
 
     /**
