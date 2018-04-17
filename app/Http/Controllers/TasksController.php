@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\TasksEmployee;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Task;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +36,14 @@ class TasksController extends Controller
             ->make(true);
     }
 
+    public function getCurrentTasks(User $user){
+        $current_date = Carbon::now();
+        $current_tasks= TasksEmployee::join('users','users.id','tasks_employees.id')
+                        ->join('tasks','tasks_employees.task_id','tasks.id')
+            ->where('users.id',$user->id)
+            ->select('tasks.*')->get();
+        return response()->json(["tasks" => $current_tasks]);
+    }
     /**
      * Show the form for creating a new resource.
      *
