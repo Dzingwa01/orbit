@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\EmployeeRole;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,12 @@ class EmployeeRolesController extends Controller
 
     public function createRole(){
         return view('employee_roles.create_role');
+    }
+
+    public function apiGetRoles(User $user)
+    {
+        $roles = EmployeeRole::where('role_creator',$user->id)->get();
+        return response()->json(["roles" => $roles]);
     }
 
     public function saveRole(Request $request){

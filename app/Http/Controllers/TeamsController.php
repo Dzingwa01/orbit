@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\InviteTeamMembers;
+use App\Shift;
 use App\TeamMember;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Team;
 use App\User;
@@ -106,6 +108,17 @@ class TeamsController extends Controller
         }
     }
 
+    public function apiGetTeams(User $user){
+        $teams = Team::join('cities','cities.id','teams.city_id')->where('creator',$user->id)->select('team_name','city_name','team_description')->get();
+        return response()->json(["teams" => $teams]);
+    }
+
+
+
+    public function getEmployeeTeams(User $user){
+       $teams = TeamMember::join('teams','teams.id','team_members.member_team_id')->where('team_member_id',$user->id)->select('teams.*')->get();
+        return response()->json(["teams" => $teams]);
+    }
     /**
      * Display the specified resource.
      *

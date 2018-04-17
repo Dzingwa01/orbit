@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Shift;
@@ -106,7 +107,14 @@ class ShiftsController extends Controller
             ->get();
         return view('shifts.edit',compact('shift','teams','team_members','team'));
     }
-
+    public function getCurrentShift(User $user){
+        $current_date = Carbon::now();
+        $current_shift = Shift::join('team_members','shifts.team_id','team_members.id')->where('team_members.team_member_id',$user->id)
+            ->where('shifts.start_date','<',$current_date)
+            ->where('shifts.end_date','>',$current_date)
+            ->get();
+        return response()->json(["shifts" => $current_shift]);
+    }
     /**
      * Update the specified resource in storage.
      *

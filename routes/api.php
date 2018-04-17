@@ -18,6 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/login_user','ApiLoginController@login');
 Route::get('/get_employees/{id}','EmployeesController@apiGetEmployees');
+Route::get('/get_employees/{id}','EmployeesController@apiGetEmployees');
+Route::get('/get_roles/{user}','EmployeeRolesController@apiGetRoles');
+Route::get('/get_teams/{user}','TeamsController@apiGetTeams');
+Route::get('/get_materials/{user}','TrainingMaterialsController@apiGetMaterials');
+Route::get('/get_current_shift/{user}','ShiftsController@getCurrentShift');
+Route::get('/get_employee_teams/{user}','TeamsController@getEmployeeTeams');
 Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     //    Route::resource('task', 'TasksController');
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.

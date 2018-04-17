@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\EmployeeRole;
+use App\User;
 use Illuminate\Http\Request;
 use App\Role;
 use Yajra\Datatables\Datatables;
@@ -10,17 +12,20 @@ use DB;
 class RolesController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
 //        dd(Role::all());
         return view('authentication.index');
 
     }
 
-    public function createRole(){
+    public function createRole()
+    {
         return view('authentication.create_role');
     }
 
-    public function saveRole(Request $request){
+    public function saveRole(Request $request)
+    {
 //        dd($request->all());
         DB::beginTransaction();
         try {
@@ -33,6 +38,7 @@ class RolesController extends Controller
         }
         return redirect('roles');
     }
+
     public function getRoles()
     {
         $roles = Role::all();
@@ -43,7 +49,10 @@ class RolesController extends Controller
             ->make(true);
     }
 
-    public function updateRole(Request $request,Role $role){
+
+
+    public function updateRole(Request $request, Role $role)
+    {
 //        dd($role);
         DB::beginTransaction();
         try {
@@ -56,15 +65,18 @@ class RolesController extends Controller
         return redirect('roles');
     }
 
-    public function editRole(Role $role){
-        return view('authentication.edit_role',compact('role'));
+    public function editRole(Role $role)
+    {
+        return view('authentication.edit_role', compact('role'));
     }
 
-    public function viewRole(Role $role){
-        return view('authentication.view_role',compact('role'));
+    public function viewRole(Role $role)
+    {
+        return view('authentication.view_role', compact('role'));
     }
 
-    public function deleteRole(Role $role){
+    public function deleteRole(Role $role)
+    {
 //        dd($role);
         Role::destroy($role->id);
         return redirect('roles');

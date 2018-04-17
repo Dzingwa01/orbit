@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\TrainingMaterial;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Shift;
@@ -61,6 +62,7 @@ class TrainingMaterialsController extends Controller
 
         $path = $request->file('file_url')->store($dir);
         $input['file_url'] = $path;
+        $input['creator_id'] = Auth::user()->id;
         DB::beginTransaction();
         try {
             $material = TrainingMaterial::create($input);
@@ -98,6 +100,11 @@ class TrainingMaterialsController extends Controller
         //
         $material = TrainingMaterial::where('id',$id)->first();
         return view('materials.edit',compact('material'));
+    }
+
+    public function apiGetMaterials(User $user){
+        $materials = TrainingMaterial::where('creator_id',$user->id)->get();
+        return response()->json(["materials" => $materials]);
     }
 
     /**
