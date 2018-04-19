@@ -35,7 +35,6 @@ $team_members = $team_members->toArray();
                             <div class="form-group">
                                 <label class="control-label" for="start_date">Start Date</label>
                                 <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date" required/>
-
                             </div>
                         </div>
                         <div class='col-sm-6 form-group'>
@@ -48,7 +47,7 @@ $team_members = $team_members->toArray();
                     <div class="row">
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
-                                <label class="control-label" for="end_date">Daily Shift Duration</label>
+                                <label class="control-label" for="end_date">Shift Duration</label>
                                 <input id='shift_duration' type='number' name="shift_duration" class="form-control"   placeholder="Daily Shift Duration" required />
                             </div>
                         </div>
@@ -114,6 +113,8 @@ $team_members = $team_members->toArray();
             $('select').select2({
                 placeholder: 'Select or search an option'
             });
+            $('#start_date').val(sessionStorage.getItem('start_date'))
+//            alert();
 
         });
         function goBack(){

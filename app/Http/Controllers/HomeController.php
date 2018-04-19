@@ -34,24 +34,24 @@ class HomeController extends Controller
         if($role->name =="Manager"){
             $events = [];
             $data = Shift::where('creator_id',Auth::user()->id)->get();
-            if($data->count()) {
-                foreach ($data as $key => $value) {
-                    $events[] = Calendar::event(
-                        $value->shift_title,
-                        true,
-                        new \DateTime($value->start_date),
-                        new \DateTime($value->end_date),
-                        null,
-                        // Add color and link on event
-                        [
-                            'color' => '#f05050',
-                            'url' => 'shifts/'.$value->id,
-                        ]
-                    );
-                }
-            }
-            $calendar = Calendar::addEvents($events);
-            return view('manager',compact('role','calendar'));
+//            if($data->count()) {
+//                foreach ($data as $key => $value) {
+//                    $events[] = Calendar::event(
+//                        $value->shift_title,
+//                        true,
+//                        new \DateTime($value->start_date),
+//                        new \DateTime($value->end_date),
+//                        null,
+//                        // Add color and link on event
+//                        [
+//                            'color' => '#f05050',
+//                            'url' => 'shifts/'.$value->id,
+//                        ]
+//                    );
+//                }
+//            }
+//            $calendar = Calendar::addEvents($events);
+            return view('manager',compact('role','data'));
         }
         else if($role->name == "Employee"){
             $events = [];

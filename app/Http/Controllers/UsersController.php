@@ -72,7 +72,6 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-
         }
         return redirect('user');
     }

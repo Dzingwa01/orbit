@@ -9,6 +9,19 @@ $employees_count = count(DB::table('users')
     ->join('packages','packages.id','users.package_id')
     ->where('users.creator_id',Auth::user()->id)
     ->select('users.*','packages.package_name')->get());
+$shifts = App\Shift::where('creator_id',Auth::user()->id)->get();
+$events = [];
+foreach ($shifts as $shift){
+    $event = new stdClass();
+    $event->title = $shift->shift_title;
+    $event->start = $shift->start_date;
+    $event->end = $shift->end_date;
+    $event->url = 'shifts/'.$shift->id;
+    array_push($events,$event);
+
+}
+$events = json_encode($events);
+//dd($events);
 ?>
 @section('style')
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,14 +29,14 @@ $employees_count = count(DB::table('users')
 @endsection
 @section('main-content')
 
-    <div class="row">
-        <div class="col-md-10 col-sm-12"  style="display: block;">
-            <h3>Team Schedule Summary</h3>
-            <a id="create_shift" class="btn btn-primary">Create Shift</a>
-            <a id="my_shifts" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>
-        <div id='calendar' >  {!! $calendar->calendar() !!}</div>
-        </div>
-    </div>
+    {{--<div class="row">--}}
+        {{--<div class="col-md-10 col-sm-12"  style="display: block;">--}}
+            {{--<h3>Team Schedule Summary</h3>--}}
+            {{--<a id="create_shift" class="btn btn-primary">Create Shift</a>--}}
+            {{--<a id="my_shifts" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>--}}
+        <div id='calendar' >  </div>
+        {{--</div>--}}
+    {{--</div>--}}
 
     {{--<div id="create_team_modal" role="dialog" class="modal fade" style="display: block; margin-top: 5em;" >--}}
         {{--<div class="modal-dialog">--}}
@@ -57,15 +70,40 @@ $employees_count = count(DB::table('users')
 
     <script type="text/javascript">
         $(document).ready(function ($) {
-           $("#create_shift").on('click',function () {
-              var counter = {{$employees_count}}
-               if(counter == 0){
-                   $.notify("You currently do not have any employees, please add employees before creating a shift", "warning");
-               }
-               else{
-                   window.location.href = 'schedules/create';
-               }
-           });
+//           $("#create_shift").on('click',function () {
+//
+//           });
+           var events = [];
+           events = {!! $events !!}
+           console.log(events);
+            $('#calendar').fullCalendar({
+                selectable: true,
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                events:events,
+                dayClick: function(date) {
+//                    alert('clicked ' + date.format());
+                },
+                select: function(startDate, endDate) {
+//                    alert('selected ' + startDate.format() + ' to ' + endDate.format());
+                    var counter = {{$employees_count}}
+                    if(counter == 0){
+                        $.notify("You currently do not have any employees, please add employees before creating a shift", "warning");
+                    }
+                    else{
+                        {{--{{return view('schedules.create',compact('startDate'))}}--}}
+                            sessionStorage.setItem('start_date',startDate.format());
+                            sessionStorage.setItem('end_date',endDate.format());
+                        window.location.href = 'schedules/create';
+                    }
+                },
+                allDay:false,
+                timeFormat: 'H(:mm)',
+                eventColor: '#f96332'
+            });
         });
         {{--var holder = $.noConflict();--}}
         {{--holder(document).ready(function () {--}}
@@ -107,6 +145,6 @@ $employees_count = count(DB::table('users')
 
 
     </script>
-    {!! $calendar->script() !!}
+    {{--{!! $calendar->script() !!}--}}
 
 @endpush
