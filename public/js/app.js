@@ -71,9 +71,24 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+        var AdminLTEOptions = {
+            //Enable sidebar expand on hover effect for sidebar mini
+            //This option is forced to true if both the fixed layout and sidebar mini
+            //are used together
+            sidebarExpandOnHover: true,
+            //BoxRefresh Plugin
+            enableBoxRefresh: true,
+            //Bootstrap.js tooltip
+            enableBSToppltip: true
+        };
+        if (typeof jQuery === "undefined") {
+            throw new Error("AdminLTE requires jQuery");
+        }
+        // var AdminLTEOptions;
+        (function ($, jQuery, AdminLTEOptions) {
+        })(jQuery, jQuery, AdminLTEOptions);
 
-
-var bind = __webpack_require__(16);
+        var bind = __webpack_require__(16);
 
 /*global toString:true*/
 
@@ -4666,7 +4681,7 @@ jQuery.Deferred.exceptionHook = function( error, stack ) {
 
 jQuery.readyException = function( error ) {
 	window.setTimeout( function() {
-		throw error;
+		// throw error;
 	} );
 };
 
@@ -14183,9 +14198,9 @@ if (true) {
 
   warn = function (msg, vm) {
     if (hasConsole && (!config.silent)) {
-      console.error("[Vue warn]: " + msg + (
-        vm ? generateComponentTrace(vm) : ''
-      ));
+      // console.error("[Vue warn]: " + msg + (
+      //   vm ? generateComponentTrace(vm) : ''
+      // ));
     }
   };
 

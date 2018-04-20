@@ -6,6 +6,7 @@ $team_members =App\TeamMember::join('users','users.id','team_members.team_member
     ->get();
 $team_members = $team_members->toArray();
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
 @section('main-content')
     <div class="container-fluid" >
 
@@ -34,21 +35,37 @@ $team_members = $team_members->toArray();
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="start_date">Start Date</label>
-                                <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date" required/>
+                                <input id='start_date' type='date' name="start_date" class="form-control"  placeholder="Start Date" required/>
                             </div>
                         </div>
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="end_date">End Date</label>
-                                <input id='end_date' type='text' name="end_date" class="form-control"   placeholder="End Date" required />
+                                <input id='end_date' type='date' name="end_date" class="form-control "   placeholder="End Date" required />
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
-                                <label class="control-label" for="end_date">Shift Duration</label>
-                                <input id='shift_duration' type='number' name="shift_duration" class="form-control"   placeholder="Daily Shift Duration" required />
+                                <label class="control-label" for="start_date">Start Time <sup>*24 hr notation</sup></label>
+                                <input id='start_time' type='text' name="start_time" class="form-control"  placeholder="Start Time" required/>
+
+                            </div>
+                        </div>
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_date">End Time <sup>*24 hr notation</sup></label>
+                                <input id='end_time' type='text' name="end_time" class="form-control"   placeholder="End Time" required />
+                            </div>
+                        </div>
+                    </div>
+                    <input id="sd"  name="shift_duration" hidden>
+                    <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_date">Shift Duration - Hrs</label>
+                                <input id='shift_duration' type='text' disabled="disabled" class="form-control"   placeholder="Daily Shift Duration" />
                             </div>
                         </div>
                         <div class="col-md-6 form-group">
@@ -68,7 +85,7 @@ $team_members = $team_members->toArray();
 
                     <div class="box-footer">
                         <center>
-                            <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Save</button>
+                            <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Next</button>
                         </center>
                     </div>
             </form>
@@ -83,6 +100,12 @@ $team_members = $team_members->toArray();
     </div>
 @endsection
 @push('datatable-scripts')
+    {{--<script--}}
+            {{--src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
+            {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
+            {{--crossorigin="anonymous"></script>--}}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -113,16 +136,43 @@ $team_members = $team_members->toArray();
             $('select').select2({
                 placeholder: 'Select or search an option'
             });
-            $('#start_date').val(sessionStorage.getItem('start_date'))
-//            alert();
+            $('#start_date').val(sessionStorage.getItem('start_date'));
+            $('#end_date').val(sessionStorage.getItem('end_date'));
+
 
         });
         function goBack(){
             window.history.back();
         }
+        $.noConflict();
         jQuery(function ($) {
-            $('#start_date').datetimepicker();
-            $('#end_date').datetimepicker();
+            $('#start_time').timepicker({
+                template: false,
+                showInputs: true,
+                minuteStep: 5,
+                maxHours:24,
+                showMeridian:false
+            });
+            $('#end_time').timepicker({
+                template: false,
+                showInputs: false,
+                minuteStep: 5,
+                maxHours:24,
+                showMeridian:false
+            });
+            $("#end_time").on('blur',function(){
+
+                var date1 = $('#start_time').val();
+                var date2 = $('#end_time').val();
+                var start = moment.utc(date1, "HH:mm");
+                var end = moment.utc(date2, "HH:mm");
+                if (end.isBefore(start))
+                    end.add(1, 'day');
+                var d = moment.duration(end.diff(start));
+                var s = moment.utc(+d).format('H:mm');
+                $('#shift_duration').val(s);
+              $('#sd').val(s);
+            });
         });
     </script>
 

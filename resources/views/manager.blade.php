@@ -29,14 +29,14 @@ $events = json_encode($events);
 @endsection
 @section('main-content')
 
-    {{--<div class="row">--}}
-        {{--<div class="col-md-10 col-sm-12"  style="display: block;">--}}
-            {{--<h3>Team Schedule Summary</h3>--}}
-            {{--<a id="create_shift" class="btn btn-primary">Create Shift</a>--}}
-            {{--<a id="my_shifts" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>--}}
+    <div class="row">
+        <div class="col-md-10 col-sm-12"  style="display: block;">
+            <h3>Team Schedule Summary</h3>
+            <a id="create_shift" class="btn btn-primary">Create Shift</a>
+            <a id="my_shifts" href="{{url('shifts')}}" class="btn btn-primary">My Shifts</a>
         <div id='calendar' >  </div>
-        {{--</div>--}}
-    {{--</div>--}}
+        </div>
+    </div>
 
     {{--<div id="create_team_modal" role="dialog" class="modal fade" style="display: block; margin-top: 5em;" >--}}
         {{--<div class="modal-dialog">--}}
@@ -61,18 +61,25 @@ $events = json_encode($events);
 @endsection
 
 @push('datatable-scripts')
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js"></script>--}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
-    {{--<script type="text/javascript">--}}
-       {{--var conf = jQuery.noConflict();--}}
-    {{--</script>--}}
-    {{--<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>--}}
 
     <script type="text/javascript">
+//        $.noConflict();
         $(document).ready(function ($) {
-//           $("#create_shift").on('click',function () {
-//
-//           });
+           $("#create_shift").on('click',function () {
+               var counter = {{$employees_count}}
+               if(counter == 0){
+                   $.notify("You currently do not have any employees, please add employees before creating a shift", "warning");
+               }
+               else{
+                   {{--{{return view('schedules.create',compact('startDate'))}}--}}
+                   sessionStorage.setItem('start_date',formatDate(new Date()));
+                   sessionStorage.setItem('end_date',formatDate(new Date()));
+                   window.location.href = 'schedules/create';
+               }
+           });
            var events = [];
            events = {!! $events !!}
            console.log(events);
@@ -104,8 +111,28 @@ $events = json_encode($events);
                 timeFormat: 'H(:mm)',
                 eventColor: '#f96332'
             });
+            $('#end_date').on('blur',function(){
+                var start_date = moment($('#start_date').val());
+//                var end_date = moment($('#end_date').val());
+
+            });
         });
-        {{--var holder = $.noConflict();--}}
+function formatDate(date) {
+    var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return year+'-'+monthNames[monthIndex]+'-'+day;
+}
+
+{{--var holder = $.noConflict();--}}
         {{--holder(document).ready(function () {--}}
             {{--console.log('tapinda');--}}
             {{--var logins_counter = 0;--}}
