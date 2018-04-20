@@ -143,15 +143,17 @@ $team_members = $team_members->toArray();
             });
             $('#start_date').val(sessionStorage.getItem('start_date'));
             $('#end_date').val(sessionStorage.getItem('end_date'));
-//            calculateDays();
+
             $('#end_date').on('blur',function(){
-                console.log("team id");
-                console.log($("#team_id").val());
+                var isAfter = moment($('#end_date').val()).isAfter($('#start_date').val());
+                console.log(isAfter);
+                if(!isAfter){
+                    alert('End date can not be less than start date');
+                }
                 if($("#team_id").val()!=""){
                     calculateDays($("#team_id").val());
                 }
             });
-
         });
 
         function calculateDays(team_id){
@@ -202,7 +204,7 @@ $team_members = $team_members->toArray();
                 if(obj.member_team_id ==team_id){
                     rows += '<td>'+obj.name + obj.surname +'</td>';
                     for(var i=0;i<datesArr.length;i++){
-                        rows+='<td><input name="'+obj.contact_number+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'"></td>';
+                        rows+='<td><input name="'+obj.id+'d'+moment(datesArr[i]).format('YYYY/MM/DD')+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'"></td>';
                     }
                     rows += '</tr>';
                     $('#table_body').append(rows);

@@ -54,6 +54,7 @@ class SchedulerController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $input = $request->all();
         $input_team_members = array_except($input,['shift_title','creator_id','start_date','end_date','_token','shift_duration','team_id']);
         $team_cur = Team::where('id',$input['team_id'])->first();

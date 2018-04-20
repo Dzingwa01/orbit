@@ -173,6 +173,7 @@ class ManagerTeamsController extends Controller
         $team_members= array_values(array_except($input,['_token','team_id']));
 //        dd($team_members);
         $cur_team_members = TeamMember::where('member_team_id',$team_id)->pluck('team_member_id')->toArray();
+//        dd($cur_team_members);
         foreach ($cur_team_members as $key){
             if(!in_array($key,$team_members)){
                 $user = User::where('id',$key)->first();
@@ -181,26 +182,23 @@ class ManagerTeamsController extends Controller
                 dispatch(new TeamRemovals($user,$cur_team->team_name));
             }
         }
-
+        DB::beginTransaction();
+        try {
         foreach($team_members as $key) {
-            DB::beginTransaction();
-            try {
                 $cur_team_member = TeamMember::where('team_member_id',$key)->where('member_team_id',$team_id)->first();
+//                dd($cur_team_member);
                 if($cur_team_member==null){
                     $user = User::where('id',$key)->first();
                     $email_token = base64_encode($user->email);
                     $team_member= TeamMember::create(['member_team_id'=>$team_id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
-//                    dd($team_member);
-                    DB::commit();
                     event($team_member);
                     dispatch(new InviteTeamMembers($team_member));
                 }
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                throw $e;
-            }
-
+        }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
         }
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
