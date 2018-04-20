@@ -82,6 +82,16 @@ $team_members = $team_members->toArray();
                 <div id="team_members" class="row" hidden>
 
                 </div>
+                <div id="dates_div">
+                <table id="dates_table" class="table">
+                    <thead id="headers">
+
+                    </thead>
+                    <tbody id="table_body">
+
+                    </tbody>
+                </table>
+                </div>
 
                     <div class="box-footer">
                         <center>
@@ -89,13 +99,7 @@ $team_members = $team_members->toArray();
                         </center>
                     </div>
             </form>
-            {{--<form id="add-team-members" action="/manager_update_team_members" method="post">--}}
-                {{--{{ csrf_field() }}--}}
-                {{--<legend>Team Members</legend>--}}
-                {{--<input hidden name="team_id" value="{{$team->id}}">--}}
-                {{--<fieldset>--}}
-               {{----}}
-            {{--</form>--}}
+
         </div>
     </div>
 @endsection
@@ -119,28 +123,97 @@ $team_members = $team_members->toArray();
                 var team_members =[];
                 team_members = {!! json_encode($team_members)!!}
                 var counter = 0;
-                team_members.forEach(function(obj){
-                   if(obj.member_team_id ==current_team){
-                       counter++;
-                       $('#team_members').append('<div class="form-check col-sm-6">\n' +
-                           '                            <input name="'+obj.contact_number+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'">\n' +
-                           '                            <label class="form-check-label" for="'+obj.contact_number+'" >'+obj.name+' '+ obj.surname+'</label>\n' +
-                           '                        </div>');
-
-                   }
-                });
-                if(counter==0){
+//                team_members.forEach(function(obj){
+//                   if(obj.member_team_id ==current_team){
+//                       counter++;
+//                       $('#team_members').append('<div class="form-check col-sm-6">\n' +
+//                           '                            <input name="'+obj.contact_number+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'">\n' +
+//                           '                            <label class="form-check-label" for="'+obj.contact_number+'" >'+obj.name+' '+ obj.surname+'</label>\n' +
+//                           '                        </div>');
+//
+//                   }
+//                });
+                if(team_members.length==0){
                     $("#team_members").append('<div><label>No Employees currently assigned to selected team<label></div>')
                 }
+                calculateDays(current_team);
             });
             $('select').select2({
                 placeholder: 'Select or search an option'
             });
             $('#start_date').val(sessionStorage.getItem('start_date'));
             $('#end_date').val(sessionStorage.getItem('end_date'));
-
+//            calculateDays();
+            $('#end_date').on('blur',function(){
+                console.log("team id");
+                console.log($("#team_id").val());
+                if($("#team_id").val()!=""){
+                    calculateDays($("#team_id").val());
+                }
+            });
 
         });
+
+        function calculateDays(team_id){
+            console.log('Check me');
+            var date2 = moment($('#end_date').val(),'YYYY MM DD');
+            var date1 = moment($('#start_date').val(),'YYYY MM DD');
+            var diff = date2.diff(date1,'days');
+            if(diff<=7){
+                var datesArr = getDates(date1, date2);
+                createTable(datesArr,team_id);
+            }
+            else{
+                alert('Please split your shift weekly');
+            }
+           console.log(datesArr);
+        }
+
+        function getDates(startDate, endDate){
+            var dates = [],
+                currentDate = startDate,
+                addDays = function(days) {
+                    var date = new Date(this.valueOf());
+                    date.setDate(date.getDate() + days);
+                    return date;
+                };
+            while (currentDate <= endDate) {
+                dates.push(currentDate);
+                currentDate = addDays.call(currentDate, 1);
+            }
+            return dates;
+        }
+        function createTable (datesArr,team_id) {
+            console.log('Drawing tables');
+            $('#headers').empty();
+            $('#table_body').empty();
+            var tr_headers = '<tr><th>Employee</th>';
+            for(var i=0;i<datesArr.length;i++){
+                    tr_headers += '<th>'+moment(datesArr[i],'YYYY MM DD').date()+'/'+(moment(datesArr[i],'YYYY MM DD').month()+1)+'</th>';
+            }
+            tr_headers = tr_headers+'</tr>';
+            $('#headers').append(tr_headers);
+            var rows = '<tr>';
+            var team_members =[];
+            team_members = {!! json_encode($team_members)!!}
+            var counter = 0;
+            team_members.forEach(function(obj){
+                console.log(obj);
+                if(obj.member_team_id ==team_id){
+                    rows += '<td>'+obj.name + obj.surname +'</td>';
+                    for(var i=0;i<datesArr.length;i++){
+                        rows+='<td><input name="'+obj.contact_number+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'"></td>';
+                    }
+                    rows += '</tr>';
+                    $('#table_body').append(rows);
+                    rows = '<tr>';
+                }
+            });
+
+        }
+
+
+        createTable(3,3);
         function goBack(){
             window.history.back();
         }

@@ -59,12 +59,13 @@ class ShiftsController extends Controller
         try {
             $shift = Shift::create($request->all());
             DB::commit();
+            return view('shifts.assign_dates',compact('shift'));
 
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-        return redirect('shifts');
+       return redirect('shifts');
     }
 
     /**
