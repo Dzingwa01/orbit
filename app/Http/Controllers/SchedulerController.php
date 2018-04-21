@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ScheduleInviteMail;
+use App\ShiftSchedule;
 use App\TeamMember;
 use App\User;
 use Illuminate\Http\Request;
@@ -54,11 +55,12 @@ class SchedulerController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+//        dd($request->all());
         $input = $request->all();
-        $input_team_members = array_except($input,['shift_title','creator_id','start_date','end_date','_token','shift_duration','team_id']);
+        $input_team_members = array_except($input,['shift_title','creator_id','start_date','end_date','_token','shift_duration','team_id','start_time','end_time','shift_description']);
         $team_cur = Team::where('id',$input['team_id'])->first();
         $cur_members = TeamMember::where('member_team_id',$team_cur->id)->get();
+        $team_members_unique =[];
 
         DB::beginTransaction();
         try {
@@ -67,7 +69,14 @@ class SchedulerController extends Controller
             {
                 $member->delete();
             }
-            foreach($input_team_members as $key) {
+            foreach($input_team_members as $key=> $member) {
+                $current_member = explode('d',$key);
+                if(!in_array($member,$team_members_unique)){
+                    array_push($team_members_unique,$member);
+                }
+                $schedule = ShiftSchedule::create(['shift_id'=>$shift->id,'employee_id'=>$current_member[0],'shift_date'=>$current_member[1]]);
+            }
+            foreach($team_members_unique as $key) {
                 $user = User::where('id',$key)->first();
                 $email_token = base64_encode($user->email);
                 TeamMember::create(['member_team_id'=>$team_cur->id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
@@ -99,7 +108,8 @@ class SchedulerController extends Controller
             ->where('teams.id',$shift->team_id)
             ->select('users.*')
             ->get();
-        return view('shifts.view',compact('shift','teams','team_members'));
+        $employee_schedules = ShiftSchedule::where('shift_id',$shift->id)->get();
+        return view('shifts.view',compact('shift','teams','team_members','employee_schedules'));
     }
 
     /**

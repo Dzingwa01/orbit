@@ -26,9 +26,12 @@ $team_members = $team_members->toArray();
                             <input id="shift_title" name="shift_title" class="form-control" placeholder="Shift Title" required>
                         </div>
                         <input hidden name="team_id" >
-                        <div class="col-md-6 form-group">
-                            <label for="creator">Task Creator</label>
-                            <input class="form-control"  id="creator" value="{{Auth::user()->name . ' ' .Auth::user()->surname}}" disabled>
+
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="shift_description">Shift Description</label>
+                                <textarea id='shift_description' name="shift_description" class="form-control "   placeholder="End Date" ></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -77,11 +80,15 @@ $team_members = $team_members->toArray();
                                 @endforeach
                             </select>
                         </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="creator">Shift Creator</label>
+                            <input class="form-control"  id="creator" value="{{Auth::user()->name . ' ' .Auth::user()->surname}}" disabled>
                         </div>
                     </div>
-                <div id="team_members" class="row" hidden>
 
-                </div>
                 <div id="dates_div">
                 <table id="dates_table" class="table">
                     <thead id="headers">
@@ -123,16 +130,6 @@ $team_members = $team_members->toArray();
                 var team_members =[];
                 team_members = {!! json_encode($team_members)!!}
                 var counter = 0;
-//                team_members.forEach(function(obj){
-//                   if(obj.member_team_id ==current_team){
-//                       counter++;
-//                       $('#team_members').append('<div class="form-check col-sm-6">\n' +
-//                           '                            <input name="'+obj.contact_number+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'">\n' +
-//                           '                            <label class="form-check-label" for="'+obj.contact_number+'" >'+obj.name+' '+ obj.surname+'</label>\n' +
-//                           '                        </div>');
-//
-//                   }
-//                });
                 if(team_members.length==0){
                     $("#team_members").append('<div><label>No Employees currently assigned to selected team<label></div>')
                 }
@@ -214,8 +211,6 @@ $team_members = $team_members->toArray();
 
         }
 
-
-        createTable(3,3);
         function goBack(){
             window.history.back();
         }
