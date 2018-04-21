@@ -24,6 +24,8 @@ Route::get('/get_teams/{user}','TeamsController@apiGetTeams');
 Route::get('/get_materials/{user}','TrainingMaterialsController@apiGetMaterials');
 Route::get('/get_current_shift/{user}','ShiftsController@getCurrentShift');
 Route::get('/get_current_shifts/{user}','ShiftsController@getCurrentShifts');
+Route::get('/get_current_shifts_manager/{user}','ShiftsController@getCurrentShiftsManager');
+Route::get('/get_current_shifts_manager_all/{user}','ShiftsController@getCurrentShiftsManagerAll');
 Route::get('/get_current_tasks/{user}','TasksController@getCurrentTasks');
 Route::get('/get_employee_teams/{user}','TeamsController@getEmployeeTeams');
 Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {

@@ -129,10 +129,34 @@ class ShiftsController extends Controller
             ->join('teams','teams.id','shifts.team_id')
             ->where('shift_schedules.employee_id',$user->id)
             ->where('shift_schedules.shift_date','>=',$current_date)
-            ->select('shifts.*','team_name')
+            ->select('shifts.*','team_name','shift_date')
             ->get();
         return response()->json(["shifts" => $current_shift]);
     }
+
+    public function getCurrentShiftsManager(User $user){
+        $current_date = Carbon::now()->format('Y-m-d');
+//        dd($user->id);
+        $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->where('shifts.creator_id',$user->id)
+            ->where('shift_schedules.shift_date','=',$current_date)
+            ->select('shifts.*')
+            ->distinct()
+            ->get();
+        return response()->json(["shifts" => $current_shift]);
+    }
+
+    public function getCurrentShiftsManagerAll(User $user){
+        $current_date = Carbon::now()->format('Y-m-d');
+        $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->where('shifts.creator_id',$user->id)
+            ->where('shift_schedules.shift_date','>=',$current_date)
+            ->select('shifts.*')
+            ->distinct()
+            ->get();
+        return response()->json(["shifts" => $current_shift]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -164,7 +188,6 @@ class ShiftsController extends Controller
             DB::rollback();
             throw $e;
         }
-//        $shift->update($request->all());
         return redirect('schedules');
     }
 
