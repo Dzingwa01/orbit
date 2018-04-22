@@ -73,6 +73,10 @@ class ApiLoginController extends Controller
 //            dd("ndeip");
             $user = $this->guard()->user();
 //            $user->generateToken();
+            $user = User::join('packages','packages.id','users.package_id')
+                    ->where('users.id',$user->id)
+                    ->select('users.*','packages.package_name')
+                    ->first();
             return response()->json(
                 $user
             );
