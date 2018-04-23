@@ -9,6 +9,8 @@ use App\Role;
 use Yajra\Datatables\Datatables;
 use DB;
 use App\Package;
+use Image;
+use File;
 
 class UsersController extends Controller
 {
@@ -76,6 +78,45 @@ class UsersController extends Controller
         return redirect('user');
     }
 
+    public function updateUserAPI(Request $request, User $user){
+//        dd($user);
+        $input = $request->all();
+//        dd($input);
+        try {
+
+            if (array_key_exists('image', $input)) {
+                $main_picture_url = $request->file('image');
+                $dir = "photos/";
+                if (File::exists(public_path($dir)) == false) {
+                    File::makeDirectory(public_path($dir), 0777, true);
+                }
+                $img = Image::make($main_picture_url->path());
+                $path = "{$dir}" . uniqid() . "." . $main_picture_url->getClientOriginalExtension();
+//                dd($path);
+                $img->save(public_path($path));
+                $input['picture_url'] = $path;
+            }
+
+            DB::beginTransaction();
+            try {
+
+                $user->update($input);
+                DB::commit();
+                $user = User::join('packages','packages.id','users.package_id')
+                    ->where('users.id',$user->id)->select('users.*','package_name')->first();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+            return response()->json(["status" => "200", "message" => "Profile update successfuly", "user" => $user]);
+
+        } catch (\Exception $e) {
+            throw $e;
+            return response()->json(["status" => "500", "message" => $e]);
+        }
+        return [];
+    }
     /**
      * Display the specified resource.
      *
