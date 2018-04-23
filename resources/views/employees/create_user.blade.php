@@ -37,6 +37,14 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
+                                <label for="company_name">Gender</label>
+                                <select id="gender" type="text" class="form-control"  style="background-color: white" name="gender" value="{{ old('company_name') }}" placeholder="select gender">
+
+                                    <option>male</option>
+                                    <option>female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
                                 <label for="company_name">Company Name</label>
                                 <input id="company_name" name="company_name" class="form-control" type="text" placeholder="Company Name" disabled value="{{Auth::user()->company_name}}" required>
                             </div>

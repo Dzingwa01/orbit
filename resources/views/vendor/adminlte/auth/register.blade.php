@@ -59,10 +59,14 @@
                         {{--<span class="glyphicon glyphicon-envelope form-control-feedback"></span>--}}
                     </div>
 
-                    {{--<div class="form-group has-feedback">--}}
-                        {{--<input type="text" class="form-control" placeholder="Company Name" style="background-color: white" name="company_name" value="{{ old('company_name') }}"/>--}}
+                    <div class="form-group has-feedback">
+                        <select id="gender" type="text" class="form-control"  style="background-color: white" name="gender" value="{{ old('company_name') }}" placeholder="select gender">
+
+                            <option>male</option>
+                            <option>female</option>
+                        </select>
                         {{--<span class="glyphicon glyphicon-envelope form-control-feedback"></span>--}}
-                    {{--</div>--}}
+                    </div>
                     <div class="form-group has-feedback">
                         <input type="text" class="form-control" placeholder="Company Name" style="background-color: white" name="company_name" value="{{ old('company_name') }}"/>
                         {{--<span class="glyphicon glyphicon-envelope form-control-feedback"></span>--}}
@@ -115,6 +119,9 @@
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional
             });
+//            $('select').select2({
+//               placeholder:"Select Placeholder"
+//            });
         });
     </script>
     <script>

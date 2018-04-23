@@ -104,6 +104,7 @@ class RegisterController extends Controller
             'role_id'=> $role_id,
             'package_id' => $data['package_id'],
             'terms' =>$data['terms'],
+            'gender' =>$data['gender'],
             'password' => bcrypt($data['password']),
             'email_token'=>$data['email_token'],
             'verified'=>0
