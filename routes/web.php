@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
+    Route::get('team_employee_shifts/{team}','SchedulerController@getTeamEmployeeShifts');
     Route::resource('user','UsersController');
     Route::get('get_users','UsersController@getUsers')->name('users.get_users');
     Route::post('/update/user/{id}','UsersController@update');

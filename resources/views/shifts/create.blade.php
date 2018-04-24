@@ -196,21 +196,48 @@ $team_members = $team_members->toArray();
             var team_members =[];
             team_members = {!! json_encode($team_members)!!}
             var counter = 0;
-            team_members.forEach(function(obj){
-                console.log(obj);
-                if(obj.member_team_id ==team_id){
-                    rows += '<td>'+obj.name + obj.surname +'</td>';
-                    for(var i=0;i<datesArr.length;i++){
-                        rows+='<td><input name="'+obj.id+'d'+moment(datesArr[i]).format('YYYY/MM/DD')+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'"></td>';
+            let team_employees_shifts = [];
+            $.get('/team_employee_shifts/'+team_id,function(data){
+                team_employees_shifts = data['employee_schedules'];
+                console.log(team_employees_shifts);
+                team_members.forEach(function(obj){
+                    if(obj.member_team_id ==team_id){
+                        rows += '<td>'+obj.name + obj.surname +'</td>';
+                        for(var i=0;i<datesArr.length;i++){
+
+                            var available = true;
+                            for(var x=0;x<team_employees_shifts.length;x++){
+                                var start_time = $("#start_time").val();
+                                if(team_employees_shifts[x].employee_id==obj.id&&moment(datesArr[i]).format('YYYY-MM-DD')==team_employees_shifts[x].shift_date && compareStartTime(team_employees_shifts[x].start_time,start_time,team_employees_shifts[x].end_time)){
+                                    available = false;
+                                }
+                            }
+                            if(available){
+                                rows+='<td><input name="'+obj.id+'d'+moment(datesArr[i]).format('YYYY/MM/DD')+'" type="checkbox" class="form-check-input" checked value="'+obj.id+'"></td>';
+                            }
+                            else{
+                                rows+='<td><input name="'+obj.id+'d'+moment(datesArr[i]).format('YYYY/MM/DD')+'" type="checkbox" class="form-check-input" disabled="disabled" value="'+obj.id+'"></td>';
+                            }
+
+                        }
+                        rows += '</tr>';
+                        $('#table_body').append(rows);
+                        rows = '<tr>';
                     }
-                    rows += '</tr>';
-                    $('#table_body').append(rows);
-                    rows = '<tr>';
-                }
+                });
             });
+            console.log(team_employees_shifts);
+
 
         }
-
+        function compareStartTime(shift_start, starting_time,end_time){
+            var hr = shift_start.split(':');
+            var start_time = starting_time.split(':');
+            var ending_time = end_time.split(':');
+            var result = parseInt(hr[0])<=parseInt(start_time[0])&&parseInt(hr[0])<=parseInt(ending_time[0]);
+            console.log(result);
+            return result;
+        }
         function goBack(){
             window.history.back();
         }

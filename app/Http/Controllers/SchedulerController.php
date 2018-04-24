@@ -47,6 +47,14 @@ class SchedulerController extends Controller
         return view('shifts.create',compact('teams'));
     }
 
+    public function getTeamEmployeeShifts(Team $team){
+        $team_users = TeamMember::join('shift_schedules','shift_schedules.employee_id','team_members.team_member_id')
+                    ->join('shifts','shifts.id','shift_schedules.shift_id')
+                    ->where('member_team_id',$team->id)
+                    ->select('shift_schedules.*','team_members.team_member_id','shifts.start_time','shifts.end_time','shifts.end_date')
+                    ->get();
+        return response()->json(['employee_schedules'=>$team_users]);
+    }
     /**
      * Store a newly created resource in storage.
      *
