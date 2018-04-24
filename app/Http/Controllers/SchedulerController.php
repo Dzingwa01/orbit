@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ScheduleInviteMail;
 use App\ShiftSchedule;
+use App\Task;
 use App\TeamMember;
 use App\User;
 use Illuminate\Http\Request;
@@ -88,16 +89,33 @@ class SchedulerController extends Controller
                 $user = User::where('id',$key)->first();
                 $email_token = base64_encode($user->email);
                 TeamMember::create(['member_team_id'=>$team_cur->id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
-                event($user);
-                dispatch(new ScheduleInviteMail($user,$team_cur->team_name,$email_token));
+//                event($user);
+//                dispatch(new ScheduleInviteMail($user,$team_cur->team_name,$email_token));
             }
             DB::commit();
+            $tasks = Task::where('tasks.start_date','>=',$shift->start_date)
+                    ->where('tasks.start_date','>=',$shift->end_date)
+                    ->get();
+            $shift_employees = ShiftSchedule::join('users','users.id','shift_schedules.employee_id')
+                                ->where('shift_schedules.shift_id',$shift->id)
+                               ->get();
+            $current_employees = [];
+            $employees_distinct = [];
+            foreach ($shift_employees as $employee){
+                if(!in_array($employee->id,$current_employees)){
+                    array_push($current_employees,$employee->id);
+                    array_push($employees_distinct,$employee);
+                }
+            }
+            $shift_employees = $employees_distinct;
+//            dd($shift_employees);
+            return view('shifts.assign_tasks',compact('shift','tasks','shift_employees'));
 
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-        return redirect('home');
+
     }
 
     /**

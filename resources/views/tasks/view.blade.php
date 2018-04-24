@@ -39,6 +39,21 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="start_time">Start Time <sup>*24 hr notation</sup></label>
+                                <input id='start_time' type='text' name="start_time" class="form-control"  placeholder="Start Time" value="{{$task->start_time}}" required/>
+
+                            </div>
+                        </div>
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_time">End Time <sup>*24 hr notation</sup></label>
+                                <input id='end_time' type='text' name="end_time" class="form-control"   placeholder="End Time" value="{{$task->end_time}}" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="description">Task Description</label>
                             <textarea id="description" name="description" class="form-control" type="text">{{$task->description}}</textarea>

@@ -27,14 +27,29 @@
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="start_date">Start Date</label>
-                                <input id='start_date' type='text' name="start_date" class="form-control"  placeholder="Start Date" required/>
+                                <input id='start_date' type='date' name="start_date" class="form-control"  placeholder="Start Date" required/>
 
                             </div>
                         </div>
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="end_date">End Date</label>
-                                <input id='end_date' type='text' name="end_date" class="form-control"   placeholder="End Date" required />
+                                <input id='end_date' type='date' name="end_date" class="form-control"   placeholder="End Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="start_time">Start Time <sup>*24 hr notation</sup></label>
+                                <input id='start_time' type='text' name="start_time" class="form-control"  placeholder="Start Time" required/>
+
+                            </div>
+                        </div>
+                        <div class='col-sm-6 form-group'>
+                            <div class="form-group">
+                                <label class="control-label" for="end_time">End Time <sup>*24 hr notation</sup></label>
+                                <input id='end_time' type='text' name="end_time" class="form-control"   placeholder="End Time" required />
                             </div>
                         </div>
                     </div>
@@ -62,7 +77,8 @@
     </div>
 @endsection
 @push('datatable-scripts')
-
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('select').select2({
@@ -77,8 +93,22 @@
             window.history.back();
         }
         jQuery(function ($) {
-            $('#start_date').datetimepicker();
-            $('#end_date').datetimepicker();
+//            $('#start_date').datetimepicker();
+//            $('#end_date').datetimepicker();
+            $('#start_time').timepicker({
+                template: false,
+                showInputs: true,
+                minuteStep: 5,
+                maxHours:24,
+                showMeridian:false
+            });
+            $('#end_time').timepicker({
+                template: false,
+                showInputs: false,
+                minuteStep: 5,
+                maxHours:24,
+                showMeridian:false
+            });
         });
     </script>
 
