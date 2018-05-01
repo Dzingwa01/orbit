@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
+    Route::get('get_employee_name/{user}','UsersController@getName');
     Route::get('team_employee_shifts/{team}','SchedulerController@getTeamEmployeeShifts');
     Route::resource('user','UsersController');
     Route::get('get_users','UsersController@getUsers')->name('users.get_users');
@@ -89,6 +90,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update_onboarding_materials/{id}','OnBoardingMaterialsController@update');
 
     Route::resource('tasks', 'TasksController');
+    Route::post('shift_tasks','TasksController@shiftTasks');
+    Route::post('another_shift_tasks','TasksController@shiftTasksExisting');
     Route::get('get_tasks','TasksController@getTasks')->name('tasks.get_tasks');
     Route::get('delete_tasks/{task}','TasksController@destroy');
     Route::post('update_task/{task}','TasksController@update');

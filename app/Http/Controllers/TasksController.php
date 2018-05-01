@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ShiftTask;
 use App\TasksEmployee;
 use App\User;
 use Carbon\Carbon;
@@ -74,6 +75,44 @@ class TasksController extends Controller
             throw $e;
         }
         return redirect('tasks');
+    }
+
+    public function shiftTasks(Request $request){
+        $input = $request->all();
+
+        DB::beginTransaction();
+        try {
+            $task = Task::create($request->all());
+            $shift_task = ShiftTask::create(['employee_id'=>$input['employee_id'],'shift_id'=>$input['shift_id'],'task_id'=>$task->id]);
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+//        return redirect('tasks');
+    }
+
+    public function shiftTasksExisting(Request $request){
+        $input = $request->all();
+//        dd($input);
+        DB::beginTransaction();
+        try {
+            $tasks_chosen = array_except($input,['shift_id','employee_id','_token']);
+//            dd($tasks_chosen);
+            foreach ($tasks_chosen as $task_selected){
+
+//                $input['task_id'] = $task_selected;
+                $shift_task = ShiftTask::create(['shift_id'=>$input['shift_id'],'employee_id'=>$input['employee_id'],'task_id'=>$task_selected]);
+            }
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+//        return redirect('tasks');
     }
 
     /**

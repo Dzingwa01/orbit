@@ -94,8 +94,10 @@ class SchedulerController extends Controller
             }
             DB::commit();
             $tasks = Task::where('tasks.start_date','>=',$shift->start_date)
-                    ->where('tasks.start_date','>=',$shift->end_date)
+                    ->where('tasks.start_date','<=',$shift->end_date)
+                    ->where('creator_id',Auth::user()->id)
                     ->get();
+//            dd($tasks);
             $shift_employees = ShiftSchedule::join('users','users.id','shift_schedules.employee_id')
                                 ->where('shift_schedules.shift_id',$shift->id)
                                ->get();

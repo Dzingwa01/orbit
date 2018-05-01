@@ -30,7 +30,7 @@ $team_members = $team_members->toArray();
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="shift_description">Shift Description</label>
-                                <textarea id='shift_description' name="shift_description" class="form-control "   placeholder="End Date" ></textarea>
+                                <textarea id='shift_description' name="shift_description" class="form-control "   placeholder="Shift Description" ></textarea>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,9 @@ $team_members = $team_members->toArray();
                             <button   class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> Next</button>
                         </center>
                     </div>
+                </div>
             </form>
+
 
         </div>
     </div>
@@ -202,7 +204,7 @@ $team_members = $team_members->toArray();
                 console.log(team_employees_shifts);
                 team_members.forEach(function(obj){
                     if(obj.member_team_id ==team_id){
-                        rows += '<td>'+obj.name + obj.surname +'</td>';
+                        rows += '<td>'+obj.name +' '+ obj.surname +'</td>';
                         for(var i=0;i<datesArr.length;i++){
 
                             var available = true;
@@ -226,8 +228,7 @@ $team_members = $team_members->toArray();
                     }
                 });
             });
-            console.log(team_employees_shifts);
-
+//            console.log(team_employees_shifts);
 
         }
         function compareStartTime(shift_start, starting_time,end_time){

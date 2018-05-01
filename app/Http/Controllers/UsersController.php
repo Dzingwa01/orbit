@@ -123,6 +123,11 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function getName(User $user){
+//        dd($user);
+        return $user->name." - ".$user->surname;
+    }
+
     public function show($id)
     {
         //
