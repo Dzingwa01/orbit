@@ -38,13 +38,25 @@ class TasksController extends Controller
     }
 
     public function getCurrentTasks(User $user){
-        $current_date = Carbon::now();
-        $current_tasks= TasksEmployee::join('users','users.id','tasks_employees.id')
-                        ->join('tasks','tasks_employees.task_id','tasks.id')
-            ->where('users.id',$user->id)
-            ->select('tasks.*')->get();
+        $current_date = Carbon::now()->format('Y-m-d');
+
+        $current_tasks= ShiftTask::join('tasks','tasks.id','shift_tasks.task_id')
+                        ->where('tasks.start_date','=',$current_date)
+                        ->where('shift_tasks.employee_id','=',$user->id)
+                        ->select('tasks.*')
+                        ->get();
         return response()->json(["tasks" => $current_tasks]);
     }
+
+    public function getCurrentManagerTasks(User $user){
+        $current_date = Carbon::now()->format('Y-m-d');
+        $current_tasks= Task::where('tasks.start_date','=',$current_date)
+            ->where('tasks.creator_id','=',$user->id)
+            ->select('tasks.*')
+            ->get();
+        return response()->json(["tasks" => $current_tasks]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

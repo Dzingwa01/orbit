@@ -27,6 +27,7 @@ Route::get('/get_current_shifts/{user}','ShiftsController@getCurrentShifts');
 Route::get('/get_current_shifts_manager/{user}','ShiftsController@getCurrentShiftsManager');
 Route::get('/get_current_shifts_manager_all/{user}','ShiftsController@getCurrentShiftsManagerAll');
 Route::get('/get_current_tasks/{user}','TasksController@getCurrentTasks');
+Route::get('/get_current_tasks_manager/{user}','TasksController@getCurrentManagerTasks');
 Route::get('/get_employee_teams/{user}','TeamsController@getEmployeeTeams');
 Route::post('/update_user/{user}','UsersController@updateUserAPI');
 Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
