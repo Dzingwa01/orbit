@@ -151,7 +151,7 @@ class TeamsController extends Controller
 
     public function getChatMessages(User $user){
         $team = TeamMember::where('team_member_id',$user->id)->first();
-        $comments = Comment::where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->get();
+        $comments = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name')->get();
         return response()->json(["messages" => $comments, "status" => "203", "message" => "Success"]);
     }
     /**
