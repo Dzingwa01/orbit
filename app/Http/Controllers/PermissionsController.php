@@ -57,7 +57,7 @@ class PermissionsController extends Controller
         $permissions = Permission::all();
         return DataTables::of($permissions)
             ->addColumn('action', function ($permission) {
-                return '<a href="view_permission/'. $permission->id . '" title="View Permission" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="edit_permission/' . $permission->id . '" style="margin-left:0.5em" title="Edit Permission" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_permission/' . $permission->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Permission"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="view_permission/'. $permission->id . '" title="View Permission" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="edit_permission/' . $permission->id . '" style="margin-left:1em" title="Edit Permission" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_permission/' . $permission->id . '" style="margin-left:1em" class="" title="Delete Permission"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }

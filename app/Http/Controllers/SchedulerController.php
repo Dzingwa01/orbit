@@ -31,7 +31,7 @@ class SchedulerController extends Controller
         $shifts = Shift::all();
         return DataTables::of($shifts)
             ->addColumn('action', function ($shift) {
-                return '<a href="shifts/' . $shift->id . '" title="View Shift" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="shifts/' . $shift->id . '/edit" style="margin-left:0.5em" title="Edit Shift" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_shift/' . $shift->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Shift"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="shifts/' . $shift->id . '" title="View Shift" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="shifts/' . $shift->id . '/edit" style="margin-left:1em" title="Edit Shift" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_shift/' . $shift->id . '" style="margin-left:1em" class="" title="Delete Shift"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -89,8 +89,8 @@ class SchedulerController extends Controller
                 $user = User::where('id',$key)->first();
                 $email_token = base64_encode($user->email);
                 TeamMember::create(['member_team_id'=>$team_cur->id,'team_member_id'=>$key,'email_token'=>$email_token,'verified'=>0]);
-//                event($user);
-//                dispatch(new ScheduleInviteMail($user,$team_cur->team_name,$email_token));
+                event($user);
+                dispatch(new ScheduleInviteMail($user,$team_cur->team_name,$email_token));
             }
             DB::commit();
             $tasks = Task::where('tasks.start_date','>=',$shift->start_date)

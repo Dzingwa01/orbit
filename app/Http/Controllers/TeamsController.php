@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Jobs\InviteTeamMembers;
 use App\Shift;
 use App\TeamMember;
@@ -35,7 +36,7 @@ class TeamsController extends Controller
                 ->select('teams.*','users.name','users.surname','cities.city_name');
         return DataTables::of($teams)
             ->addColumn('action', function ($team) {
-                return '<a href="team/' . $team->id . '" title="View Team" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="team/' . $team->id . '/edit" style="margin-left:0.5em" title="Edit Team" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_team/' . $team->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Team"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="team/' . $team->id . '" title="View Team" class="1em"><i class="glyphicon glyphicon-eye-open"></i></a><a href="team/' . $team->id . '/edit" style="margin-left:1em" title="Edit Team" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_team/' . $team->id . '" style="margin-left:1em" class="" title="Delete Team"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
@@ -122,7 +123,7 @@ class TeamsController extends Controller
         $input = $request->all();
         $user_id = $input['user_id'];
         $team = TeamMember::where('team_member_id',$user_id)->first();
-        $input['team_id'] = $team->id;
+        $input['team_id'] = $team->member_team_id;
         try {
             $input['picture_url'] = "none";
             if (array_key_exists('image', $input)) {
@@ -150,7 +151,7 @@ class TeamsController extends Controller
 
     public function getChatMessages(User $user){
         $team = TeamMember::where('team_member_id',$user->id)->first();
-        $comments = Comment::where('team_id',$team->id)->orderBy('created_at', 'desc')->get();
+        $comments = Comment::where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->get();
         return response()->json(["messages" => $comments, "status" => "203", "message" => "Success"]);
     }
     /**

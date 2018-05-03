@@ -31,7 +31,7 @@ class EmployeesController extends Controller
             ->select('users.*','packages.package_name')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
-                return '<a href="employees/' . $user->id . '" title="View Employee" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="employees/' . $user->id . '/edit" style="margin-left:0.5em" title="Edit Employee" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_employee/' . $user->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Employee"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="employees/' . $user->id . '" title="View Employee" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="employees/' . $user->id . '/edit" style="margin-left:1em" title="Edit Employee" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_employee/' . $user->id . '" style="margin-left:1em" class="" title="Delete Employee"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }

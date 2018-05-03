@@ -30,7 +30,7 @@ class UsersController extends Controller
                 ->select('users.*','packages.package_name')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
-                return '<a href="user/' . $user->id . '" title="View User" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="user/' . $user->id . '/edit" style="margin-left:0.5em" title="Edit User" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="delete_user/' . $user->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="user/' . $user->id . '" title="View User" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="user/' . $user->id . '/edit" style="margin-left:1em" title="Edit User" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_user/' . $user->id . '" style="margin-left:1em" class="" title="Delete User"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }

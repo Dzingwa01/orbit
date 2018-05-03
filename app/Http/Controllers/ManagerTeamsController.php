@@ -30,7 +30,7 @@ class ManagerTeamsController extends Controller
             ->select('teams.*','users.name','users.surname','cities.city_name')->get();
         return DataTables::of($teams)
             ->addColumn('action', function ($team) {
-                return '<a href="manager_teams/' . $team->id . '" title="View Team" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="manager_teams/' . $team->id . '/edit" style="margin-left:0.5em" title="Edit Team" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="manager_delete_team/' . $team->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete Team"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="manager_teams/' . $team->id . '" title="View Team" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="manager_teams/' . $team->id . '/edit" style="margin-left:1em" title="Edit Team" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="manager_delete_team/' . $team->id . '" style="margin-left:1em" class="" title="Delete Team"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }

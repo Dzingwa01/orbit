@@ -24,7 +24,7 @@ class CitiesController extends Controller
         $cities = City::all();
         return DataTables::of($cities)
             ->addColumn('action', function ($city) {
-                return '<a href="/city/' . $city->id . '" title="View City" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i></a><a href="/city/' . $city->id . '/edit" style="margin-left:0.5em" title="Edit City" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a><a href="/delete_city/' . $city->id . '" style="margin-left:0.5em" class="btn btn-xs btn-danger" title="Delete City"><i class="glyphicon glyphicon-trash "></i></a>';
+                return '<a href="/city/' . $city->id . '" title="View City" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="/city/' . $city->id . '/edit" style="margin-left:1em" title="Edit City" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="/delete_city/' . $city->id . '" style="margin-left:1em" class="" title="Delete City"><i class="glyphicon glyphicon-trash "></i></a>';
             })
             ->make(true);
     }
