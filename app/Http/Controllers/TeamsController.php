@@ -113,11 +113,45 @@ class TeamsController extends Controller
         return response()->json(["teams" => $teams]);
     }
 
-
-
     public function getEmployeeTeams(User $user){
        $teams = TeamMember::join('teams','teams.id','team_members.member_team_id')->where('team_member_id',$user->id)->select('teams.*')->get();
         return response()->json(["teams" => $teams]);
+    }
+
+    public function storeChatMessage(Request $request){
+        $input = $request->all();
+        $user_id = $input['user_id'];
+        $team = TeamMember::where('team_member_id',$user_id)->first();
+        $input['team_id'] = $team->id;
+        try {
+            $input['picture_url'] = "none";
+            if (array_key_exists('image', $input)) {
+                $main_picture_url = $request->file('image');
+                $dir = "photos/";
+                if (File::exists(public_path($dir)) == false) {
+                    File::makeDirectory(public_path($dir), 0777, true);
+                }
+                $img = Image::make($main_picture_url->path());
+                $path = "{$dir}" . uniqid() . "." . $main_picture_url->getClientOriginalExtension();
+                $img->save(public_path($path));
+                $input['picture_url'] = $path;
+            }
+
+            $cur_post = Comment::updateOrcreate($input);
+
+            return response()->json(["status" => "200", "message" => "Message published successfully", "message" => $cur_post]);
+
+        } catch (\Exception $e) {
+            throw $e;
+            return response()->json(["status" => "500", "message" => $e]);
+        }
+        return [];
+    }
+
+    public function getChatMessages(User $user){
+        $team = TeamMember::where('team_member_id',$user->id)->first();
+        $comments = Comment::where('team_id',$team->id)->orderBy('created_at', 'desc')->get();
+        return response()->json(["messages" => $comments, "status" => "203", "message" => "Success"]);
     }
     /**
      * Display the specified resource.
