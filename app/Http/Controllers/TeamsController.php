@@ -14,6 +14,8 @@ use App\City;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use DB;
+use File;
+use Image;
 
 class TeamsController extends Controller
 {
@@ -138,7 +140,11 @@ class TeamsController extends Controller
                 $input['picture_url'] = $path;
             }
 
-            $cur_post = Comment::updateOrcreate($input);
+            $cur_post = Comment::Create($input);
+//            dd($cur_post);
+            $team = TeamMember::where('team_member_id',$cur_post->user_id)->first();
+            $cur_post = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->where('comments.id',$cur_post->id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')->first();
+
 
             return response()->json(["status" => "200", "message" => "Message published successfully", "message" => $cur_post]);
 
@@ -151,7 +157,7 @@ class TeamsController extends Controller
 
     public function getChatMessages(User $user){
         $team = TeamMember::where('team_member_id',$user->id)->first();
-        $comments = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name')->get();
+        $comments = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')->get();
         return response()->json(["messages" => $comments, "status" => "203", "message" => "Success"]);
     }
     /**

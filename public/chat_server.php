@@ -23,9 +23,10 @@ $comment->user_id = $_POST['user_id'];
 $comment->team_id = $_POST['team_id'];
 $comment->comment_text = $_POST['comment_text'];
 $comment->first_name = $_POST['first_name'];
-$comment->first_name = $_POST['last_name'];
+$comment->last_name = $_POST['last_name'];
 $comment->created_at = $_POST['created_at'];
 $comment->id = $_POST['id'];
+$comment->user_picture_url = $_POST['user_picture_url'];
 $comment->picture_url = $_POST['picture_url'];
 
 $pusher->trigger('my-channel', 'my-event', $comment);
