@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Jobs\InviteTeamMembers;
 use App\Shift;
+use App\ShiftSchedule;
 use App\TeamMember;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -78,7 +79,13 @@ class TeamsController extends Controller
         }
         return redirect('team');
     }
-
+public function getCurrentShiftEmployees(Shift $shift){
+        $employees = ShiftSchedule::join('users','users.id','shift_schedules.employee_id')
+            ->where('shift_id',$shift->id)
+            ->select('users.*')
+            ->get();
+    return response()->json(["employees" => $employees]);
+}
     public function managersTeamMembers(Request $request){
         $input = $request->all();
         $team_id = $input['team_id'];
