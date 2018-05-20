@@ -88,6 +88,26 @@ public function getCurrentShiftEmployees(Shift $shift){
             ->get();
     return response()->json(["employees" => $employees]);
 }
+    public function getCurrentShiftTeams(User $user){
+        $teams = TeamMember::join('teams','teams.id','team_members.member_team_id')
+                            ->join('cities','cities.id','teams.city_id')
+                            ->where('team_member_id',$user->id)
+                            ->select('teams.id','team_name','city_name','team_description')
+                            ->get();
+        return response()->json(["teams" => $teams]);
+    }
+
+    public function getCurrentTeamEmployees(Team $team){
+        $team_members = TeamMember::all();
+//        dd($team_members);
+        $employees = Team::join('team_members','teams.id','team_members.member_team_id')
+                        ->join('users','users.id','team_members.team_member_id')
+                        ->where('teams.id',$team->id)
+                        ->select('users.*')
+                         ->get();
+        return response()->json(["employees" => $employees]);
+    }
+
     public function managersTeamMembers(Request $request){
         $input = $request->all();
         $team_id = $input['team_id'];
@@ -119,6 +139,7 @@ public function getCurrentShiftEmployees(Shift $shift){
             return view('emails.team_member_invite_success', ['user' => $user]);
         }
     }
+
 
     public function apiGetTeams(User $user){
         $teams = Team::join('cities','cities.id','teams.city_id')->where('creator',$user->id)->select('team_name','city_name','team_description')->get();

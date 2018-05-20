@@ -30,6 +30,9 @@ Route::get('/get_current_tasks/{user}','TasksController@getCurrentTasks');
 Route::get('/get_current_tasks_manager/{user}','TasksController@getCurrentManagerTasks');
 Route::get('/get_shift_employees/{shift}','TeamsController@getCurrentShiftEmployees');
 
+Route::get('/get_team_employees/{team}','TeamsController@getCurrentTeamEmployees');
+Route::get('/get_employee_teams/{user}','TeamsController@getCurrentShiftTeams');
+
 Route::post('/update_user/{user}','UsersController@updateUserAPI');
 Route::post('/store_chat_message','TeamsController@storeChatMessage');
 Route::get('/get_chat_messages/{user}','TeamsController@getChatMessages');
