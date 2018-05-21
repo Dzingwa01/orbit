@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ShiftSchedule;
+use App\SwapShift;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -122,6 +123,20 @@ class ShiftsController extends Controller
         return response()->json(["shifts" => $current_shift]);
     }
 
+    public function storeShiftSwapApi(Request $request){
+
+        DB::beginTransaction();
+        try {
+            $swap_shift = SwapShift::create($request->all());
+            DB::commit();
+            return response()->json(["status" => "200", "message" => "Profile update successfuly", "swap_response" => $swap_shift]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
     public function getCurrentShifts(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
 //        dd($user->id);
@@ -129,7 +144,7 @@ class ShiftsController extends Controller
             ->join('teams','teams.id','shifts.team_id')
             ->where('shift_schedules.employee_id',$user->id)
             ->where('shift_schedules.shift_date','>=',$current_date)
-            ->select('shift_schedules.id','shift_schedules.shift_id','shift_title','start_date','shifts.end_date','creator_id','team_id','shift_duration','start_time','end_time','shift_description','team_name','shift_date')
+            ->select('shift_schedules.id','employee_id','shift_schedules.shift_id','shift_title','start_date','shifts.end_date','creator_id','team_id','shift_duration','start_time','end_time','shift_description','team_name','shift_date')
             ->get();
         return response()->json(["shifts" => $current_shift]);
     }
@@ -143,7 +158,7 @@ class ShiftsController extends Controller
             ->where('shift_schedules.employee_id','!=',$user->id)
             ->where('shift_schedules.shift_date','!=',$shift_schedule->shift_date)
             ->where('shift_schedules.shift_date','>',$current_date)
-            ->select('users.*')
+            ->select('users.*','employee_id')
             ->get();
         return response()->json(["employees" => $current_shift]);
     }

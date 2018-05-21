@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class SwapShift extends Model
 {
     //
-    protected $fillable = ['swap_shift','with_shift','reason','employeed_id','approval'];
+    protected $fillable = ['swap_shift','with_shift','reason','employee_id','requestor_id','approval'];
 }
