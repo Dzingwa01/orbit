@@ -32,6 +32,8 @@ Route::get('/get_shift_employees/{shift}','TeamsController@getCurrentShiftEmploy
 
 Route::get('/get_team_employees/{team}','TeamsController@getCurrentTeamEmployees');
 Route::get('/get_employee_teams/{user}','TeamsController@getCurrentShiftTeams');
+Route::get('/get_current_team_shifts/{user}/{shift_schedule}','ShiftsController@getCurrentTeamMemberShifts');
+Route::get('/get_available_members/{user}/{shift_schedule}','ShiftsController@getCurrentAvailableTeamMembers');
 
 Route::post('/update_user/{user}','UsersController@updateUserAPI');
 Route::post('/store_chat_message','TeamsController@storeChatMessage');

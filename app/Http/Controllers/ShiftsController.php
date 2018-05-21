@@ -129,10 +129,41 @@ class ShiftsController extends Controller
             ->join('teams','teams.id','shifts.team_id')
             ->where('shift_schedules.employee_id',$user->id)
             ->where('shift_schedules.shift_date','>=',$current_date)
-            ->select('shifts.*','team_name','shift_date')
+            ->select('shift_schedules.id','shift_schedules.shift_id','shift_title','start_date','shifts.end_date','creator_id','team_id','shift_duration','start_time','end_time','shift_description','team_name','shift_date')
             ->get();
         return response()->json(["shifts" => $current_shift]);
     }
+
+    public function getCurrentAvailableTeamMembers(User $user,ShiftSchedule $shift_schedule){
+        $current_date = Carbon::now()->format('Y-m-d');
+        $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->join('teams','teams.id','shifts.team_id')
+            ->join('users','users.id','shift_schedules.employee_id')
+            ->where('shifts.id',$shift_schedule->shift_id)
+            ->where('shift_schedules.employee_id','!=',$user->id)
+            ->where('shift_schedules.shift_date','!=',$shift_schedule->shift_date)
+            ->where('shift_schedules.shift_date','>',$current_date)
+            ->select('users.*')
+            ->get();
+        return response()->json(["employees" => $current_shift]);
+    }
+
+    public function getCurrentTeamMemberShifts(User $user,ShiftSchedule $shift_schedule){
+        $current_date = Carbon::now()->format('Y-m-d');
+//        dd($user->id);
+//        $employee_shifts = ShiftSchedule::where('shift_date','!=',$shift->shift_date)
+//                            ::
+        $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->join('teams','teams.id','shifts.team_id')
+            ->join('users','users.id','shift_schedules.employee_id')
+            ->where('shifts.id',$shift_schedule->shift_id)
+            ->where('shift_schedules.employee_id','!=',$user->id)
+            ->where('shift_schedules.shift_date','>',$current_date)
+            ->select('shift_schedules.id','shift_schedules.shift_id','name','surname','shift_title','start_date','shifts.end_date','shifts.creator_id','team_id','shift_duration','employee_id','start_time','end_time','shift_description','team_name','shift_date')
+            ->get();
+        return response()->json(["shifts" => $current_shift]);
+    }
+
 
     public function getCurrentShiftsManager(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
