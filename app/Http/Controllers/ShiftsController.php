@@ -124,7 +124,7 @@ class ShiftsController extends Controller
     }
 
     public function storeShiftSwapApi(Request $request){
-
+//        dd($request->all());
         DB::beginTransaction();
         try {
             $swap_shift = SwapShift::create($request->all());
