@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ShiftOffer;
 use App\ShiftSchedule;
 use App\SwapShift;
 use App\User;
@@ -129,7 +130,19 @@ class ShiftsController extends Controller
         try {
             $swap_shift = SwapShift::create($request->all());
             DB::commit();
-            return response()->json(["status" => "200", "message" => "Profile update successfuly", "swap_response" => $swap_shift]);
+            return response()->json(["status" => "200", "message" => "Shift Offer request submitted successfuly", "swap_response" => $swap_shift]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+    public function storeShiftOfferApi(Request $request){
+        DB::beginTransaction();
+        try {
+            $offer_shift = ShiftOffer::create($request->all());
+            DB::commit();
+            return response()->json(["status" => "200", "message" => "Swap request submitted successfuly", "offer_response" => $offer_shift]);
 
         } catch (\Exception $e) {
             DB::rollback();
