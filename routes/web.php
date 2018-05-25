@@ -111,6 +111,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('roles','RolesController@index');
     Route::post('/update_role/{role}','RolesController@updateRole');
 
+    Route::post('/store_leave_request','ShiftsController@createLeaveRequest');
+
     Route::get('/get_permissions', 'PermissionsController@getPermissions')->name('permissions.get_permissions');
     Route::get('create_permission','PermissionsController@createPermission');
     Route::post('/save_permission','PermissionsController@savePermission');

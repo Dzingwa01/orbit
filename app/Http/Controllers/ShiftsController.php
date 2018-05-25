@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LeaveRequest;
 use App\ShiftOffer;
 use App\ShiftSchedule;
 use App\SwapShift;
@@ -131,6 +132,18 @@ class ShiftsController extends Controller
             $swap_shift = SwapShift::create($request->all());
             DB::commit();
             return response()->json(["status" => "200", "message" => "Shift Offer request submitted successfuly", "swap_response" => $swap_shift]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+    public function createLeaveRequest(Request $request){
+        DB::beginTransaction();
+        try {
+            $leave_request = LeaveRequest::create($request->all());
+            DB::commit();
+            return response()->json(["status" => "200", "message" => "Shift Offer request submitted successfuly", "request_response" => $leave_request]);
 
         } catch (\Exception $e) {
             DB::rollback();
