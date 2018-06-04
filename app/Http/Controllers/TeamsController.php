@@ -80,6 +80,7 @@ class TeamsController extends Controller
         return redirect('team');
     }
 public function getCurrentShiftEmployees(ShiftSchedule $shift){
+//        dd($shift);
     $current_date = Carbon::now()->format('Y-m-d');
         $employees = ShiftSchedule::join('users','users.id','shift_schedules.employee_id')
             ->where('shift_id',$shift->shift_id)

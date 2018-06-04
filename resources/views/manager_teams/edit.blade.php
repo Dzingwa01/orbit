@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="team_name">Team Name</label>
-                            <input id="team_name" name="team_name" class="form-control" placeholder="Team Name" value="{{$team->team_name}}">
+                            <input id="team_name" name="team_name" class="form-control" required placeholder="Team Name" value="{{$team->team_name}}">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="creator">Team Creator</label>
@@ -25,11 +25,11 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="package_prices">Team Description</label>
-                            <textarea id="team_description" name="team_description" class="form-control" type="text">{{$team->team_description}}</textarea>
+                            <textarea id="team_description" name="team_description" class="form-control" required type="text">{{$team->team_description}}</textarea>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="discount">City</label>
-                            <select id="city_id" name="city_id" class="form-control">
+                            <select id="city_id" name="city_id" class="form-control" required>
                                 @foreach($cities as $city)
                                     <option {{$team->city_id==$city->id?'selected':''}} value="{{$city->id}}">{{$city->city_name}}</option>
                                 @endforeach

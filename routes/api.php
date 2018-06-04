@@ -36,6 +36,10 @@ Route::get('/get_current_team_shifts/{user}/{shift_schedule}','ShiftsController@
 Route::get('/get_available_members/{user}/{shift_schedule}','ShiftsController@getCurrentAvailableTeamMembers');
 Route::post('/store_shift_swap', 'ShiftsController@storeShiftSwapApi');
 Route::post('/store_shift_offer', 'ShiftsController@storeShiftOfferApi');
+Route::post('/store_off_request', 'ShiftsController@createLeaveRequest');
+
+Route::get('/get_swap_requests/{user}','ShiftsController@getSwapRequests');
+Route::get('/get_off_requests/{user}','ShiftsController@getOffRequests');
 
 Route::post('/update_user/{user}','UsersController@updateUserAPI');
 Route::post('/store_chat_message','TeamsController@storeChatMessage');

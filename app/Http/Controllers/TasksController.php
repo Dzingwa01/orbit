@@ -54,6 +54,15 @@ class TasksController extends Controller
             ->where('tasks.creator_id','=',$user->id)
             ->select('tasks.*')
             ->get();
+        $current_temp = array();
+        $current_temp_2 = array();
+        foreach($current_tasks as $current_task){
+            if(!in_array($current_task->start_date,$current_temp)){
+                array_push($current_temp,$current_task->start_date);
+                array_push($current_temp_2,$current_task);
+            }
+        }
+        $current_tasks = $current_temp_2;
         return response()->json(["tasks" => $current_tasks]);
     }
 

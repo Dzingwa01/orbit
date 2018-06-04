@@ -30,7 +30,7 @@ $team_members = $team_members->toArray();
                         <div class='col-sm-6 form-group'>
                             <div class="form-group">
                                 <label class="control-label" for="shift_description">Shift Description</label>
-                                <textarea id='shift_description' name="shift_description" class="form-control "   placeholder="Shift Description" ></textarea>
+                                <textarea id='shift_description' name="shift_description" class="form-control " required   placeholder="Shift Description" ></textarea>
                             </div>
                         </div>
                     </div>

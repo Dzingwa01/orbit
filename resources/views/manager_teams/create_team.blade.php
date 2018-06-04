@@ -15,22 +15,22 @@
 
                             <div class="col-md-6 form-group">
                                 <label for="team_name">Team Name</label>
-                                <input id="team_name" name="team_name" class="form-control" placeholder="Team Name">
+                                <input id="team_name" name="team_name" required class="form-control" placeholder="Team Name">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="creator">Team Creator</label>
-                                <input class="form-control" type="text" value="{{Auth::user()->name . ' '. Auth::user()->surname}}" disabled="disabled">
+                                <input class="form-control" type="text" required value="{{Auth::user()->name . ' '. Auth::user()->surname}}" disabled="disabled">
 
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="package_prices">Team Description</label>
-                                <textarea id="team_description" name="team_description" class="form-control" type="text"></textarea>
+                                <textarea id="team_description" required name="team_description" class="form-control" type="text"></textarea>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="discount">City</label>
-                                <select id="city_id" name="city_id" class="form-control">
+                                <select id="city_id" name="city_id" required class="form-control">
                                     @foreach($cities as $city)
                                         <option value="{{$city->id}}">{{$city->city_name}}</option>
                                     @endforeach

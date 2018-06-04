@@ -103,6 +103,7 @@ class ManagerTeamsController extends Controller
     {
         //
         $team = Team::where('id',$id)->first();
+//        dd($team);
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$id)
@@ -133,10 +134,10 @@ class ManagerTeamsController extends Controller
     public function update(Request $request, $id)
     {
         $team_cur = Team::where('id',$id)->first();
-
+//        dd($team_cur);
         DB::beginTransaction();
         try {
-            $team = $team_cur->update($request->all());
+            $team_cur->update($request->all());
             DB::commit();
 //            dd($team);
             $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
@@ -156,13 +157,16 @@ class ManagerTeamsController extends Controller
                 ->select('users.*')
                 ->get();
             $cities = City::all();
+            $team = $team_cur;
             return view('manager_teams.edit',compact('team','cities','team_members','available_team_members'));
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
+//        return view('manager_teams.view',compact('team','cities','team_members'));
         return view('manager_teams.team_members',compact('team'));
     }
+
 
     public function updateTeamMembers(Request $request){
 //        dd('ndeip');
