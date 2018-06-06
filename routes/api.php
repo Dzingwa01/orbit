@@ -40,7 +40,10 @@ Route::post('/store_off_request', 'ShiftsController@createLeaveRequest');
 
 Route::get('/get_swap_requests/{user}','ShiftsController@getSwapRequests');
 Route::get('/get_off_requests/{user}','ShiftsController@getOffRequests');
+Route::get('/get_user_messages/{user}','MessagesController@getMessagesApi');
 
+Route::post('/accept_shift_swap/{swap_shift}','ShiftsController@acceptShiftSwap');
+Route::post('/accept_shift_offer/{shift_offer}','ShiftsController@acceptOffer');
 Route::post('/update_user/{user}','UsersController@updateUserAPI');
 Route::post('/store_chat_message','TeamsController@storeChatMessage');
 Route::get('/get_chat_messages/{user}','TeamsController@getChatMessages');

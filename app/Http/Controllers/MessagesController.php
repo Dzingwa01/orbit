@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 
 class MessagesController extends Controller
@@ -26,6 +28,14 @@ class MessagesController extends Controller
         //
     }
 
+    public function getMessagesApi(User $user){
+        $messages = Message::join('users','users.id','messages.to')
+                          -> where('to',$user->id)
+            ->select('messages.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')
+            ->get();
+
+        return response()->json(["messages"=>$messages]);
+    }
     /**
      * Store a newly created resource in storage.
      *

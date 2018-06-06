@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LeaveRequest;
+use App\Message;
 use App\ShiftOffer;
 use App\ShiftSchedule;
 use App\SwapShift;
@@ -132,7 +133,7 @@ class ShiftsController extends Controller
         try {
             $swap_shift = SwapShift::create($request->all());
             DB::commit();
-            return response()->json(["status" => "200", "message" => "Shift Offer request submitted successfuly", "swap_response" => $swap_shift]);
+            return response()->json(["status" => "200", "message" => "Shift Swap request submitted successfuly", "swap_response" => $swap_shift]);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -164,6 +165,7 @@ class ShiftsController extends Controller
         $swap_requests = SwapShift::join('users','users.id','swap_shifts.requestor_id')
                         ->join('shift_schedules','shift_schedules.id','swap_shifts.swap_shift')
                         ->where('swap_shifts.employee_id',$user->id)
+                        ->whereNull('approval')
                         ->where('shift_schedules.shift_date','>=',$current_date)
                         ->select('swap_shifts.*','users.name','users.surname','shift_date')
                         ->get();
@@ -182,6 +184,56 @@ class ShiftsController extends Controller
         return response()->json(['swap_requests'=>$swap_requests]);
     }
 
+    public function acceptShiftSwap(SwapShift $swap_shift){
+        DB::beginTransaction();
+        try {
+            $swap_shift->update(['approval'=>1]);
+            $message = Message::create(["to"=>$swap_shift->requestor_id,"from"=>$swap_shift->employee_id,"message_text"=>"Shift Swap Accepted - Shift Date: ","message_picture_url"=>""]);
+            $shift_schedule = ShiftSchedule::where('id',$swap_shift->swap_shift)->first();
+            $shift_schedule->update(['employee_id'=>$swap_shift->employee_id]);
+            $shift_schedule_2 = ShiftSchedule::where('id',$swap_shift->with_shift)->first();
+            $shift_schedule_2->update(['employee_id'=>$swap_shift->requestor_id]);
+            $receiver = User::where('id',$message->from)->first();
+            $push_message = new \stdClass();
+            $push_message->id = $message->id;
+            $push_message->first_name = $receiver->name;
+            $push_message->last_name = $receiver->surname;
+            $push_message->message_text = $message->message;
+            $push_message->message_picture_url = $message->message_picture_url;
+            $push_message->user_picture_url = $receiver->picture_url;
+            DB::commit();
+            return response()->json(['push_msg'=>$push_message,"status"=>"200","message"=>"Swap Offer Accepted"]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
+    }
+
+    public function acceptOffer(ShiftOffer $shift_offer){
+        DB::beginTransaction();
+        try {
+            $shift_offer->update(['approval'=>1]);
+            $message = Message::create(["to"=>$shift_offer->employee_id,"from"=>$shift_offer->team_member,"message_text"=>"Shift Offer Accepted","message_picture_url"=>""]);
+            $shift_schedule = ShiftSchedule::where('id',$shift_offer->offer_shift)->first();
+            $shift_schedule->update(['employee_id'=>$shift_offer->team_member]);
+
+            $receiver = User::where('id',$message->from)->first();
+            $push_message = new \stdClass();
+            $push_message->id = $message->id;
+            $push_message->first_name = $receiver->name;
+            $push_message->last_name = $receiver->surname;
+            $push_message->message_text = $message->message;
+            $push_message->message_picture_url = $message->message_picture_url;
+            $push_message->user_picture_url = $receiver->picture_url;
+            DB::commit();
+            return response()->json(['push_msg'=>$push_message,"status"=>"200","message"=>"Swap Offer Accepted"]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
     public function getOffRequests(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
         $off_requests =  ShiftOffer::join('users','users.id','shift_offers.employee_id')
@@ -198,7 +250,7 @@ class ShiftsController extends Controller
         try {
             $offer_shift = ShiftOffer::create($request->all());
             DB::commit();
-            return response()->json(["status" => "200", "message" => "Swap request submitted successfuly", "offer_response" => $offer_shift]);
+            return response()->json(["status" => "200", "message" => "Shift request submitted successfuly", "offer_response" => $offer_shift]);
 
         } catch (\Exception $e) {
             DB::rollback();

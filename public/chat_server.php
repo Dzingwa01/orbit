@@ -42,4 +42,13 @@ else if($event_type == "Shift Swap"){
     $shift_swap->created_at = $_POST['created_at'];
     $pusher->trigger('my-channel', 'my-swap-event', $shift_swap);
 }
+else if($event_type == "Send_Message"){
+    $message = new stdClass();
+    $message->id = $_POST['id'];
+    $message->first_name = $_POST['first_name'];
+    $message->last_name = $_POST['last_name'];
+    $message->user_picture_url = $_POST['user_picture_url'];
+    $message->message_text = $_POST['message_text'];
+    $message->message_picture_url = $_POST['message_picture_url'];
+}
 
