@@ -73,6 +73,23 @@ class ShiftsController extends Controller
         }
        return redirect('shifts');
     }
+    public function storeShiftApi(Request $request){
+        DB::beginTransaction();
+        try {
+            $shift = Shift::create($request->all());
+            DB::commit();
+            $team_users = TeamMember::join('shift_schedules','shift_schedules.employee_id','team_members.team_member_id')
+                ->join('shifts','shifts.id','shift_schedules.shift_id')
+                ->where('member_team_id',$shift->team_id)
+                ->select('shift_schedules.*','team_members.team_member_id','shifts.start_time','shifts.end_time','shifts.end_date')
+                ->get();
+            return response()->json(["shift"=>$shift,"status"=>200,"employee_schedules"=>$team_users,"message"=>"Shift created Successfully"]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -159,6 +176,20 @@ class ShiftsController extends Controller
         }
     }
 
+    public function getLeaveRequests(User $user){
+        $current_date = Carbon::now()->format('Y-m-d');
+
+        $leave_requests = Team::join('team_members','team_members.member_team_id','teams.id')
+                            ->join('leave_requests','leave_requests.employee_id','team_members.team_member_id')
+                            ->join('users','users.id','team_members.team_member_id')
+                            ->whereNull('approval')
+                            ->where('leave_requests.off_start_date','>=',$current_date)
+                            ->where('teams.creator',$user->id)
+                            ->select('leave_requests.*','users.name','users.surname','teams.creator')
+                            ->get();
+
+        return response()->json(['leave_requests'=>$leave_requests]);
+    }
     public function getSwapRequests(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
 
@@ -184,11 +215,43 @@ class ShiftsController extends Controller
         return response()->json(['swap_requests'=>$swap_requests]);
     }
 
+    public function acceptLeaveRequest(LeaveRequest $leave_request,User $manager){
+        DB::beginTransaction();
+        try {
+            $leave_request->update(['approval'=>1]);
+            $message = Message::create(["to"=>$leave_request->employee_id,"from"=>$manager->id,"message_text"=>"Leave Request Accepted - Leave Start Date: ".$leave_request->off_start_date ." Time ".$leave_request->off_start_time." Leave End Date: ".$leave_request->off_start_date ." Time ".$leave_request->off_end_time,"message_picture_url"=>""]);
+
+            $receiver = $manager;
+            $push_message = new \stdClass();
+            $push_message->id = $message->id;
+            $push_message->first_name = $receiver->name;
+            $push_message->last_name = $receiver->surname;
+            $push_message->message_text = $message->message;
+            $push_message->message_picture_url = $message->message_picture_url;
+            $push_message->user_picture_url = $receiver->picture_url;
+            DB::commit();
+            return response()->json(['push_msg'=>$push_message,"status"=>"200","message"=>"Request Offer Accepted"]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
     public function acceptShiftSwap(SwapShift $swap_shift){
         DB::beginTransaction();
         try {
             $swap_shift->update(['approval'=>1]);
-            $message = Message::create(["to"=>$swap_shift->requestor_id,"from"=>$swap_shift->employee_id,"message_text"=>"Shift Swap Accepted - Shift Date: ","message_picture_url"=>""]);
+            $swapped_shift = SwapShift::join('shift_schedules','shift_schedules.id','swap_shifts.swap_shift')
+                            ->join('shifts','shifts.id','shift_schedules.shift_id')
+                            ->where('shift_schedules.id',$swap_shift->swap_shift)
+                            ->select('shift_schedules.shift_date','shifts.start_time','shifts.end_time')
+                            ->first();
+            $new_shift = SwapShift::join('shift_schedules','shift_schedules.id','swap_shifts.with_shift')
+                ->join('shifts','shifts.id','shift_schedules.shift_id')
+                ->where('shift_schedules.id',$swap_shift->with_shift)
+                ->select('shift_schedules.shift_date','shifts.start_time','shifts.end_time')
+                ->first();
+            $message = Message::create(["to"=>$swap_shift->requestor_id,"from"=>$swap_shift->employee_id,"message_text"=>"Shift Swap Accepted - Swapped Shift Date: ".$swapped_shift->shift_date ." Time ".$swapped_shift->start_time." - ".$swapped_shift->end_time. " New Shift: ".$new_shift->shift_date ." Time ".$new_shift->start_time." - ".$new_shift->end_time,"message_picture_url"=>""]);
             $shift_schedule = ShiftSchedule::where('id',$swap_shift->swap_shift)->first();
             $shift_schedule->update(['employee_id'=>$swap_shift->employee_id]);
             $shift_schedule_2 = ShiftSchedule::where('id',$swap_shift->with_shift)->first();

@@ -107,6 +107,13 @@ class TrainingMaterialsController extends Controller
         return response()->json(["materials" => $materials]);
     }
 
+    public function apiGetEmployeeMaterials(User $user){
+        $materials = TrainingMaterial::join('teams','teams.creator','training_materials.creator_id')
+                    ->join('team_members','team_members.member_team_id','teams.id')->where('team_member_id',$user->id)->select('training_materials.*')
+                    ->distinct()->get();
+        return response()->json(["materials" => $materials]);
+    }
+
     /**
      * Update the specified resource in storage.
      *

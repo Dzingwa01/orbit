@@ -143,7 +143,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
 
 
     public function apiGetTeams(User $user){
-        $teams = Team::join('cities','cities.id','teams.city_id')->where('creator',$user->id)->select('team_name','city_name','team_description')->get();
+        $teams = Team::join('cities','cities.id','teams.city_id')->where('creator',$user->id)->select('teams.id','team_name','city_name','team_description')->get();
         return response()->json(["teams" => $teams]);
     }
 
@@ -157,6 +157,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
         $user_id = $input['user_id'];
         $team = TeamMember::where('team_member_id',$user_id)->first();
         $input['team_id'] = $team->member_team_id;
+        DB::beginTransaction();
         try {
             $input['picture_url'] = "none";
             if (array_key_exists('image', $input)) {
@@ -175,11 +176,12 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
 //            dd($cur_post);
             $team = TeamMember::where('team_member_id',$cur_post->user_id)->first();
             $cur_post = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->where('comments.id',$cur_post->id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')->first();
-
+            DB::commit();
 
             return response()->json(["status" => "200", "message" => "Message published successfully", "message" => $cur_post]);
 
         } catch (\Exception $e) {
+            DB::rollback();
             throw $e;
             return response()->json(["status" => "500", "message" => $e]);
         }
