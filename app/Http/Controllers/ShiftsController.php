@@ -64,8 +64,15 @@ class ShiftsController extends Controller
         DB::beginTransaction();
         try {
             $shift = Shift::create($request->all());
+            $team = TeamMember::join('users','users.id','team_members.team_member_id')
+                ->join('teams','teams.id','team_members.member_team_id')
+                ->where('team.id',$shift->team_id)
+                ->select('users.*','team_members.member_team_id')
+                ->get();
+//            dd($team);
+//            $team_members = $team_members->toArray();
             DB::commit();
-            return view('shifts.assign_dates',compact('shift'));
+            return view('shifts.assign_dates',compact('shift','team'));
 
         } catch (\Exception $e) {
             DB::rollback();

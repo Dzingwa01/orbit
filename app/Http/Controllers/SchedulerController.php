@@ -109,9 +109,10 @@ class SchedulerController extends Controller
                     array_push($employees_distinct,$employee);
                 }
             }
+            $team = Team::where('id',$shift->team_id)->first();
             $shift_employees = $employees_distinct;
 //            dd($shift_employees);
-            return view('shifts.assign_tasks',compact('shift','tasks','shift_employees'));
+            return view('shifts.assign_tasks',compact('shift','tasks','shift_employees','team'));
 
         } catch (\Exception $e) {
             DB::rollback();
