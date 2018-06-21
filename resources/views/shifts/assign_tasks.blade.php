@@ -50,7 +50,7 @@
             </div>
         </div>
         <div id="tasks_modal" class="modal">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -60,6 +60,8 @@
                     <div class="modal-body">
                         @if(count($tasks)>0)
                         <form id="tasks" method="post">
+                            <button id="new_task_btn" type="button" class="btn btn-primary" >New Task</button>
+                            <fieldset><legend>Select existing tasks</legend>
                             {{ csrf_field() }}
                         <div >
                             @foreach($tasks as $task)
@@ -71,9 +73,69 @@
                             <input hidden name="employee_id" id="employee_id" >
                             <input  type="submit" class="btn btn-success" value="Save">
                             <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </fieldset>
                         </form>
+                            <form id ="new_task_from_existing" method="post">
+                                {{ csrf_field() }}
+                                <div class="row">
+                                    <input name="creator_id" type="number" value="{{Auth::user()->id}}" hidden>
+                                    <input id="selected_employee_id" name="employee_id" type="number" value="" hidden>
+                                    <input id="" name="shift_id" type="number" value="{{$shift->id}}" hidden>
+                                    <div class="col-md-6 form-group">
+                                        <label for="name">Task Title</label>
+                                        <input id="name"  type="text" name="name" class="form-control" placeholder="Task Title">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="description">Task Description</label>
+                                        <textarea id="description" name="description" class="form-control" type="text"></textarea>
+                                    </div>
+                                    {{--<div class="col-md-6 form-group">--}}
+                                    {{--<label for="creator">Task Creator</label>--}}
+                                    {{--<input class="form-control"  id="creator" value="{{Auth::user()->name . ' ' .Auth::user()->surname}}" disabled>--}}
+                                    {{--</div>--}}
+                                </div>
+                                <div class="row">
+                                    <div class='col-sm-6 form-group'>
+                                        <div class="form-group">
+                                            <label class="control-label" for="start_date">Start Date</label>
+                                            <input id='start_date' type='date' name="start_date" class="form-control"  placeholder="Start Date" required/>
+
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-6 form-group'>
+                                        <div class="form-group">
+                                            <label class="control-label" for="end_date">End Date</label>
+                                            <input id='end_date' type='date' name="end_date" class="form-control"   placeholder="End Date" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-sm-6 form-group'>
+                                        <div class="form-group">
+                                            <label class="control-label" for="start_time">Start Time <sup>*24 hr notation</sup></label>
+                                            <input id='start_time' type='text' name="start_time" class="form-control"  placeholder="Start Time" required/>
+
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-6 form-group'>
+                                        <div class="form-group">
+                                            <label class="control-label" for="end_time">End Time <sup>*24 hr notation</sup></label>
+                                            <input id='end_time' type='text' name="end_time" class="form-control"   placeholder="End Time" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6 form-group">
+                                        <label for="picture_url">Picture</label>
+                                        <input type="file" class="form-control">
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn btn-success" value="Save">
+                                <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </form>
                         @else
-                            <label>No tasks available for this shift.Add task below</label>
+                            <label>No tasks available for this shift. Add task below</label>
 
                             <form id ="new_task" method="post">
                                 {{ csrf_field() }}
@@ -83,7 +145,7 @@
                                 <input id="" name="shift_id" type="number" value="{{$shift->id}}" hidden>
                                 <div class="col-md-6 form-group">
                                     <label for="name">Task Title</label>
-                                    <input id="name" name="name" class="form-control" placeholder="Task Title">
+                                    <input id="name" name="name" type="text" class="form-control" placeholder="Task Title">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="description">Task Description</label>
@@ -131,7 +193,7 @@
                                     <input type="file" class="form-control">
                                 </div>
                             </div>
-                                <input id="save" type="submit" class="btn btn-success" value="Save">
+                                <input  type="submit" class="btn btn-success" value="Save">
                                 <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </form>
 
@@ -154,12 +216,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        console.log("Checking here");
+        $("#new_task_from_existing").hide();
         $('#tasks_assign_modal').appendTo("body").modal();
         $('#no').on('click',function(){
             window.location.href = '/home';
         });
 
+        $("#new_task_btn").on('click',function () {
+            $("#tasks").hide();
+            $("#new_task_from_existing").show();
+            $.get('/get_employee_name/'+$("#employee_id").val(),function(data){
+                $("#name").empty();
+                $("#name").append(data);
+            });
+//            $('#start_date').val(shift_date);
+//            $('#end_date').val(shift_date);
+//            $('#selected_employee_id').val($("#employee_id"));
+            $('#selected_employee_id').val($("#employee_id").val());
+            $('#tasks_modal').appendTo("body").modal();
+        });
 
         $('#yes').on('click',function(){
             $('#tasks_assign_modal').toggle('hide');
@@ -168,8 +243,19 @@
         $('#new_task').submit(function(e){
            e.preventDefault();
            $.post("/shift_tasks",$('#new_task').serialize()).done(function(){
+               $("input[type=text], textarea").val("");
               $('#tasks_modal').modal('hide');
            });
+        });
+
+        $('#new_task_from_existing').submit(function(e){
+            e.preventDefault();
+            $.post("/shift_tasks",$('#new_task_from_existing').serialize()).done(function(){
+                $("input[type=text], textarea").val("");
+                $("#new_task_from_existing").hide();
+                $("#tasks").show();
+                $('#tasks_modal').modal('hide');
+            });
         });
         $('#tasks').submit(function(e){
             e.preventDefault();
@@ -191,17 +277,17 @@
             maxHours: 24,
             showMeridian: false
         });
-        $('a').click(function(event){
-            console.log("clicked");
-            $.get('/get_employee_name/'+event.target.id,function(data){
-                $("#name").empty();
-                $("#name").append(data);
-            });
-            $('#employee_id').val(event.target.id);
-            $('#selected_employee_id').val(event.target.id);
-            $('#tasks_modal').appendTo("body").modal();
-
-        });
+//        $('a').click(function(event){
+//            console.log("clicked");
+//            $.get('/get_employee_name/'+event.target.id,function(data){
+//                $("#name").empty();
+//                $("#name").append(data);
+//            });
+//            $('#employee_id').val(event.target.id);
+//            $('#selected_employee_id').val(event.target.id);
+//            $('#tasks_modal').appendTo("body").modal();
+//
+//        });
         function calculateDays(){
             console.log('Check me');
             var shift = {!! json_encode($shift) !!}
@@ -232,7 +318,7 @@
                     return date;
                 };
             while (currentDate <= endDate) {
-                dates.push(currentDate);
+                dates.push(moment(currentDate).format("YYYY-MM-DD"));
                 currentDate = addDays.call(currentDate, 1);
             }
             return dates;
@@ -259,18 +345,23 @@
                 console.log("team_emp_shifts",team_employees_shifts);
                 console.log("team members",team_members);
                 team_members.forEach(function(obj){
-//                    if(obj.member_team_id ==team.id){
                         rows += '<td>'+obj.name +' '+ obj.surname +'</td>';
                         for(var i=0;i<datesArr.length;i++){
-                            var available = true;
+                            var cur_date = moment(datesArr[i]).format("YYYY-MM-DD");
+                            var available = false;
                             for(var x=0;x<team_employees_shifts.length;x++){
                                 var start_time = $("#start_time").val();
-                                if(team_employees_shifts[x].employee_id==obj.id&&moment(datesArr[i]).format('YYYY-MM-DD')==team_employees_shifts[x].shift_date && compareStartTime(team_employees_shifts[x].start_time,start_time,team_employees_shifts[x].end_time)){
-                                    available = false;
+                                if(team_employees_shifts[x].employee_id==obj.id&&moment(datesArr[i]).format('YYYY-MM-DD')==team_employees_shifts[x].shift_date){
+                                    available = true;
                                 }
                             }
                             if(available){
-                                rows+='<td><a ><i id="'+obj.id+'"  class="fa fa-plus task_add"></i></a></td>';
+                                console.log("Check here",cur_date);
+                                var id_string = obj.id+","+cur_date;
+                                rows+='<td><a id="'+id_string+'" onclick="assign_task(this)"><i   class="fa fa-plus task_add"></i></a></td>';
+                            }
+                            else{
+                                rows+='<td><a onclick="no_shift()"><i class="fa fa-minus task_add"></i></a></td>';
                             }
                         }
                         rows += '</tr>';
@@ -281,6 +372,26 @@
             });
         }
     });
+    function no_shift(){
+        alert("Employee is not working on this day");
+    }
+    function assign_task(obj){
+//        console.log("Shift_date",obj.id);
+        $("#new_task_from_existing").hide();
+        $("#tasks").show();
+        var arr_values = obj.id.split(',');
+        var id = arr_values[0];
+        var shift_date = arr_values[1];
+        $.get('/get_employee_name/'+id,function(data){
+            $("#name").empty();
+            $("#name").append(data);
+        });
+        $('#start_date').val(shift_date);
+        $('#end_date').val(shift_date);
+        $('#employee_id').val(id);
+        $('#selected_employee_id').val(id);
+        $('#tasks_modal').appendTo("body").modal();
+    }
     function goBack(){
         window.history.back();
     }

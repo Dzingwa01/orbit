@@ -28,6 +28,9 @@ Route::get('/', function () {
     $individual_package = App\Package::where('number_of_members',1)->first();
     return view('welcome',compact('packages','individual_package'));
 });
+Route::get('contact_us',function(){
+   return view('contact_us');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {

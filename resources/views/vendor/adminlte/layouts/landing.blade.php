@@ -45,35 +45,11 @@
                     </a></li>
                 <li class="active"><a href="/">Home</a>
                 </li>
-                <li><a href="#">Packages and Pricing</a>
-                    <ul class="dropdown">
-                        <li><a href="#">One column</a>
-                            <ul class="dropdown">
-                                <li><a href="blog-one-column-right-sidebar.html">Right sidebar</a></li>
-                                <li><a href="blog-one-column-left-sidebar.html">Left sidebar</a></li>
-                                <li><a href="blog-one-column-no-sidebar.html">No sidebar</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Two columns</a>
-                            <ul class="dropdown">
-                                <li><a href="blog-two-columns-right-sidebar.html">Right sidebar</a></li>
-                                <li><a href="blog-two-columns-left-sidebar.html">Left sidebar</a></li>
-                                <li><a href="blog-two-columns-no-sidebar.html">No sidebar</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Single post</a>
-                            <ul class="dropdown">
-                                <li><a href="blog-single-post-right-sidebar.html">Right sidebar</a></li>
-                                <li><a href="blog-single-post-left-sidebar.html">Left sidebar</a></li>
-                                <li><a href="blog-single-post-no-sidebar.html">No sidebar</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+
                 <li><a href="#">About Us</a>
 
                 </li>
-                <li><a href="#">Contact Us</a>
+                <li><a href="{{url('contact_us')}}">Contact Us</a>
                 </li>
                 <li>
                     <a href="{{url('login')}}"
@@ -87,30 +63,39 @@
         <center><h2  class="section-title">Welcome to Orbit</h2></center>
     </div>
     <div class="row" >
-        <div class="col-sm-offset-2 col-sm-4 col-md-4 text-section">
-            <div class="typed-strings" style="display: none"><p>share!</p>
-                <p>communicate!</p>
-                <p>manage!</p></div>
+        <div class="col-sm-4 col-md-4 text-section">
+            <div class="typed-strings" style="display: none"><p>Share!</p>
+                <p>Communicate!</p>
+                <p>Manage!</p></div>
             <h4 class="hero-header">Best application<br>for you to <span class="typed">site!</span></h4>
-            <p class="hero-text">Sign up for an individual account!</p>
+            <p class="hero-text">Create an account for your organisation!</p>
             <div class="button-block">
-                <a href="{{url('register')}}" id="Individual" onclick="passToReg('{{$individual_package->id}}')"
-                        class="rocket-btn rocket-btn-animated-icon rocket-btn-fixed-width"><span
-                            class="rocket-btn-icon-wrap"><i class="fa fa-rocket" aria-hidden="true"></i></span>
-                    <span class="rocket-btn-text-wrap">Sign up now</span>
-                </a>
+                <button class="rocket-btn" data-toggle="modal" data-target="#packages_modal">Sign up now
+                </button>
             </div>
         </div>
+
         <div class="col-sm-4 col-md-4 text-section">
-            <h4 class="hero-header">Mobile App is available on Google Play Store.</h4>
-            <p class="hero-text">Download application today!</p>
+            <h4 class="hero-header">Orbit features</h4>
+            <li>Managers can create weekly employee schedules/shifts and associated tasks</li>
+            <li>Employees can swap shifts, offer shifts and submit leave requests</li>
+            <li>Team chat and direct messaging</li>
+            <li>Upload and view training material for employees</li>
+            <a  href="#">Read more</a>
+        </div>
+        <div class="col-sm-4 col-md-4 text-section " >
+            <h4 class="hero-header">Mobile Apps</h4>
+            <p class="hero-text">Increasing employee engagement is easy when you give your staff access to their work schedules - anytime, anywhere. Download application today.</p>
             <div class="button-block"><a
                         href="#"
                         class="rocket-btn rocket-btn-animated-icon rocket-btn-fixed-width" target="_blank"><span
                             class="rocket-btn-icon-wrap"><i class="fa fa-rocket" aria-hidden="true"></i></span>
                     <span class="rocket-btn-text-wrap">Download Now</span></a></div>
         </div>
+
     </div>
+
+
 </div>
 {{--<main>--}}
     {{--<section class="light-section pricing-section animated-section">--}}
@@ -148,6 +133,45 @@
             </div>
 
         </div>
+<div id="packages_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Please select the package you want to register for. </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                @foreach($packages as $package)
+                    <div class="col-sm-12 col-md-4">
+                        <div class="pricing" data-anim-queue="2" data-anim-type="fadeInUp">
+                            <div class="plan-title"><span class="plan">{{$package->package_name}}</span></div>
+                            <div class="price"><span class="currency">R </span> <span class="amount">{{$package->package_prices}}</span> <span
+                                        class="period">/mo</span></div>
+                            <div class="pricing-content">
+                                <ul class="collection">
+                                    <li class="collection-item"><b>Team Size: </b>{{$package->number_of_members}}</li>
+                                    <li class="collection-item"><b>Discount: </b>{{$package->discount}}</li>
+
+                                </ul>
+                            </div>
+                            <div class="plan-signup-btn"><a href="{{url('register')}}"
+                                                            class="rocket-btn rocket-btn-fixed-width rocket-btn-animated-icon" onclick="passToReg('{{$package->id}}')" id="{{$package->package_name}}"><span
+                                            class="rocket-btn-icon-wrap"><i class="fa fa-sign-in"
+                                                                            aria-hidden="true"></i></span> <span
+                                            class="rocket-btn-text-wrap">Sign Up</span></a></div>
+                        </div>
+                    </div>
+                @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{--<button type="button" class="rocket-btn" data-dismiss="modal">Close</button>--}}
+            </div>
+        </div>
+    </div>
+</div>
     {{--</section>--}}
 {{--</main>--}}
 <footer>
@@ -180,6 +204,7 @@
         <div class="scrollToTop-icon"></div>
     </div>
 </div>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="js/assets.min.js"></script>
 <script src="js/main.min.js"></script>
 <script>
