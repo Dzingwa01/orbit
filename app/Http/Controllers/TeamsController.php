@@ -36,6 +36,7 @@ class TeamsController extends Controller
         $teams = DB::table('teams')
                 ->join('users','users.id','teams.creator')
                 ->join('cities','teams.city_id','cities.id')
+                ->whereNull('users.deleted_at')
                 ->select('teams.*','users.name','users.surname','cities.city_name');
         return DataTables::of($teams)
             ->addColumn('action', function ($team) {
@@ -84,6 +85,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
     $current_date = Carbon::now()->format('Y-m-d');
         $employees = ShiftSchedule::join('users','users.id','shift_schedules.employee_id')
             ->where('shift_id',$shift->shift_id)
+            ->whereNull('users.deleted_at')
             ->where('shift_date',$shift->shift_date)
             ->select('users.*')
             ->get();
@@ -104,6 +106,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
         $employees = Team::join('team_members','teams.id','team_members.member_team_id')
                         ->join('users','users.id','team_members.team_member_id')
                         ->where('teams.id',$team->id)
+                        ->whereNull('users.deleted_at')
                         ->select('users.*')
                          ->get();
         return response()->json(["employees" => $employees]);
@@ -190,7 +193,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
 
     public function getChatMessages(User $user){
         $team = TeamMember::where('team_member_id',$user->id)->first();
-        $comments = Comment::join('users','users.id','comments.user_id')->where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')->get();
+        $comments = Comment::join('users','users.id','comments.user_id')->whereNull('users.deleted_at')->where('team_id',$team->member_team_id)->orderBy('created_at', 'desc')->select('comments.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')->get();
         return response()->json(["messages" => $comments, "status" => "203", "message" => "Success"]);
     }
     /**
@@ -236,7 +239,15 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
     public function destroy(Team $team)
     {
         //
-        $team->delete();
-        return redirect('team');
+
+        DB::beginTransaction();
+        try {
+            $team->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('team')->with('error','You can not delete this team, there are employees attached to this team');
+        }
+        return redirect('team')->with('status','Team deleted successfully');
     }
 }

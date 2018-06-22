@@ -24,7 +24,7 @@ Route::get('send_test_email', function(){
 
 Route::get('/', function () {
 //    dd(phpinfo());
-    $packages = App\Package::orderBy('number_of_members','ASC')->get();
+    $packages = App\Package::where('package_name','!=','Individual Account')->orderBy('number_of_members','ASC')->get();
     $individual_package = App\Package::where('number_of_members',1)->first();
     return view('welcome',compact('packages','individual_package'));
 });

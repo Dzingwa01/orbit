@@ -32,7 +32,7 @@ class ApiLoginController extends Controller
     protected function attemptLogin(Request $request)
     {
 //        dd($request->all());
-        $user = User::where('email', $request->all()['email'])->first();
+        $user = User::where('email', $request->all()['email'])->whereNull('users.deleted_at')->first();
         if ($user != null) {
             $verified = $user->verified;
 //            dd($verified);
@@ -75,6 +75,7 @@ class ApiLoginController extends Controller
 //            $user->generateToken();
             $user = User::join('packages','packages.id','users.package_id')
                     ->where('users.id',$user->id)
+                    ->whereNull('users.deleted_at')
                     ->select('users.*','packages.package_name')
                     ->first();
             return response()->json(

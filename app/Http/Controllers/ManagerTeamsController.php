@@ -27,6 +27,7 @@ class ManagerTeamsController extends Controller
             ->join('users','users.id','teams.creator')
             ->join('cities','teams.city_id','cities.id')
             ->where('users.id',Auth::user()->id)
+            ->whereNull('users.deleted_at')
             ->select('teams.*','users.name','users.surname','cities.city_name')->get();
         return DataTables::of($teams)
             ->addColumn('action', function ($team) {
@@ -67,7 +68,7 @@ class ManagerTeamsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            throw $e;
+            return redirect('manager_teams')->with('error','An error occured during team creation, please contact Orbit admin');
         }
         return view('manager_teams.team_members',compact('team'));
     }
@@ -85,6 +86,7 @@ class ManagerTeamsController extends Controller
         $team = Team::where('id',$id)->first();
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
                         ->join('teams','teams.id','team_members.member_team_id')
+            ->whereNull('users.deleted_at')
                         ->select('users.*')
             ->where('teams.id',$id)
                         ->get();
@@ -107,17 +109,20 @@ class ManagerTeamsController extends Controller
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$id)
+            ->whereNull('users.deleted_at')
             ->select('users.*')
             ->get();
         $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$id)
+            ->whereNull('users.deleted_at')
             ->pluck('users.id');
 //        dd($team_member_ids);
 
         $available_team_members = Team::join('users','users.creator_id','teams.creator')
             ->where('teams.id',$id)
             ->whereNotIn('users.id',$team_member_ids)
+            ->whereNull('users.deleted_at')
             ->select('users.*')
             ->get();
         $cities = City::all();
@@ -134,7 +139,7 @@ class ManagerTeamsController extends Controller
     public function update(Request $request, $id)
     {
         $team_cur = Team::where('id',$id)->first();
-//        dd($team_cur);
+
         DB::beginTransaction();
         try {
             $team_cur->update($request->all());
@@ -143,28 +148,31 @@ class ManagerTeamsController extends Controller
             $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
                 ->join('teams','teams.id','team_members.member_team_id')
                 ->where('teams.id',$id)
+                ->whereNull('users.deleted_at')
                 ->select('users.*')
                 ->get();
 
             $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
                 ->join('teams','teams.id','team_members.member_team_id')
+                ->whereNull('users.deleted_at')
                 ->where('teams.id',$id)
                 ->pluck('users.id');
 
             $available_team_members = Team::join('users','users.creator_id','teams.creator')
                 ->where('teams.id',$id)
+                ->whereNull('users.deleted_at')
                 ->whereNotIn('users.id',$team_member_ids)
                 ->select('users.*')
                 ->get();
             $cities = City::all();
             $team = $team_cur;
+
             return view('manager_teams.edit',compact('team','cities','team_members','available_team_members'));
         } catch (\Exception $e) {
+            $team = $team_cur;
             DB::rollback();
-            throw $e;
+            return redirect('manager_teams/'.$team->id.'/edit')->with('error','An error occurred during update, please delete one at a time');
         }
-//        return view('manager_teams.view',compact('team','cities','team_members'));
-        return view('manager_teams.team_members',compact('team'));
     }
 
 
@@ -201,20 +209,24 @@ class ManagerTeamsController extends Controller
         }
             DB::commit();
         } catch (\Exception $e) {
+
             DB::rollback();
-            throw $e;
+            return redirect('manager_teams/'.$team_id.'/edit')->with('error','An error occurred during update, please delete one at a time');
         }
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
             ->where('teams.id',$team_id)
+            ->whereNull('users.deleted_at')
             ->select('users.*')
             ->get();
         $team_member_ids = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
+            ->whereNull('users.deleted_at')
             ->where('teams.id',$team_id)
             ->pluck('users.id');
         $available_team_members = Team::join('users','users.creator_id','teams.creator')
             ->where('teams.id',$team_id)
+            ->whereNull('users.deleted_at')
             ->whereNotIn('users.id',$team_member_ids)
             ->select('users.*')
             ->get();
@@ -231,7 +243,15 @@ class ManagerTeamsController extends Controller
     public function destroy(Team $team)
     {
         //
-        $team->delete();
-        return redirect('manager_teams');
+
+        DB::beginTransaction();
+        try {
+            $team->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('manager_teams')->with('error','You can not delete this team, there are employees attached to this team');
+        }
+        return redirect('manager_teams')->with('status','Team deleted successfully');
     }
 }

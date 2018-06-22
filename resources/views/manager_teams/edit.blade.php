@@ -2,7 +2,15 @@
 
 @section('main-content')
     <div class="container-fluid" >
-
+        @if (session('status'))
+            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('status') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="box box-danger col-md-12" >
             <div class="box-header with-border">
                 <h3 class="box-title">Edit Team Details: {{$team->team_name}}</h3>
@@ -91,6 +99,9 @@
         $(document).ready(function () {
             $('select').select2({
                 placeholder: 'Select or search an option'
+            });
+            $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+                $(".alert").slideUp(500);
             });
         });
     </script>

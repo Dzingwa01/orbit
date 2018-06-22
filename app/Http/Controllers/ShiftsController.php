@@ -31,7 +31,7 @@ class ShiftsController extends Controller
     }
 
     public function getShifts(){
-        $shifts = Shift::where('creator_id',Auth::user()->id)->get();
+        $shifts = Shift::where('creator_id',Auth::user()->id)->whereNull('deleted_at')->get();
         return DataTables::of($shifts)
             ->addColumn('action', function ($shift) {
                 return '<a href="shifts/' . $shift->id . '" title="View Shift" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="shifts/' . $shift->id . '/edit" style="margin-left:1em" title="Edit Shift" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_shift/' . $shift->id . '" style="margin-left:1em" class="" title="Delete Shift"><i class="glyphicon glyphicon-trash "></i></a>';
@@ -143,6 +143,7 @@ class ShiftsController extends Controller
 //        dd($user->id);
         $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
             ->join('teams','teams.id','shifts.team_id')
+            ->whereNull('shifts.deleted_at')
             ->where('shift_schedules.employee_id',$user->id)
             ->where('shift_schedules.shift_date','=',$current_date)
             ->select('shift_schedules.id','shift_title','team_name','start_date','end_date','creator_id','team_id','shift_description','start_time','end_date','end_time')
@@ -334,6 +335,7 @@ class ShiftsController extends Controller
 //        dd($user->id);
         $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
             ->join('teams','teams.id','shifts.team_id')
+            ->whereNull('shifts.deleted_at')
             ->where('shift_schedules.employee_id',$user->id)
             ->where('shift_schedules.shift_date','>=',$current_date)
             ->select('shift_schedules.id','employee_id','shift_schedules.shift_id','shift_title','start_date','shifts.end_date','creator_id','team_id','shift_duration','start_time','end_time','shift_description','team_name','shift_date')
@@ -352,6 +354,7 @@ class ShiftsController extends Controller
             ->where('shift_schedules.employee_id','!=',$user->id)
             ->where('shift_schedules.shift_date','!=',$shift_schedule->shift_date)
             ->where('shift_schedules.shift_date','>',$current_date)
+            ->whereNull('users.deleted_at')
             ->select('users.*','employee_id','shift_schedules.shift_date')
             ->whereNotIn('shift_date',$employee_shifts)
             ->get();
@@ -370,6 +373,7 @@ class ShiftsController extends Controller
             ->where('shifts.id',$shift_schedule->shift_id)
             ->where('shift_schedules.employee_id','!=',$user->id)
             ->where('shift_schedules.shift_date','>',$current_date)
+            ->whereNull('users.deleted_at')
             ->select('shift_schedules.id','shift_schedules.shift_id','name','surname','shift_title','start_date','shifts.end_date','shifts.creator_id','team_id','shift_duration','employee_id','start_time','end_time','shift_description','team_name','shift_date')
             ->whereNotIn('shift_date',$employee_shifts)
             ->get();
@@ -380,6 +384,7 @@ class ShiftsController extends Controller
     public function getCurrentShiftsManager(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
         $current_shifts = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->whereNull('shifts.deleted_at')
             ->where('shifts.creator_id',$user->id)
             ->where('shift_schedules.shift_date','=',$current_date)
             ->select('shift_schedules.id','shift_title','start_date','end_date','creator_id','team_id','shift_description','start_time','end_date','end_time')
@@ -400,6 +405,7 @@ class ShiftsController extends Controller
     public function getCurrentShiftsManagerAll(User $user){
         $current_date = Carbon::now()->format('Y-m-d');
         $current_shift = ShiftSchedule::join('shifts','shifts.id','shift_schedules.shift_id')
+            ->whereNull('shifts.deleted_at')
             ->where('shifts.creator_id',$user->id)
             ->where('shift_schedules.shift_date','>=',$current_date)
             ->select('shifts.*')
@@ -450,8 +456,22 @@ class ShiftsController extends Controller
      */
     public function destroy(Shift $shift)
     {
-        //
+
+        DB::beginTransaction();
+        try {
+        $shift->shiftTasks()->delete();
+       $shifts =  ShiftSchedule::where('shift_id',$shift->id)->get();
+       foreach ($shifts as $schedule){
+           $schedule->swapShifts()->delete();
+           $schedule->shiftOffers()->delete();
+       }
+            ShiftSchedule::where('shift_id',$shift->id)->delete();
         $shift->delete();
-        return redirect('shifts');
+        DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('shifts')->with('error',$e->getMessage());
+        }
+        return redirect('shifts')->with('status','Shift deleted successfully');
     }
 }

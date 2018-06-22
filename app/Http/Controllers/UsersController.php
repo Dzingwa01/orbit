@@ -27,6 +27,7 @@ class UsersController extends Controller
     public function getUsers(){
         $users = DB::table('users')
                 ->join('packages','packages.id','users.package_id')
+                ->whereNull('users.deleted_at')
                 ->select('users.*','packages.package_name')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
@@ -185,8 +186,16 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+        DB::beginTransaction();
+        try {
         $user = User::find($id);
+        $user->comments()->delete();
         $user->delete();
-        return redirect('/user');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('shifts')->with('error','Error occured during deleting the user');
+        }
+        return redirect('/user')->with('status','User deleted successfully');
     }
 }

@@ -50,7 +50,9 @@ class SchedulerController extends Controller
 
     public function getTeamEmployeeShifts(Team $team){
         $team_users = TeamMember::join('shift_schedules','shift_schedules.employee_id','team_members.team_member_id')
+                    ->join('users','users.id','shift_schedules.employee_id')
                     ->join('shifts','shifts.id','shift_schedules.shift_id')
+                    ->whereNull('users.deleted_at')
                     ->where('member_team_id',$team->id)
                     ->select('shift_schedules.*','team_members.team_member_id','shifts.start_time','shifts.end_time','shifts.end_date')
                     ->get();
@@ -59,7 +61,9 @@ class SchedulerController extends Controller
 
     public function getTeamEmployeeShiftsAssign(Team $team){
         $team_users = TeamMember::join('shift_schedules','shift_schedules.employee_id','team_members.team_member_id')
+            ->join('users','users.id','shift_schedules.employee_id')
             ->join('shifts','shifts.id','shift_schedules.shift_id')
+            ->whereNull('users.deleted_at')
             ->where('member_team_id',$team->id)
             ->select('shift_schedules.*','team_members.team_member_id','shifts.start_time','shifts.end_time','shifts.end_date')
             ->get();
@@ -143,6 +147,7 @@ class SchedulerController extends Controller
         $teams = Team::where('creator',Auth::user()->id)->get();
         $team_members = TeamMember::join('users','users.id','team_members.team_member_id')
             ->join('teams','teams.id','team_members.member_team_id')
+            ->whereNull('users.deleted_at')
             ->where('teams.id',$shift->team_id)
             ->select('users.*')
             ->get();

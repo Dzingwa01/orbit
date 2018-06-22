@@ -33,6 +33,7 @@ class MessagesController extends Controller
 
     public function getMessagesApi(User $user){
         $messages = Message::join('users','users.id','messages.to')
+                        ->whereNull('users.deleted_at')
                           -> where('to',$user->id)
             ->orderBy('created_at','DESC')
             ->select('messages.*','users.name as first_name','users.surname as last_name','users.picture_url as user_picture_url')

@@ -7,6 +7,16 @@ $employees_count = count(DB::table('users')
 ?>
 @section('main-content')
     <div class="container-fluid" >
+        @if (session('status'))
+            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('status') }}
+            </div>
+            @elseif(session('error'))
+            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="row" style="margin-top:1em;">
             <div class="col-sm-2">
                 <a id="create_shift" class="btn btn-success"><i class="fa fa-plus-square"></i> Add Shift</a>
@@ -58,6 +68,9 @@ $employees_count = count(DB::table('users')
                     else{
                         window.location.href = 'schedules/create';
                     }
+                });
+                $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+                    $(".alert").slideUp(500);
                 });
             });
         });

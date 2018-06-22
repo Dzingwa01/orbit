@@ -8,4 +8,5 @@ class TrainingMaterial extends Model
 {
     //
     protected $fillable = ['name','description','file_url','creator_id'];
+
 }

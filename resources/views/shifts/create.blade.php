@@ -210,7 +210,9 @@ $team_members = $team_members->toArray();
                             var available = true;
                             for(var x=0;x<team_employees_shifts.length;x++){
                                 var start_time = $("#start_time").val();
-                                if(team_employees_shifts[x].employee_id==obj.id&&moment(datesArr[i]).format('YYYY-MM-DD')==team_employees_shifts[x].shift_date && compareStartTime(team_employees_shifts[x].start_time,start_time,team_employees_shifts[x].end_time)){
+                                var end_time = $("#start_time").val();
+                                if(team_employees_shifts[x].employee_id==obj.id&&moment(datesArr[i]).format('YYYY-MM-DD')==team_employees_shifts[x].shift_date && compareStartTime(team_employees_shifts[x].start_time,start_time,end_time,team_employees_shifts[x].end_time)){
+                                    console.log("Hit",team_employees_shifts[x].shift_date);
                                     available = false;
                                 }
                             }
@@ -231,11 +233,22 @@ $team_members = $team_members->toArray();
 //            console.log(team_employees_shifts);
 
         }
-        function compareStartTime(shift_start, starting_time,end_time){
+        function compareStartTime(shift_start, starting_time,shift_ending_time,end_time){
             var hr = shift_start.split(':');
             var start_time = starting_time.split(':');
             var ending_time = end_time.split(':');
-            var result = parseInt(hr[0])<=parseInt(start_time[0])&&parseInt(hr[0])<=parseInt(ending_time[0]);
+            var shift_end = shift_ending_time.split(':');
+            console.log("hour",hr);
+            console.log("start_time",start_time);
+            console.log("ending_time",ending_time);
+            var result =false;
+            if(parseInt(hr[0])<=parseInt(start_time[0])){
+                result = parseInt(hr[0])<=parseInt(start_time[0])&&parseInt(shift_end[0])<=parseInt(ending_time[0]);
+
+            }
+            else {
+                result = parseInt(hr[0])>=parseInt(start_time[0])&&parseInt(shift_end[0])<=parseInt(ending_time[0]);
+            }
             console.log(result);
             return result;
         }

@@ -59,13 +59,16 @@ class TrainingMaterialsController extends Controller
         if (File::exists(public_path($dir)) == false) {
             File::makeDirectory(public_path($dir), 0777, true);
         }
-
+//        $file = $request->file('file_url');
         $path = $request->file('file_url')->store($dir);
         $input['file_url'] = $path;
         $input['creator_id'] = Auth::user()->id;
+//        dd($input);
         DB::beginTransaction();
         try {
+//            dd($input);
             $material = TrainingMaterial::create($input);
+//            dd($material);
             DB::commit();
 
         } catch (\Exception $e) {

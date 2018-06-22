@@ -10,11 +10,13 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use EntrustUserTrait;
+    use EntrustUserTrait{ restore as private restoreA; }
+    use SoftDeletes{ restore as private restoreB; }
     /**
      * The attributes that are mass assignable.
      *
@@ -32,4 +34,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function comments(){
+        return $this->hasMany('App\Comment');
+    }
+
+    public function restore()
+    {
+        $this->restoreA();
+        $this->restoreB();
+    }
 }

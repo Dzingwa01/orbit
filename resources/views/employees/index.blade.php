@@ -12,6 +12,15 @@ $package_size = $user->number_of_members;
 ?>
 @section('main-content')
     <div class="container-fluid" >
+        @if (session('status'))
+            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('status') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="row" style="margin-top:1em;">
             <div class="col-sm-2">
                 <a id="create_employee"  class="btn btn-success"><i class="fa fa-plus-square"></i> Add Employee</a>
@@ -68,6 +77,9 @@ $package_size = $user->number_of_members;
                 else{
                     $.notify("You currently do not have any employees, please add employees before creating a shift", "warning");
                 }
+            });
+            $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+                $(".alert").slideUp(500);
             });
         });
 

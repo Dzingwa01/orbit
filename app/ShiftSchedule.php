@@ -8,5 +8,12 @@ class ShiftSchedule extends Model
 {
     //
     protected $fillable = ['shift_date','employee_id','shift_id'];
-//    protected $dates = ['shift_date'];
+
+    public function swapShifts(){
+        return $this->hasMany('App\SwapShift','swap_shift');
+    }
+
+    public function shiftOffers(){
+        return $this->hasMany('App\ShiftOffer','offer_shift');
+    }
 }

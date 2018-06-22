@@ -21,7 +21,7 @@ class PackagesController extends Controller
     }
 
     public function getPackages(){
-        $packages = Package::all();
+        $packages = Package::where('package_name','!=','Individual Account')->get();
         return DataTables::of($packages)
             ->addColumn('action', function ($package) {
                 return '<a href="/package/' . $package->id . '" title="View Package" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="/package/' . $package->id . '/edit" style="margin-left:1em" title="Edit Package" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="/delete_package/' . $package->id . '" style="margin-left:1em" class="" title="Delete Package"><i class="glyphicon glyphicon-trash "></i></a>';

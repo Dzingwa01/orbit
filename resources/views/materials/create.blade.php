@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="start_date">Title</label>
-                                    <input id="name" name="name" type='text' class="form-control"
+                                    <input id="name" name="name" type='text' class="form-control" required
                                            />
 
                             </div>
@@ -24,7 +24,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="end_date">Description</label>
 
-                                    <textarea id="description" name="description"  class="form-control"
+                                    <textarea id="description" name="description"  class="form-control" required
                                     ></textarea>
 
                             </div>
@@ -34,7 +34,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="file_url">Material File</label>
                                 <input id="file_url" name="file_url" class="form-control" type="file"
-                                       placeholder="Upload File Url">
+                                       placeholder="Upload File Url" required>
                             </div>
 
                         </div>

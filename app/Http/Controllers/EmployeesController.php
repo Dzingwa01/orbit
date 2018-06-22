@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EmployeeRole;
 use App\Jobs\InviteEmployees;
+use App\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -28,6 +29,7 @@ class EmployeesController extends Controller
         $users = DB::table('users')
             ->join('packages','packages.id','users.package_id')
             ->where('users.creator_id',Auth::user()->id)
+            ->whereNull('users.deleted_at')
             ->select('users.*','packages.package_name')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
@@ -43,8 +45,9 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        //
+
         $role = Role::where('name','Employee')->first();
+//        dd($role);
         $package = Package::where('package_name','Individual Account')->first();
 //        dd($package);
         return view('employees.create_user',compact('role','package'));
@@ -151,7 +154,15 @@ class EmployeesController extends Controller
     {
         //
         $user = User::find($id);
-        $user->delete();
-        return redirect('/employees');
+        DB::beginTransaction();
+        try {
+            TeamMember::where('team_member_id',$user->id)->delete();
+            $user->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/employees')->with('error','Error occured during deleting the employee');
+        }
+        return redirect('/employees')->with('status','Employee deleted successfully');
     }
 }
