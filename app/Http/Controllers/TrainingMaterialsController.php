@@ -51,24 +51,17 @@ class TrainingMaterialsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        dd($request->all());
         $input = $request->all();
-//        dd($input);
         $dir = "files/";
         if (File::exists(public_path($dir)) == false) {
             File::makeDirectory(public_path($dir), 0777, true);
         }
-//        $file = $request->file('file_url');
         $path = $request->file('file_url')->store($dir);
         $input['file_url'] = $path;
         $input['creator_id'] = Auth::user()->id;
-//        dd($input);
         DB::beginTransaction();
         try {
-//            dd($input);
             $material = TrainingMaterial::create($input);
-//            dd($material);
             DB::commit();
 
         } catch (\Exception $e) {
@@ -136,8 +129,17 @@ class TrainingMaterialsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TrainingMaterial $material)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $material->delete();
+
+            DB::commit();
+            return redirect('training_materials')->with('status','File deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('training_materials')->with('error','Error occured during deleting the file');
+        }
     }
 }

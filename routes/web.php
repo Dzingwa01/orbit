@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedules','SchedulerController');
 
     Route::resource('training_materials','TrainingMaterialsController');
+    Route::get('delete_material/{material}','TrainingMaterialsController@destroy');
     Route::get('get_training_materials','TrainingMaterialsController@getTrainingMaterials')->name('training_materials.get_materials');
     Route::post('update_training_materials/{id}','TrainingMaterialsController@update');
 
