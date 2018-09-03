@@ -31,6 +31,9 @@ Route::get('/', function () {
 Route::get('contact_us',function(){
    return view('contact_us');
 });
+Route::get('service_policy',function(){
+   return view('privacy_policy');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
