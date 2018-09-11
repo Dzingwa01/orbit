@@ -37,7 +37,7 @@ class ScheduleInviteMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.send_schedule_invite')->with([
-            'url' => 'http://169.60.184.102/invite_team_member/'.$this->email_token,
+            'url' => 'http://18.220.238.181/invite_team_member/'.$this->email_token,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
             'team_name'=>$this->team_name

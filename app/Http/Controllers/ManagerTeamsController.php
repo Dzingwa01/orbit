@@ -68,7 +68,7 @@ class ManagerTeamsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('manager_teams')->with('error','An error occured during team creation, please contact Orbit admin');
+            return redirect('manager_teams')->with('error','An error occured during team creation, please contact MiShift admin');
         }
         return view('manager_teams.team_members',compact('team'));
     }

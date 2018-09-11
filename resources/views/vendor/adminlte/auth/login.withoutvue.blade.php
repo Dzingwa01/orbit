@@ -9,7 +9,7 @@
     <div id="app">
         <div class="col-md-offset-4 col-md-4" style="margin-top:8em;">
         <div class="login-logo">
-            <a href="{{ url('/home') }}"> <img src="{{URL::asset('/img/orbit_logo_new.png')}}"/></a>
+            <a href="{{ url('/home') }}"> <img src="{{URL::asset('/img/mishift_logo.png')}}"/></a>
         </div><!-- /.login-logo -->
 
             @if (count($errors) > 0)

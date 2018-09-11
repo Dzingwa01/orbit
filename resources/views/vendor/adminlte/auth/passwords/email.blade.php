@@ -11,7 +11,7 @@
 
         <div class="login-box">
         <div class="login-logo">
-            <a href="/"><img src="/img/orbit_logo_new.png" alt="orbit"></a>
+            <a href="/"><img src="/img/mishift_logo.png" alt="orbit"></a>
         </div><!-- /.login-logo -->
 
         @if (session('status'))

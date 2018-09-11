@@ -3,7 +3,7 @@
         <li>
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="/home"><img src="/img/orbit_logo_new.png" alt="orbit"></a>
+                <a class="navbar-brand" href="/home"><img src="/img/mishift_logo.png" alt="orbit"></a>
             </div>
         </li>
         <li>

@@ -35,7 +35,7 @@
 </div>
 <header class="scrolled">
     <div class="container">
-        <div class="row"><a href="/" class="logo"><img src="img/orbit_logo_new.png" alt="Orbit" class="top-logo">
+        <div class="row"><a href="/" class="logo"><img src="img/mishift_logo.png" alt="Orbit" class="top-logo">
             </a><a href="#" class="menutoggle">
                 <div class="bar"></div>
             </a>

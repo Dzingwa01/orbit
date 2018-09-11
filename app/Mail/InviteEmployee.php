@@ -35,7 +35,7 @@ class InviteEmployee extends Mailable
     public function build()
     {
         return $this->markdown('emails.employee_invite')->with([
-            'url' => 'http://169.60.184.102/verify_email/'.$this->user->email_token,
+            'url' => 'http://18.220.238.181/verify_email/'.$this->user->email_token,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
             'user_name'=>$this->user->email,

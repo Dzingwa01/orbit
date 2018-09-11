@@ -10,7 +10,7 @@
     <div id="app" v-cloak>
         <div class="register-box">
             <div class="register-logo">
-                <a href="{{ url('/') }}"><img src="/img/orbit_logo_new.png" alt="orbit"></a></a>
+                <a href="{{ url('/') }}"><img src="/img/mishift_logo.png" alt="orbit"></a></a>
             </div>
 
             @if (count($errors) > 0)

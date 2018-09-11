@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Orbit - Manage Share &amp; Communicate</title>
+    <title>MiShift - Manage Share &amp; Communicate</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,7 +35,7 @@
 </div>
 <header class="scrolled">
     <div class="container">
-        <div class="row"><a href="/" class="logo"><img src="img/orbit_logo_new.png" alt="Orbit" class="top-logo">
+        <div class="row"><a href="/" class="logo"><img src="img/mishift_logo.png" alt="Orbit" class="top-logo">
             </a><a href="#" class="menutoggle">
                 <div class="bar"></div>
             </a>
@@ -60,7 +60,7 @@
 </header>
 <div class="container">
     <div class="row" style="margin-top: 6em;">
-        <center><h2  class="section-title">Welcome to Orbit</h2></center>
+        <center><h2  class="section-title">Welcome to MiShift</h2></center>
     </div>
     <div class="row" >
         <div class="col-sm-4 col-md-4 text-section">
@@ -139,7 +139,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Please select the package you want to register for. </h4>
+                <h4 class="modal-title">Please select the package you want to register for.</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -191,8 +191,8 @@
         </div>
         <div class="bottom-bar">
             <div class="container">
-                <div class="row text-align-center">© Copyright 2018 - <a href="https://orbit.co.za/"
-                                                                         target="_blank">Orbit</a>.
+                <div class="row text-align-center">© Copyright 2018 - <a href="https://getmishift.co.za/"
+                                                                         target="_blank">MiShift</a>.
                     All Rights Reserved.
                 </div>
             </div>

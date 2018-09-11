@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Orbit - Manage Share &amp; Communicate</title>
+    <title>MiShift - Manage Share &amp; Communicate</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,7 +35,7 @@
 </div>
 <header class="scrolled">
     <div class="container">
-        <div class="row"><a href="/" class="logo"><img src="img/orbit_logo_new.png" alt="Orbit" class="top-logo">
+        <div class="row"><a href="/" class="logo"><img src="img/mishift_logo.png" alt="Orbit" class="top-logo">
             </a><a href="#" class="menutoggle">
                 <div class="bar"></div>
             </a>
