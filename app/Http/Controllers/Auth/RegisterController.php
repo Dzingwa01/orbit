@@ -6,6 +6,8 @@ use App\Jobs\SendVerificationEmail;
 use App\Package;
 use App\Role;
 use App\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Validator;
 use DB;
 use App\Http\Controllers\Controller;
@@ -110,6 +112,7 @@ class RegisterController extends Controller
             'email_token'=>$data['email_token'],
             'verified'=>0
         ];
+//        dd($fields);
         DB::beginTransaction();
         try {
             $user = User::create($fields);
@@ -117,6 +120,7 @@ class RegisterController extends Controller
             DB::commit();
             event($user);
             dispatch(new SendVerificationEmail($user));
+            return $user;
 
         }
         catch (\Exception $e){
@@ -124,6 +128,14 @@ class RegisterController extends Controller
             throw $e;
         }
         return response()->view('status.status_message',$user,200);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+        return redirect('/account_creation_success');
     }
     public function verify($token)
     {
