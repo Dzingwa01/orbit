@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Orbit - Manage Share &amp; Communicate</title>
+    <title>MiShift - Manage Share &amp; Communicate</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,8 +26,8 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="http://18.220.238.181/css/assets.min.css" rel="stylesheet">
-    <link href="http://18.220.238.181/css/style.min.css" rel="stylesheet">
+    <link href="getmishift.co.za/css/assets.min.css" rel="stylesheet">
+    <link href="getmishift.co.za/css/style.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CVarela+Round" rel="stylesheet">
 </head>
 <body>
@@ -36,7 +36,7 @@
 </div>
 <header class="scrolled">
     <div class="container">
-        <div class="row"><a href="/" class="logo"><img src="http://18.220.238.181/img/mishift_logo.png" alt="Orbit" class="top-logo">
+        <div class="row"><a href="/" class="logo"><img src="http://getmishift.co.za/img/mishift_logo.png" alt="Orbit" class="top-logo">
             </a><a href="#" class="menutoggle">
                 <div class="bar"></div>
             </a>

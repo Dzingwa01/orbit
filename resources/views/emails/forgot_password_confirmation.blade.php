@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Orbit E-Mail Verification</title>
+    <title>MiShift E-Mail Verification</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,7 +18,7 @@
                     <br/>Hi {{$name}},
                     <br/>
                     This email servers to notify that your account is password is being reset. Complete new password
-                    reset on the <b>Pencil Chalk App</b><br>
+                    reset on the <b>MishiftApp App</b><br>
                     <a class="btn btn-success" href="{{url('/verify_forget_password/'.$user->_id)}}"
                     > Confirm Password Reset</a>
                     <br/>
