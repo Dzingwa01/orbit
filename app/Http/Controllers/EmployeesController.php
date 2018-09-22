@@ -27,10 +27,9 @@ class EmployeesController extends Controller
 
     public function getUsers(){
         $users = DB::table('users')
-            ->join('packages','packages.id','users.package_id')
             ->where('users.creator_id',Auth::user()->id)
             ->whereNull('users.deleted_at')
-            ->select('users.*','packages.package_name')->get();
+            ->select('users.*')->get();
         return DataTables::of($users)
             ->addColumn('action',function($user){
                 return '<a href="employees/' . $user->id . '" title="View Employee" class=""><i class="glyphicon glyphicon-eye-open"></i></a><a href="employees/' . $user->id . '/edit" style="margin-left:1em" title="Edit Employee" class=""><i class="glyphicon glyphicon-edit"></i></a><a href="delete_employee/' . $user->id . '" style="margin-left:1em" class="" title="Delete Employee"><i class="glyphicon glyphicon-trash "></i></a>';
@@ -65,12 +64,17 @@ class EmployeesController extends Controller
         DB::beginTransaction();
         try {
             $input = $request->all();
-//            dd($input);
+            $employee_package = Package::where('package_name','Individual Package')->first();
+//            dd($employee_package);
+            $role = Role::where('name','Employee')->first();
+            $role_id = $role->id;
             $plain_password =  $input['password'];
             $password = bcrypt($input['password']);
             $input['password'] = $password;
             $input['logins_counter'] = 0;
             $input['verified'] = 0;
+            $input['role_id'] = $role_id;
+            $input['package_id'] = $employee_package->id;
             $input['email_token'] = base64_encode($input['email']);
             $user = User::create($input);
 //            dd($user);
@@ -81,8 +85,8 @@ class EmployeesController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-
         }
+
         return redirect('employees');
     }
 

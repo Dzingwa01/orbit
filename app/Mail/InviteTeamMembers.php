@@ -35,7 +35,7 @@ class InviteTeamMembers extends Mailable
     public function build()
     {
         return $this->markdown('emails.invite_team_members')->with([
-            'url' => 'http://18.220.238.181/invite_team_member/'.$this->email_token,
+            'url' => 'http://getmishift.co.za/invite_team_member/'.$this->email_token,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
         ]);

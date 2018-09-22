@@ -48,14 +48,16 @@ class OnBoardingMaterialsController extends Controller
         //
 //        dd($request->all());
         $input = $request->all();
-//        dd($input);
         $dir = "files/";
-        if (File::exists(public_path($dir)) == false) {
-            File::makeDirectory(public_path($dir), 0777, true);
+        $file = $input['file_url'];
+        $ext  = $file->getClientOriginalExtension();
+        $filename = md5(str_random(5)).'.'.$ext;
+        $name = 'file_url';
+        if($file->move($dir,$filename)){
+            $this->arr[$name] = $dir.$filename;
         }
 
-        $path = $request->file('file_url')->store($dir);
-        $input['file_url'] = $path;
+        $input['file_url'] = $this->arr[$name];
         DB::beginTransaction();
         try {
             $material = OnBoardingMaterial::create($input);

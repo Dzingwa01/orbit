@@ -26,8 +26,8 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="http://getmishift.co.za/css/assets.min.css" rel="stylesheet">
-    <link href="http://getmishift.co.za/css/style.min.css" rel="stylesheet">
+    <link href="http://18.220.238.181/css/assets.min.css" rel="stylesheet">
+    <link href="http://18.220.238.181/css/style.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CVarela+Round" rel="stylesheet">
 </head>
 <body>

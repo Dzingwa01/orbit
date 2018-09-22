@@ -9,7 +9,6 @@
                 </div>
                 <form role="form" id="add-user" action="/employees" method="post">
                     {{ csrf_field() }}
-                    <input name="package_id" value="{{$package->id}}" hidden>
                     <input name="role_id" value="{{$role->id}}" hidden>
                     <input name="creator_id" value="{{Auth::user()->id}}" hidden>
                     <input name="company_name" value="{{Auth::user()->company_name}}" hidden>

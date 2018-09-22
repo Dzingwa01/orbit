@@ -26,8 +26,8 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="getmishift.co.za/css/assets.min.css" rel="stylesheet">
-    <link href="getmishift.co.za/css/style.min.css" rel="stylesheet">
+    <link href="http://getmishift.co.za/css/assets.min.css" rel="stylesheet">
+    <link href="http://getmishift.co.za/css/style.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CVarela+Round" rel="stylesheet">
 </head>
 <body>
@@ -87,10 +87,10 @@
     <div class="row" style="margin-top: 6em;">
         <div class="panel-heading"><h3>Registration Confirmed</h3></div>
         <div class="panel-body">
-            <br/> Your Email is successfully verified. Please proceed and sign in to the <b>Orbit</b>. Click here to <a href="{{url('/login')}}"> Sign in</a>
+            <br/> Your Email is successfully verified. Please proceed and sign in to the <b>MiShift App</b>. Click here to <a href="{{url('/login')}}"> Sign in</a> if you are a manager. If you are an employee proceed to log in to the mobile application.
             <br/>
             Kind regards,<br/>
-            Orbit Team
+            MiShift Team
         </div>
     </div>
 
