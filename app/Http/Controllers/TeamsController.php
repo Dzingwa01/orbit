@@ -114,6 +114,7 @@ public function getCurrentShiftEmployees(ShiftSchedule $shift){
 
     public function managersTeamMembers(Request $request){
         $input = $request->all();
+//        dd($input);
         $team_id = $input['team_id'];
         $team_members= array_values(array_except($input,['_token','team_id']));
 //        dd($team_members);

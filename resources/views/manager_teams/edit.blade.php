@@ -62,8 +62,8 @@
                 <div class="row">
                 @foreach($team_members as $team_member)
                     <div class="form-check col-sm-6">
-                        <input name="{{$team_member->contact_number}}" type="checkbox" class="form-check-input" checked value="{{$team_member->id}}">
-                        <label class="form-check-label" for="{{$team_member->contact_number}}" >{{$team_member->name . ' '. $team_member->surname}}</label>
+                        <input name="{{$team_member->email}}" type="checkbox" class="form-check-input" checked value="{{$team_member->id}}">
+                        <label class="form-check-label" for="{{$team_member->email}}" >{{$team_member->name . ' '. $team_member->surname}}</label>
                     </div>
                 @endforeach
                 </div>
@@ -79,8 +79,8 @@
 
                 @foreach($available_team_members as $team_member)
                     <div class="form-check col-sm-6">
-                        <input name="{{$team_member->contact_number}}" type="checkbox" class="form-check-input" value="{{$team_member->id}}">
-                        <label class="form-check-label" for="{{$team_member->contact_number}}" >{{$team_member->name . ' '. $team_member->surname}}</label>
+                        <input name="{{$team_member->email}}" type="checkbox" class="form-check-input" value="{{$team_member->id}}">
+                        <label class="form-check-label" for="{{$team_member->email}}" >{{$team_member->name . ' '. $team_member->surname}}</label>
                     </div>
                 @endforeach
                 </div>

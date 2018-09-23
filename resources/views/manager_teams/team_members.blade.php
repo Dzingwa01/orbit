@@ -28,8 +28,8 @@
                     {{--<fieldset>--}}
                     @foreach($employees as $employee)
                         <div class="form-check col-sm-6">
-                            <input name="{{$employee->contact_number}}" type="checkbox" class="form-check-input" value="{{$employee->id}}">
-                            <label class="form-check-label" for="{{$employee->contact_number}}">{{$employee->name . ' '. $employee->surname}}</label>
+                            <input name="{{$employee->email}}" type="checkbox" class="form-check-input" value="{{$employee->id}}">
+                            <label class="form-check-label" for="{{$employee->email}}">{{$employee->name . ' '. $employee->surname}}</label>
                         </div>
                     @endforeach
                         <div class="box-footer" style="margin-top:3em!important;">
