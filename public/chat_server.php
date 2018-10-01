@@ -6,7 +6,7 @@
  * Time: 03:09 PM
  */
 //require __DIR__ . '/vendor/autoload.php';
-require '/var/www/orbit/vendor/autoload.php';
+require '/var/www/html/orbit/vendor/autoload.php';
 $options = array(
     'cluster' => 'ap2',
     'encrypted' => true
@@ -50,5 +50,6 @@ else if($event_type == "Send_Message"){
     $message->user_picture_url = $_POST['user_picture_url'];
     $message->message_text = $_POST['message_text'];
     $message->message_picture_url = $_POST['message_picture_url'];
+    $pusher->trigger('my-channel', 'my-message-event', $message);
 }
 
